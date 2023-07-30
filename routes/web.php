@@ -19,12 +19,14 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', 'App\Http\Controllers\AdminController@show')->name('show');
 
 Route::get('/', 'App\Http\Controllers\AdminController@login')->name('login');
+Route::get('/login', 'App\Http\Controllers\AdminController@login')->name('login');
 Route::post('/login', 'App\Http\Controllers\AdminController@trylogin')->name('login');
-Route::post('/login', 'App\Http\Controllers\AdminController@trylogin')->name('logout');
+Route::middleware(['auth', 'admin'])->group(function () {
+Route::post('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');
 
 
-Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
-Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('profile');
+// Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
+// Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('profile');
 
 // Route::get('/stories', 'App\Http\Controllers\StoryController@getAllStories')->name('stories');
 // // Route::get('/stories', [App\Http\Controllers\StoryController::class, 'getAllStories'])->name('stories');
@@ -92,7 +94,7 @@ Route::post('/addNewSlide', [App\Http\Controllers\StoryMediaController::class, '
 
 
 // Routes for admin only
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth','admin'])->group(function () {
     //dashboard 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'showChart'])->name('home');
     // manage all managers
@@ -109,6 +111,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     // check filed
     Route::post('/checkFiled', [App\Http\Controllers\StoryController::class, 'checkFiled'])->name('checkFiled');
 
+});
 });
 
 // test

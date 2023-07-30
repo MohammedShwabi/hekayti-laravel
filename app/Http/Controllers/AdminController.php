@@ -94,4 +94,12 @@ class AdminController extends Controller
     {
         //
     }
+    // logout user
+    public function logout()
+    {
+        auth()->logout();
+        session()->flush();
+
+        return redirect('/');
+    }
 }
