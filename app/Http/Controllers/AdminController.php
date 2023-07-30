@@ -14,7 +14,7 @@ class AdminController extends Controller
       public function login()
       {
           if (auth()->check()) {
-              return  redirect('/home');
+              return  redirect('/stories');
           }
           return view('auth.login');
       }
