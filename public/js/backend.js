@@ -9,11 +9,9 @@ function toggleLoadingOverlay(show) {
 }
 
 // to expand add button on hover
-$(document).ready(function () {
-    $('.add-btn').hover(function () {
-        $('.add-btn span').show();
-    }, function () {
-        $('.add-btn span').hide();
+$(document).ready(function() {
+    $('.add-btn').hover(function() {
+        $('.add-btn span').toggle();
     });
 });
 
@@ -116,6 +114,12 @@ function searchInput(url, options) {
     });
 }
 
+// to get id and send it to delete popup form
+function deletePopup(target_id, model, pop_input) {
+    $(`#${pop_input}`).val(target_id);
+    $(`#${model}`).modal('show');
+}
+
 // ************ end of general function section ************
 
 // ************** start of home page **************
@@ -184,22 +188,11 @@ function hidePassword(target) {
 // ************** end of login page **************
 
 // ************** start of admin page **************
-
-// to get id of admin and send it to delete popup form
-function deleteAdmin(admin_id) {
-    $('#admin_id').val(admin_id);
-    $('#delete_manager').modal('show');
-}
-
 // show the edit admin popup
 function editAdmin(admin_id, admin_name, admin_email) {
-    id = admin_id;
-    Aname = admin_name;
-    email = admin_email;
-    $('#edit_admin_id').val(id);
-    $('#nameEditInput').val(Aname);
-    $('#emailEditInput').val(email);
-    // $('#passwordEditInput').val(admin_name);
+    $('#edit_admin_id').val(admin_id);
+    $('#nameEditInput').val(admin_name);
+    $('#emailEditInput').val(admin_email);
     $('#edit_manager').modal('show');
 }
 
@@ -464,7 +457,7 @@ $('#change_pass').submit(function (e) {
 // edit profile photo 
 $('#edit_profile_photo').click(function () {
     // Create an input field of type "file" and make it hidden
-    var input = $('<input>', {
+    $('<input>', {
         type: 'file',
         accept: 'image/*',
         style: 'display: none;'
@@ -682,18 +675,6 @@ $('#edit_level').change(function () {
     $('#warning_edit_order').empty();
 });
 
-// to get id of story and send it to delete popup form
-function deleteStory(story_id) {
-    $('#story_id').val(story_id);
-    $('#delete_story').modal('show');
-}
-
-// to get id of story and send it to delete popup form
-function publishStory(story_id) {
-    $('#publish_story_id').val(story_id);
-    $('#publish_story').modal('show');
-}
-
 // show the edit story popup
 function editStory(story_id, story_name, story_author, story_photo, story_order, level) {
 
@@ -750,21 +731,8 @@ $("#edit_story").on('hidden.bs.modal', function () {
 // ************** end of stories page **************
 
 // ************** start of story slide page **************
-
-function deleteSlide(thisSlide) {
-    var slideId = $(thisSlide).data('id');
-    $('#del_slide_id').val(slideId);
-    $('#delete_slide').modal('show');
-}
-
 $(document).ready(function () {
-    // show the delete slide popup
-    // $('.delete-slide').click(function () {
-    //     var slideId = $(this).data('id');
-    //     $('#del_slide_id').val(slideId);
-    //     $('#delete_slide').modal('show');
-    // });
-
+    
     // add new slide
     $('.add-slide-btn').click(function () {
         $('#slide_imge').attr('src', "upload/slides_photos/img_upload.svg");
@@ -774,18 +742,13 @@ $(document).ready(function () {
         $('#edit-photo').attr('onclick', "addPhoto()");
         $('#replace_sound').attr('onclick', "addSound()");
         $('#edit_text_icon').attr('onclick', "addText()");
-        // edit here
+        
 
         $('.add-slide-btns').html(
             '<button type="button" class="btn save" id="add_slide" onclick="saveSlide()">حفظ</button>' +
             '<input type="button" onclick="closeSlide()" class="cancel slide-cancel btn btn-secondary" value="إلغاء">'
         );
-        // $('.add-slide-btns').html(
-        //     '<button type="button" class="btn save" id="add_slide" onclick="saveSlide()">حفظ</button>' +
-        //     '<input type="reset" class="cancel slide-cancel btn btn-secondary" value="إلغاء">'
-        // );
-
-
+        
         $("#icon_text").text("إضافة");
 
         $("#error-photo-message").text("");
@@ -799,89 +762,40 @@ $(document).ready(function () {
 });
 
 // for add slide actions 
-function addPhoto() {
+function addFile(type) {
     // Create an input field of type "file"
-    var input = $('<input />', {
-        type: 'file',
-        accept: 'image/*',
-        name: 'add_slide_imge',
-        id: 'add_slide_imge',
-        style: 'display: none;',
-
-    });
+    var input = $("<input />", { type: "file", accept: type + "/*", name: "add_slide_" + type, id: "add_slide_" + type, style: "display: none;" });
 
     // Trigger a click event on the input field
-    input.trigger('click');
+    input.trigger("click");
 
     // Listen for a change event on the input field
     input.change(function () {
+
         var file = this.files[0];
 
+        // Check if the selected file is correct type
+        if (file.type.match(type + '.*')) {
 
-        // Check if the selected file is an image
-        if (!file.type.match('image.*')) {
-            alert('Please select an image file.');
-            return;
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                // Set the src attribute of the image tag to the data URL of the selected image
+                $("#slide_" + type).attr("src", event.target.result.toString());
+            };
+            reader.readAsDataURL(file);
+        } else {
+            alert("Please select a " + type.toUpperCase() + " file.");
         }
-
-        // Check if the selected file belongs to a specific file type
-        if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
-            alert('Please select a PNG or JPEG image file.');
-            return;
-        }
-
-        var reader = new FileReader();
-
-        reader.onload = function (event) {
-            // Set the src attribute of the image tag to the data URL of the selected image
-            $('#slide_imge').attr('src', event.target.result.toString());
-        };
-
-        reader.readAsDataURL(file);
     });
-    $('#imginput').html(input);
+    $("#" + type + "input").html(input);
+}
+
+function addPhoto() {
+    addFile("image");
 }
 
 function addSound() {
-    // Create an input field of type "file"
-    var input = $('<input />', {
-        type: 'file',
-        accept: 'audio/*',
-        name: 'add_slide_audio',
-        id: 'add_slide_audio',
-        style: 'display: none;'
-    });
-    // Trigger a click event on the input field
-    input.trigger('click');
-
-    // Listen for a change event on the input field
-    input.change(function () {
-        var file = this.files[0];
-
-
-        // Check if the selected file is an image
-        if (!file.type.match('audio.*')) {
-            alert('Please select an image file.');
-            return;
-        }
-
-        // Check if the selected file belongs to a specific file type
-        // if (file.type !== 'image/png' && file.type !== 'image/jpeg') {
-        //     alert('Please select a PNG or JPEG image file.');
-        //     return;
-        // }
-        // $('#error-sound-message').text("");
-        var reader = new FileReader();
-
-        reader.onload = function (event) {
-            // Set the src attribute of the image tag to the data URL of the selected image
-            $('#slide_sound').attr('src', event.target.result);
-        };
-
-        reader.readAsDataURL(file);
-    });
-
-    $('#soundinput').html(input);
+    addFile("audio");
 }
 
 function addText() {
@@ -889,7 +803,7 @@ function addText() {
 
     var current_text = ($element.text() == "أدخل النص هنا") ? "" : $element.text();
 
-    // edit here
+    
     var $input = $('<input>').attr('type', 'text').attr('id', 'slide_input').val(current_text);
     $input.addClass('form-control');
 
@@ -898,7 +812,7 @@ function addText() {
 
     $input.blur(function () {
         var current_text = ($.trim($input.val()) == "") ? "أدخل النص هنا" : $input.val();
-        // edit here
+        
         var $newElement = $('<div>').attr('id', 'slide_text').text(current_text);
         $input.replaceWith($newElement);
         // $('#error-text-message').text('');
@@ -921,40 +835,42 @@ $('input[type="submit"]').on('click', function (event) {
 
 // save slide 
 function saveSlide() {
-    // Get the selected image data
 
-    // Get the selected image data
-    var fileInput = $('#add_slide_imge')[0];
-    // validaite from image 
-    if (!fileInput || !fileInput.files || !fileInput.files.length > 0) {
+    // Get the selected input data
+    var photoInput = $("#add_slide_image")[0];
+    var soundInput = $("#add_slide_audio")[0];
+    var textElement = $("#slide_text");
+    var photoMessage = $("#error-photo-message");
+    var soundMessage = $("#error-sound-message");
+    var textMessage = $("#error-text-message");
+
+    // validate from image 
+    if (!photoInput || !photoInput.files || !photoInput.files.length === 0) {
 
         // Scroll to the error message after it's shown
         document.querySelector('#edit-photo').scrollIntoView({ behavior: 'smooth' });
-        $("#error-photo-message").text("لطفا قم بإختيار الصورة").append('<i class="fa fa-close close-btn" onclick="deleteText()"></i>');
-
+        photoMessage.text("لطفا قم بإختيار الصورة").append('<i class="fa fa-close close-btn" onclick="deleteText()"></i>');
         return;
     }
-    var img = fileInput.files[0];
 
-    // Get the selected audio file
-    var audioInput = $('#add_slide_audio')[0];
-    // validaite from sound
-    if (!audioInput || !audioInput.files || !audioInput.files.length > 0) {
+
+    var photoFile = photoInput.files[0];
+
+    // validate from sound
+    if (!soundInput || !soundInput.files || !soundInput.files.length > 0) {
         // Access input.files safely here
-        $("#error-sound-message").text("لطفا قم بإختيار الصوت");
-        // alert('eror in chose sound');
+        soundMessage.text("لطفا قم بإختيار الصوت");
         return;
     }
-    var audio = audioInput.files[0];
+
+    var soundFile = soundInput.files[0];
 
     // Get the contents of the "story-content" div
-    var slideText = $('#slide_text').html();
+    var slideText = textElement.html();
     if (slideText == '' || slideText == 'أدخل النص هنا') {
-        // alert('eror in text');
-        // $("#error-photo-message").text("");
-        $("#error-photo-message").empty();
-        $("#error-sound-message").text("");
-        $("#error-text-message").text("لطفا قم بإدخال النص");
+        photoMessage.empty();
+        soundMessage.text("");
+        textMessage.text("لطفا قم بإدخال النص");
         return;
     }
 
@@ -962,10 +878,10 @@ function saveSlide() {
     var formData = new FormData();
 
     // Append the selected image file to the form data
-    formData.append('photo', img);
+    formData.append('photo', photoFile);
 
     // Append the selected audio file to the form data
-    formData.append('sound', audio);
+    formData.append('sound', soundFile);
 
     // Append the contents of the "slide text" div to the form data
     formData.append('text', slideText);
@@ -1016,32 +932,25 @@ function saveSlide() {
 }
 
 // for editing slide 
-function editPhoto() {
+function editMedia(type) {
     // Create an input field of type "file"
-    var input = $('<input />', {
-        type: 'file',
-        accept: 'image/*',
-        style: 'display: none;'
-    });
-
+    var input = $("<input />", { type: "file", accept: type + "/*", style: "display: none;" });
     // Trigger a click event on the input field
-    input.trigger('click');
+    input.trigger("click");
 
     // Listen for a change event on the input field
     input.change(function () {
-        var id = $('#slide_id').text();
+        var slideId = $("#slide_id").text();
         var formData = new FormData();
-        formData.append("photo", this.files[0]);
+        formData.append(type, this.files[0]);
 
         // Show loading overlay
         toggleLoadingOverlay(true);
 
         // Send an AJAX request to the server to upload the image
         $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: "editSlidePhoto?id=" + id,
+            headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") },
+            url: "editSlide" + type.charAt(0).toUpperCase() + type.slice(1) + "?id=" + slideId,
             type: "POST",
             data: formData,
             contentType: false,
@@ -1050,89 +959,40 @@ function editPhoto() {
                 // Hide loading overlay
                 toggleLoadingOverlay(false);
 
-                // Update the preview image with the new URL
-                $('#slide_imge').attr('src', data.url);
-                $('#image' + id).attr('src', data.url);
-                // alert("Image uploaded successfully!");
-                $('#error-photo-message').text("");
+                if (type === "image") {
+                    // update main slid image
+                    $("#slide_image").attr("src", data.url);
+
+                    // update aside slid imag
+                    $("#slide_image").attr("src", data.url);
+
+                } else if (type === "audio") {
+                    // This ensures that the browser loads the new version of the audio file instead of using a cached version.
+                    //we append a cache-busting parameter to the URL by adding ?_= followed by the current timestamp using new Date().getTime(). 
+                    $("#slide_audio").attr("src", data.url + "?" + (new Date()).getTime());
+                }
+                // empty error message
+                $('#error-' + type + '-message').text("");
+
             },
-            error: function (xhr, status, error) {
+            error: function (xhr) {
                 // Hide loading overlay
                 toggleLoadingOverlay(false);
-
+                // Get the first error message
                 var errors = xhr.responseJSON.errors;
+
                 if (errors) {
-                    // Get the first error message
-                    var errorMessage = Object.values(errors)[0][0];
-                    //here to customaize the error message of fiald of uploud image
-                    $('#error-photo-message').text(errorMessage);
+                    var errorMsg = Object.values(errors)[0][0];
+                    $("#error-" + type + "-message").text(errorMsg);
                 }
             }
         });
     });
-}
-
-function editSound() {
-    // Create an input field of type "file"
-    var input = $('<input />', {
-        type: 'file',
-        accept: 'audio/*',
-        style: 'display: none;'
-    });
-
-    // Trigger a click event on the input field
-    input.trigger('click');
-
-    // Listen for a change event on the input field
-    input.change(function () {
-        //get id of the slide
-        var id = $('#slide_id').text();
-        var formData = new FormData();
-        formData.append("sound", this.files[0]);
-
-        // Show loading overlay
-        toggleLoadingOverlay(true);
-
-        // Send an AJAX request to the server to upload the audio
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: "editSlideSound?id=" + id,
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-
-                // Update the preview image with the new URL
-                //we append a cache-busting parameter to the URL by adding ?_= followed by the current timestamp using new Date().getTime(). 
-                // This ensures that the browser loads the new version of the audio file instead of using a cached version.
-                $('#slide_sound').attr('src', data.url + '?_=' + new Date().getTime());
-                $('#error-sound-message').text("");
-            },
-            error: function (xhr, status, error) {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-
-                var errors = xhr.responseJSON.errors;
-                if (errors) {
-                    // Get the first error message
-                    var errorMessage = Object.values(errors)[0][0];
-                    $('#error-sound-message').text(errorMessage);
-                }
-            }
-        });
-    });
-
-
 }
 
 function editText() {
     var $element = $('#slide_text');
-    // edit here
+    
     var $input = $('<input>').attr('type', 'text').attr('id', 'slide_input').val($element.text());
     $input.addClass('form-control');
 
@@ -1160,7 +1020,7 @@ function editText() {
                 // Hide loading overlay
                 toggleLoadingOverlay(false);
 
-                // edit here
+                
                 var $newElement = $('<div>').attr('id', 'slide_text').text($input.val());
                 $input.replaceWith($newElement);
                 $('#text' + id).text($input.val());
@@ -1194,4 +1054,3 @@ function closeSlide() {
 }
 
 // ************** end of story slide page **************
-// test comment

@@ -85,7 +85,7 @@
                         <a class="delete_popup text-decoration-none" id="delete_popup" onclick="editAdmin({{ $admin->id }},'{{ $admin->name }}' , '{{ $admin->email }}')">
                             <i class="fa fa-pen "></i>
                         </a>
-                        <a class="delete_popup text-decoration-none" id="delete_popup" onclick="deleteAdmin({{ $admin->id }})">
+                        <a class="delete_popup text-decoration-none" id="delete_popup" onclick="deletePopup({{ $admin->id }},'delete_manager','admin_id')">
                             <i class="fa fa-trash-can pe-3"></i>
                         </a>
                     </div>

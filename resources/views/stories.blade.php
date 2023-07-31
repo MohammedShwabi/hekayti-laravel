@@ -83,7 +83,7 @@
                         <li>
                             <!-- check if story has media then show publish pop-up else show no publish pop-up  -->
                             @if ($story->hasMedia)
-                            <a class="shadow" id="publish_icon" onclick="publishStory({{ $story->id }})" data-tip="نشر القصة"><i class="fa fa-bullhorn"></i></a>
+                            <a class="shadow" id="publish_icon" onclick="deletePopup({{ $story->id }},'publish_story','publish_story_id')" data-tip="نشر القصة"><i class="fa fa-bullhorn"></i></a>
                             @else
                             <a class="shadow" id="publish_icon" data-bs-toggle="modal" data-bs-target="#no_pub_pop" data-tip="نشر القصة"><i class="fa fa-bullhorn"></i></a>
                             @endif
@@ -92,7 +92,7 @@
 
                         <!-- delete icon -->
                         <li>
-                            <a class="shadow" id="delete_icon" onclick="deleteStory({{ $story->id }})" data-tip="حذف القصة">
+                            <a class="shadow" id="delete_icon" onclick="deletePopup({{ $story->id }},'delete_story','story_id')" data-tip="حذف القصة">
                                 <i class="fa fa-trash-can"></i>
                             </a>
                         </li>

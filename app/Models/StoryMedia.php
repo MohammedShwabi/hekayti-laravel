@@ -12,8 +12,8 @@ class StoryMedia extends Model
     protected $fillable = [
         'story_id',
         'page_no',
-        'photo',
-        'sound',
+        'image',
+        'audio',
         'text',
         'text_no_desc',
     ];

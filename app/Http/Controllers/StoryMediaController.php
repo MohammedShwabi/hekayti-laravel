@@ -129,7 +129,7 @@ class StoryMediaController extends Controller
         // Validate the uploaded file
         $request->validate(
             [
-                'photo' => [
+                'image' => [
                     'required',
                     'image',
                     'mimes:jpeg,png,jpg,gif',
@@ -144,14 +144,14 @@ class StoryMediaController extends Controller
                 ],
             ],            
             [
-                'photo.image' => 'يجب ان يكون الملف صورة ',
-                'photo.mimes' => 'فقط الانواع التالية متاحة jpeg, png, jpg, gif,svg',
-                'photo.max' => '2MB حجم الصورة اكبر ',
+                'image.image' => 'يجب ان يكون الملف صورة ',
+                'image.mimes' => 'فقط الانواع التالية متاحة jpeg, png, jpg, gif,svg',
+                'image.max' => '2MB حجم الصورة اكبر ',
             ]
         );
 
         // Store the image on the server
-        $image = $request->file('photo');
+        $image = $request->file('image');
         $imageName = $image->getClientOriginalName();
         // to replace image in files
         $image->move(public_path('upload/slides_photos/'), $imageName);
@@ -208,7 +208,7 @@ class StoryMediaController extends Controller
         // Validate the uploaded file
         $request->validate(
             [
-                'sound' => [
+                'audio' => [
                     'required',
                     'file',
                     'mimes:mp3,wav,ogg',
@@ -223,12 +223,12 @@ class StoryMediaController extends Controller
                 ],
             ],
             [
-                'sound.mimes' => 'فقط الانواع التالية متاحة mp3,wav',
+                'audio.mimes' => 'فقط الانواع التالية متاحة mp3,wav',
             ]
         );
 
         // Store the audio file on the server
-        $audio = $request->file('sound');
+        $audio = $request->file('audio');
         $audioName = $audio->getClientOriginalName();
         // to replace audio file in the directory
         $audio->move(public_path('upload/slides_sounds/'), $audioName);
