@@ -1138,7 +1138,7 @@ audio:focus-visible {
     position: relative;
 }
 
-#error-photo-message {
+#error-image-message {
     background-color: #f8d7da;
     color: #721c24;
     text-align: center;
@@ -1153,7 +1153,7 @@ audio:focus-visible {
     margin-left: 10%;
 }
 
-#error-photo-message:not(:empty) {
+#error-image-message:not(:empty) {
     padding: 10px;
 }
 

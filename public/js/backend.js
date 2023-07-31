@@ -8,15 +8,58 @@ function toggleLoadingOverlay(show) {
     $('#loading-overlay').fadeToggle(show);
 }
 
-// to expand add button on hover
-$(document).ready(function() {
-    $('.add-btn').hover(function() {
-        $('.add-btn span').toggle();
-    });
-});
+// Function to perform search based on input and display results
+function performSearch(url, searchData) {
+    // also check if the search text is less than 3 characters
+    if (searchData.search.length < 3) {
+        $("#result_list").empty();
+    } else {
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: searchData,
+            beforeSend: () => $("#search_icon").toggleClass("fa-circle-notch fa-spin fa-magnifying-glass"), // to show loading icon
+            success: (response) => handleSearchResult(response, url, searchData.level),
+            error: (xhr, status, error) => console.log("Error:", error),
+        });
+    }
+}
+
+// Function to handle search results
+function handleSearchResult(response, url, level) {
+
+    // check the response and add it to variable
+    const searchResultsHTML = response && response.length > 0
+        ? response.map(result => {
+            const query = `${url}?search=${encodeURIComponent(result)}${url === "stories" ? `&level=${encodeURIComponent(level)}` : ""}`;
+            return `<a href='${query}' class='list-group-item list-group-item-action search-item'>${result}</a>`;
+        }).join("")
+        : "<a href='#' class='list-group-item list-group-item-action search-item'>لا توجد نتائج</a>";
+
+    // add the list item to the page
+    $("#result_list").html(searchResultsHTML);
+
+    // to hide loading icon
+    $("#search_icon").toggleClass("fa-circle-notch fa-spin fa-magnifying-glass");
+
+    // to reset the current focus suggestion item
+    currentFocus = -1;
+}
+
+// Function to get id and send it to delete popup
+function deletePopup(target_id, model, pop_input) {
+    $(`#${pop_input}`).val(target_id);
+    $(`#${model}`).modal('show');
+}
 
 // to call function only when page loaded
 $(document).ready(function () {
+
+    // to expand add button on hover
+    $('.add-btn').hover(function () {
+        $('.add-btn span').toggle();
+    });
+
     // make the width of search result equal to search input
     $('#result_list').width($('.search').width());
 
@@ -69,98 +112,44 @@ $(document).ready(function () {
     };
 });
 
-// general search function to search for story and admin
-function searchInput(url, options) {
-    // also check if the search text is less than 3 characters
-    if (options.search.length < 3) {
-        $("#result_list").empty();
-        return;
-    }
-    $.ajax({
-        type: 'GET',
-        url: url,
-        data: options,
-        beforeSend: function () {
-            // to show loading icon
-            $("#search_icon").addClass('fa-circle-notch fa-spin').removeClass('fa-magnifying-glass');
-        },
-        success: function (response) {
-
-            if (response && response.length > 0) {
-
-                var html = response.map(function (item) {
-
-                    var href = `${url}?search=${encodeURIComponent(item)}` + (url === 'stories' ? `&level=${encodeURIComponent(options.level)}` : '');
-
-                    return `<a href='${href}' class='list-group-item list-group-item-action search-item'>${item}</a>`;
-                }).join('');
-            }
-            else {
-                html = "<a href='#' class='list-group-item list-group-item-action search-item'>لا توجد نتائج</a>";
-            }
-
-            // add the list item to the page
-            $("#result_list").html(html);
-
-            // to hide loading icon
-            $("#search_icon").addClass('fa-magnifying-glass').removeClass('fa-circle-notch fa-spin');
-
-            // to reset the current focus suggestion item
-            currentFocus = -1;
-        },
-        error: function (xhr, status, error) {
-            console.log('Error:', error);
-        }
-    });
-}
-
-// to get id and send it to delete popup form
-function deletePopup(target_id, model, pop_input) {
-    $(`#${pop_input}`).val(target_id);
-    $(`#${model}`).modal('show');
-}
-
 // ************ end of general function section ************
 
 // ************** start of home page **************
 
+// to animate the counts inside the dashboard
+function animateCount(element) {
+    var target = $(element);
+    var count = 0;
+    var finalCount = parseInt(target.data('final-count'));
+    var duration = 1000; // Animation duration in milliseconds
+    var increment = finalCount / (duration / 100); // Increment value based on animation duration
+
+    var interval = setInterval(function () {
+        count += increment;
+        target.text(Math.floor(count));
+        if (count >= finalCount) {
+            clearInterval(interval);
+            target.text(finalCount); // Set the final count value
+        }
+    }, 100);
+
+    target.addClass('fade-in'); // Add fade-in animation class
+}
+
+// to animate the number oly when its visible to the user view
+function checkVisibility() {
+    var windowBottom = $(window).scrollTop() + $(window).innerHeight();
+    // get all elements with count-animation class and animate them
+    $('.count-animation').each(function () {
+        var targetTop = $(this).offset().top;
+        if ($(this).is(':visible') && !$(this).hasClass('animation-started') && windowBottom > targetTop) {
+            animateCount(this);
+            $(this).addClass('animation-started');
+        }
+    });
+}
+
 $(document).ready(function () {
-
-    // get all elements with count-animation class to animate it later
-    var animatedElements = $('.count-animation');
-
-    // to animate the counts inside the dashboard
-    function animateCount(element) {
-        var target = $(element);
-        var count = 0;
-        var finalCount = parseInt(target.data('final-count'));
-        var duration = 1000; // Animation duration in milliseconds
-        var increment = finalCount / (duration / 100); // Increment value based on animation duration
-
-        var interval = setInterval(function () {
-            count += increment;
-            target.text(Math.floor(count));
-            if (count >= finalCount) {
-                clearInterval(interval);
-                target.text(finalCount); // Set the final count value
-            }
-        }, 100);
-
-        target.addClass('fade-in'); // Add fade-in animation class
-    }
-
-    // to animate the number oly when its visible to the user view
-    function checkVisibility() {
-        var windowBottom = $(window).scrollTop() + $(window).innerHeight();
-        animatedElements.each(function () {
-            var targetTop = $(this).offset().top;
-            if ($(this).is(':visible') && !$(this).hasClass('animation-started') && windowBottom > targetTop) {
-                animateCount(this);
-                $(this).addClass('animation-started');
-            }
-        });
-    }
-
     // Bind scroll event to check element visibility
     $(window).scroll(checkVisibility);
 
@@ -172,30 +161,24 @@ $(document).ready(function () {
 
 // ************** start of login page **************
 
-// for Hide and Show the password by using the EYE icons
-function hidePassword(target) {
-    var input = document.getElementById(target);
-
-    if (input.type === 'password') {
-        input.type = "text";
-        $("#hide").addClass("fa-eye-slash").removeClass("fa-eye");
-    } else {
-        input.type = "password";
-        $("#hide").addClass("fa-eye").removeClass("fa-eye-slash");
-    }
+// Function to Hide and Show the password by using the EYE icons
+function hidePassword(inputId) {
+    const input = document.getElementById(inputId);
+    input.type = (input.type === "password") ? "text" : "password";
+    $("#hide").toggleClass("fa-eye-slash fa-eye");
 }
 
 // ************** end of login page **************
 
 // ************** start of admin page **************
-// show the edit admin popup
+// Function to show the edit admin popup
 function editAdmin(admin_id, admin_name, admin_email) {
     $('#edit_admin_id').val(admin_id);
     $('#nameEditInput').val(admin_name);
     $('#emailEditInput').val(admin_email);
     $('#edit_manager').modal('show');
 }
-
+// later
 $(function () {
 
     // Change state of the admin
@@ -454,60 +437,6 @@ $('#change_pass').submit(function (e) {
     });
 });
 
-// edit profile photo 
-$('#edit_profile_photo').click(function () {
-    // Create an input field of type "file" and make it hidden
-    $('<input>', {
-        type: 'file',
-        accept: 'image/*',
-        style: 'display: none;'
-    }).change(function () {
-        // Prepare form data with the selected image file
-        var formData = new FormData();
-        formData.append("image", this.files[0]);
-
-        // Show loading overlay
-        toggleLoadingOverlay(true);
-
-        // Send an AJAX request to upload the image
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: "editProfilePhoto",
-            type: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (data) {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-
-                // Update the nav profile photo
-                $('#round-profile').attr('src', data.thumbUrl);
-                // Update the preview image with the new URL
-                $('#profile_photo').attr('src', data.url);
-
-                // Clear any error messages
-                $('#error-profile-photo').text("");
-            },
-            error: function (xhr, status, error) {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-
-                var errors = xhr.responseJSON.errors;
-
-                if (errors) {
-                    // Get the first error message
-                    var errorMessage = Object.values(errors)[0][0];
-                    // Display the error message
-                    $('#error-profile-photo').text(errorMessage);
-                }
-            }
-        });
-    }).trigger('click');
-});
-
 // to rest edit name popup when the popup closed
 $("#edit_name_pop").on('hidden.bs.modal', function () {
 
@@ -732,27 +661,27 @@ $("#edit_story").on('hidden.bs.modal', function () {
 
 // ************** start of story slide page **************
 $(document).ready(function () {
-    
+
     // add new slide
     $('.add-slide-btn').click(function () {
-        $('#slide_imge').attr('src', "upload/slides_photos/img_upload.svg");
-        $('#slide_sound').attr('src', "");
+        $('#slide_image').attr('src', "upload/slides_photos/img_upload.svg");
+        $('#slide_audio').attr('src', "");
         $('#slide_text').text("أدخل النص هنا");
 
         $('#edit-photo').attr('onclick', "addPhoto()");
         $('#replace_sound').attr('onclick', "addSound()");
         $('#edit_text_icon').attr('onclick', "addText()");
-        
+
 
         $('.add-slide-btns').html(
             '<button type="button" class="btn save" id="add_slide" onclick="saveSlide()">حفظ</button>' +
             '<input type="button" onclick="closeSlide()" class="cancel slide-cancel btn btn-secondary" value="إلغاء">'
         );
-        
+
         $("#icon_text").text("إضافة");
 
-        $("#error-photo-message").text("");
-        $("#error-sound-message").text("");
+        $("#error-image-message").text("");
+        $("#error-audio-message").text("");
         $("#error-text-message").text("");
 
     });
@@ -787,7 +716,7 @@ function addFile(type) {
             alert("Please select a " + type.toUpperCase() + " file.");
         }
     });
-    $("#" + type + "input").html(input);
+    $("#" + type + "Input").html(input);
 }
 
 function addPhoto() {
@@ -803,7 +732,7 @@ function addText() {
 
     var current_text = ($element.text() == "أدخل النص هنا") ? "" : $element.text();
 
-    
+
     var $input = $('<input>').attr('type', 'text').attr('id', 'slide_input').val(current_text);
     $input.addClass('form-control');
 
@@ -812,16 +741,15 @@ function addText() {
 
     $input.blur(function () {
         var current_text = ($.trim($input.val()) == "") ? "أدخل النص هنا" : $input.val();
-        
+
         var $newElement = $('<div>').attr('id', 'slide_text').text(current_text);
         $input.replaceWith($newElement);
-        // $('#error-text-message').text('');
     });
 
 }
 
 $('input[type="submit"]').on('click', function (event) {
-    var errorMessage = $('#error-photo-message');
+    var errorMessage = $('#error-image-message');
 
     // Check if error message is visible
     if (errorMessage.is(':visible')) {
@@ -840,12 +768,15 @@ function saveSlide() {
     var photoInput = $("#add_slide_image")[0];
     var soundInput = $("#add_slide_audio")[0];
     var textElement = $("#slide_text");
-    var photoMessage = $("#error-photo-message");
-    var soundMessage = $("#error-sound-message");
+    var photoMessage = $("#error-image-message");
+    var soundMessage = $("#error-audio-message");
     var textMessage = $("#error-text-message");
 
+    console.log(photoInput);
+
     // validate from image 
-    if (!photoInput || !photoInput.files || !photoInput.files.length === 0) {
+    if (!photoInput || !photoInput.files || !photoInput.files.length > 0) {
+        
 
         // Scroll to the error message after it's shown
         document.querySelector('#edit-photo').scrollIntoView({ behavior: 'smooth' });
@@ -878,10 +809,10 @@ function saveSlide() {
     var formData = new FormData();
 
     // Append the selected image file to the form data
-    formData.append('photo', photoFile);
+    formData.append('image', photoFile);
 
     // Append the selected audio file to the form data
-    formData.append('sound', soundFile);
+    formData.append('audio', soundFile);
 
     // Append the contents of the "slide text" div to the form data
     formData.append('text', slideText);
@@ -918,7 +849,7 @@ function saveSlide() {
                 let errors = response.responseJSON.errors;
                 Object.keys(errors).forEach(function (key) {
                     $("#error-" + key + "-message").text(errors[key][0]);
-                    if (key == 'photo') {
+                    if (key == 'image') {
                         $("#error-" + key + "-message").text(errors[key][0]).append('<i class="fa fa-close close-btn" onclick="deleteText()"></i>');;
                     }
                 });
@@ -932,7 +863,7 @@ function saveSlide() {
 }
 
 // for editing slide 
-function editMedia(type) {
+function editMedia(type, url) {
     // Create an input field of type "file"
     var input = $("<input />", { type: "file", accept: type + "/*", style: "display: none;" });
     // Trigger a click event on the input field
@@ -940,9 +871,15 @@ function editMedia(type) {
 
     // Listen for a change event on the input field
     input.change(function () {
-        var slideId = $("#slide_id").text();
+
         var formData = new FormData();
         formData.append(type, this.files[0]);
+
+        // this for edit slide photo and audio
+        if(url == "editSlideImage" || url == "editSlideAudio"){
+            var id = $('#slide_id').text();
+            formData.append('id', id);
+        }
 
         // Show loading overlay
         toggleLoadingOverlay(true);
@@ -950,7 +887,7 @@ function editMedia(type) {
         // Send an AJAX request to the server to upload the image
         $.ajax({
             headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") },
-            url: "editSlide" + type.charAt(0).toUpperCase() + type.slice(1) + "?id=" + slideId,
+            url: url,
             type: "POST",
             data: formData,
             contentType: false,
@@ -959,17 +896,23 @@ function editMedia(type) {
                 // Hide loading overlay
                 toggleLoadingOverlay(false);
 
-                if (type === "image") {
+                if (type === "image" && url == "editSlideImage") {
                     // update main slid image
                     $("#slide_image").attr("src", data.url);
 
                     // update aside slid imag
-                    $("#slide_image").attr("src", data.url);
+                    $('#image' + id).attr('src', data.url);
 
                 } else if (type === "audio") {
                     // This ensures that the browser loads the new version of the audio file instead of using a cached version.
                     //we append a cache-busting parameter to the URL by adding ?_= followed by the current timestamp using new Date().getTime(). 
                     $("#slide_audio").attr("src", data.url + "?" + (new Date()).getTime());
+                }
+                else if (type === "image" && url == "editProfilePhoto") {
+                    // Update the nav profile photo
+                    $('#round-profile').attr('src', data.thumbUrl);
+                    // Update the preview image with the new URL
+                    $('#profile_photo').attr('src', data.url);
                 }
                 // empty error message
                 $('#error-' + type + '-message').text("");
@@ -982,8 +925,14 @@ function editMedia(type) {
                 var errors = xhr.responseJSON.errors;
 
                 if (errors) {
+                    // Get the first error message
                     var errorMsg = Object.values(errors)[0][0];
+                    // Display the error message
                     $("#error-" + type + "-message").text(errorMsg);
+
+                    if(url= 'editSlideImage'){
+                        $("#error-" + type + "-message").append('<i class="fa fa-close close-btn" onclick="deleteText()"></i>');
+                    }
                 }
             }
         });
@@ -992,7 +941,7 @@ function editMedia(type) {
 
 function editText() {
     var $element = $('#slide_text');
-    
+
     var $input = $('<input>').attr('type', 'text').attr('id', 'slide_input').val($element.text());
     $input.addClass('form-control');
 
@@ -1020,7 +969,7 @@ function editText() {
                 // Hide loading overlay
                 toggleLoadingOverlay(false);
 
-                
+
                 var $newElement = $('<div>').attr('id', 'slide_text').text($input.val());
                 $input.replaceWith($newElement);
                 $('#text' + id).text($input.val());
@@ -1046,7 +995,7 @@ function editText() {
 
 // to delete photo error message when user click on the close icon
 function deleteText() {
-    document.getElementById("error-photo-message").innerHTML = "";
+    document.getElementById("error-image-message").innerHTML = "";
 }
 
 function closeSlide() {

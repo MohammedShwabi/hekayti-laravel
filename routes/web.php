@@ -86,9 +86,9 @@ Route::post('/deleteSlide', [App\Http\Controllers\StoryMediaController::class, '
 // edit slide text
 Route::post('/editSlideText', [App\Http\Controllers\StoryMediaController::class, 'editSlideText'])->name('editSlideText');
 // edit slide photo
-Route::post('/editSlidePhoto', [App\Http\Controllers\StoryMediaController::class, 'editSlidePhoto'])->name('editSlidePhoto');
+Route::post('/editSlideImage', [App\Http\Controllers\StoryMediaController::class, 'editSlideImage'])->name('editSlideImage');
 // edit slide sound
-Route::post('/editSlideSound', [App\Http\Controllers\StoryMediaController::class, 'editSlideSound'])->name('editSlideSound');
+Route::post('/editSlideAudio', [App\Http\Controllers\StoryMediaController::class, 'editSlideAudio'])->name('editSlideAudio');
 // add new slide
 Route::post('/addNewSlide', [App\Http\Controllers\StoryMediaController::class, 'addNewSlide'])->name('addNewSlide');
 

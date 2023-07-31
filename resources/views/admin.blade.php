@@ -26,7 +26,7 @@
                     <span class="search-icon icon-bordered">
                         <i class="fa-solid fa-magnifying-glass fa-flip-horizontal" id="search_icon" style="--fa-animation-duration: 1s;"></i>
                     </span>
-                    <input type="text" value="{{$search}}" name="search" id="search_txt" oninput="searchInput('manage', { search: this.value.trim() } )" autocomplete="off" class="form-control shadow-none" placeholder="بحث عن مدير ...">
+                    <input type="text" value="{{$search}}" name="search" id="search_txt" oninput="performSearch('manage', { search: this.value.trim() } )" autocomplete="off" class="form-control shadow-none" placeholder="بحث عن مدير ...">
                     <input type="submit" id="search_btn" value="بحث" class="btn btn-primary">
                 </div>
             </form>

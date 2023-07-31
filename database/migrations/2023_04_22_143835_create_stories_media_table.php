@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->tinyInteger('page_no');
             $table->bigInteger('story_id')->unsigned();
-            $table->string('photo')->unique();
-            $table->string('sound')->unique();
+            $table->string('image')->unique();
+            $table->string('audio')->unique();
             $table->string('text');
             $table->string('text_no_desc');
             $table->foreign('story_id')->references('id')->on('stories')->onDelete('cascade');

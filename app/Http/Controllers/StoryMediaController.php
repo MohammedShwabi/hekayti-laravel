@@ -58,9 +58,9 @@ class StoryMediaController extends Controller
         $slide = StoryMedia::find($request->slide_id);
 
         // get the media path
-        $path = public_path('upload/slides_photos/' . $slide->photo);
-        $soundPathe = public_path('upload/slides_sounds/' . $slide->sound);
-        $thumpPath = public_path('upload/slides_photos/thumbs/' . $slide->photo);
+        $path = public_path('upload/slides_photos/' . $slide->image);
+        $soundPathe = public_path('upload/slides_sounds/' . $slide->audio);
+        $thumpPath = public_path('upload/slides_photos/thumbs/' . $slide->image);
         if (file_exists($path)) {
             unlink($path);
         }
@@ -111,8 +111,8 @@ class StoryMediaController extends Controller
     }
 
 
-      // edit slide photo  
-    public function editSlidePhoto(Request $request)
+    // edit slide photo  
+    public function editSlideImage(Request $request)
     {
         // validate from the id 
         $validatedData = request()->validate(
@@ -136,13 +136,13 @@ class StoryMediaController extends Controller
                     'max:2048',
                     function ($attribute, $value, $fail) use ($request) {
                         $filename = $value->getClientOriginalName();
-                        $existingStory = StoryMedia::where('photo', $filename)->where('id', '<>', $request->id)->first();
+                        $existingStory = StoryMedia::where('image', $filename)->where('id', '<>', $request->id)->first();
                         if ($existingStory) {
                             $fail('هذه الصورة موجودة مسبقا');
                         }
                     },
                 ],
-            ],            
+            ],
             [
                 'image.image' => 'يجب ان يكون الملف صورة ',
                 'image.mimes' => 'فقط الانواع التالية متاحة jpeg, png, jpg, gif,svg',
@@ -170,9 +170,9 @@ class StoryMediaController extends Controller
         $story_media = StoryMedia::find($id);
         //  this while generate error if you useing the same image so the default image will deleted and when you try again he can not find it 
         // to delete old image from files  and thumb file
-        if ($story_media->photo !== 'default.png') {
-            $path = public_path('upload/slides_photos/' . $story_media->photo);
-            $thumbPath = public_path('upload/slides_photos/thumbs/' . $story_media->photo);
+        if ($story_media->image !== 'default.png') {
+            $path = public_path('upload/slides_photos/' . $story_media->image);
+            $thumbPath = public_path('upload/slides_photos/thumbs/' . $story_media->image);
             if (file_exists($path)) {
                 unlink($path);
             }
@@ -184,14 +184,14 @@ class StoryMediaController extends Controller
         // Update the URL of the image in the database
         $imageUrl = asset('upload/slides_photos/' . $imageName);
         // Assuming you have a Model called Photo and the photo that you want to update has an ID of 1:
-        $story_media->photo = $imageName;
+        $story_media->image = $imageName;
         $story_media->save();
 
         return response()->json(['url' => $imageUrl]);
     }
 
-      // edit slide sound 
-    public function editSlideSound(Request $request)
+    // edit slide Audio 
+    public function editSlideAudio(Request $request)
     {
         // validate from the id 
         $validatedData = request()->validate(
@@ -215,7 +215,7 @@ class StoryMediaController extends Controller
                     'max:2048',
                     function ($attribute, $value, $fail) use ($request) {
                         $filename = $value->getClientOriginalName();
-                        $existingStory = StoryMedia::where('sound', $filename)->where('id', '<>', $request->id)->first();
+                        $existingStory = StoryMedia::where('audio', $filename)->where('id', '<>', $request->id)->first();
                         if ($existingStory) {
                             $fail('هذه الصوت موجودة مسبقا');
                         }
@@ -238,7 +238,7 @@ class StoryMediaController extends Controller
         // Delete old audio file from the directory
         // this if we have defult value
         if ($story_media->audio !== 'default.mp3') {
-            $path = public_path('upload/slides_sounds/' . $story_media->sound);
+            $path = public_path('upload/slides_sounds/' . $story_media->audio);
             if (file_exists($path)) {
                 unlink($path);
             }
@@ -246,7 +246,7 @@ class StoryMediaController extends Controller
 
         // Update the URL of the audio file in the database
         $audioUrl = asset('upload/slides_sounds/' . $audioName);
-        $story_media->sound = $audioName;
+        $story_media->audio = $audioName;
         $story_media->save();
 
         // return audio url
@@ -311,15 +311,14 @@ class StoryMediaController extends Controller
 
         $validated = $request->validate(
             [
-                // 'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048|unique:stories_media,photo',
-                'photo' => [
+                'image' => [
                     'required',
                     'image',
                     'mimes:jpeg,png,jpg,gif',
                     'max:2048',
                     function ($attribute, $value, $fail) use ($request) {
                         $filename = $value->getClientOriginalName();
-                        $existingStory = StoryMedia::where('photo', $filename)->first();
+                        $existingStory = StoryMedia::where('image', $filename)->first();
                         if ($existingStory) {
                             $fail('هذه الصورة موجودة مسبقا');
                         }
@@ -327,14 +326,14 @@ class StoryMediaController extends Controller
                 ],
 
                 // '' => 'required|file||max:2048|unique:stories_media,sound',
-                'sound' => [
+                'audio' => [
                     'required',
                     'file',
                     'mimes:mp3,wav,ogg',
                     'max:2048',
                     function ($attribute, $value, $fail) use ($request) {
                         $filename = $value->getClientOriginalName();
-                        $existingStory = StoryMedia::where('sound', $filename)->first();
+                        $existingStory = StoryMedia::where('audio', $filename)->first();
                         if ($existingStory) {
                             $fail('هذه الصوت موجودة مسبقا');
                         }
@@ -344,10 +343,10 @@ class StoryMediaController extends Controller
                 'text' => ['required', 'string'],
             ],
             [
-                'photo.image' => 'يجب ان يكون الملف صورة ',
-                'photo.mimes' => 'فقط الانواع التالية متاحة jpeg, png, jpg, gif,svg',
-                'photo.max' => '2MB حجم الصورة اكبر ',
-                'sound.mimes' => 'فقط الانواع التالية متاحة ogg,mp3,wav',
+                'image.image' => 'يجب ان يكون الملف صورة ',
+                'image.mimes' => 'فقط الانواع التالية متاحة jpeg, png, jpg, gif,svg',
+                'image.max' => '2MB حجم الصورة اكبر ',
+                'audio.mimes' => 'فقط الانواع التالية متاحة ogg,mp3,wav',
                 'text' => 'لطفا قم بإدخال النص'
 
             ]
@@ -355,7 +354,7 @@ class StoryMediaController extends Controller
 
 
         // Get the uploaded file from the request
-        $image = $request->file('photo');
+        $image = $request->file('image');
         $imageName = $image->getClientOriginalName();
         // check if img file uploaded
         if ($image->move(public_path('upload/slides_photos/'), $imageName)) {
@@ -370,7 +369,7 @@ class StoryMediaController extends Controller
             });
             $thumb->save($thumbPath);
 
-            $audio = $request->file('sound');
+            $audio = $request->file('audio');
             $audioName = $audio->getClientOriginalName();
 
             if ($audio->move(public_path('upload/slides_sounds/'), $audioName)) {
@@ -390,8 +389,8 @@ class StoryMediaController extends Controller
                     $slide = new StoryMedia;
                     $slide->page_no = $new_page;
                     $slide->story_id  = $story_id;
-                    $slide->photo = $imageName;
-                    $slide->sound = $audioName;
+                    $slide->image = $imageName;
+                    $slide->audio = $audioName;
                     $slide->text = $slideText;
                     // remove diacritical from slide text and save it to the new column
                     $slide->text_no_desc = $this->removeDiacritics($slideText);
