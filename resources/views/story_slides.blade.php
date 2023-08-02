@@ -68,7 +68,7 @@
 
                         }
                     </script>
-                    {{-- marge the id with the id to distnic it --}}
+                    {{-- Merge the id with the id to distinguish it --}}
                     @if ($hasSlide)
                     @foreach ($slides as $slide)
                     <div class="card_slide card" id="card_slide_{{ $i }}" onclick="getSlide({{ $i }})">
