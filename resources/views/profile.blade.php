@@ -97,7 +97,6 @@
             <form id="edit_name_form">
                 @csrf
                 <div class="modal-body mx-5 mb-4">
-                    <input type="hidden" name="admin_id" id="admin_id" value="{{ Auth::user()->id }}">
                     <div class="form-group">
                         <div class="col-12 mt-4 mb-3">
                             <label for="nameInput" class="form-label manager-name">إسم المستخدم</label>

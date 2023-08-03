@@ -30,11 +30,7 @@ class HomeController extends Controller
         return view('home');
     }
 
-    // show the profile page
-    public function profile()
-    {
-        return view('profile');
-    }
+   
 
     // get the number of users registered in each month to use in dashboard
     public function getUserGrowthData()

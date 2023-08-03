@@ -53,7 +53,7 @@ Route::post('/logout', 'App\Http\Controllers\AdminController@logout')->name('log
 
 // profile Routes 
 // show profile page 
-Route::get('/profile', [App\Http\Controllers\HomeController::class, 'profile'])->name('profile');
+Route::get('/profile', [App\Http\Controllers\AdminController::class, 'profile'])->name('profile');
 // edit profile photo 
 Route::post('/editProfilePhoto', [App\Http\Controllers\AdminController::class, 'editProfilePhoto'])->name('editProfilePhoto');
 // edit profile name
