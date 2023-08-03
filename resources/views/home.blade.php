@@ -195,13 +195,13 @@
 <div class="container-fluid" id="chart_container">
     <div class="row my-4">
         <div class="col-lg-3 col-md-4 d-none d-md-block">
-            <img src="{{ asset('img/person_two.png') }}" class=" img-fluid chart-img" alt="">
+            <img src="{{ asset('storage/img/person_two.png') }}" class=" img-fluid chart-img" alt="">
         </div>
         <div class="col-lg-6 col-md-4 col-12 d-flex justify-content-center m-0 p-0">
             <div id="curve_chart" style="width: 900px; height: 500px;"></div>
         </div>
         <div class="col-lg-3 col-md-4 d-none d-md-block">
-            <img src="{{ asset('img/person_one.png') }}" class=" img-fluid chart-img" alt="">
+            <img src="{{ asset('storage/img/person_one.png') }}" class=" img-fluid chart-img" alt="">
         </div>
     </div>
 </div>

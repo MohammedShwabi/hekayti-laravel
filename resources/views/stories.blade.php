@@ -69,7 +69,7 @@
             <div class="out-card m-2">
                 <div class="card card-story">
 
-                    <img src="{{ asset('upload/stories_covers/' . $story->cover_photo) }}" class="img-fluid rounded " alt="..." />
+                    <img src="{{ asset('storage/upload/stories_covers/' . $story->cover_photo) }}" class="img-fluid rounded " alt="..." />
                     <a href="{{ route('storyslide') . '?story_id=' . $story->id }}" class="hover-background"></a>
 
                     <!-- if story is not published then show the icons -->
@@ -140,7 +140,7 @@
                 <h1 class="mb-0 pb-0 pt-5 text-muted">لا توجد قصة بهذا الاسم !!</h1>
                 @endif
 
-                <img src="{{ asset('upload/No_data.svg') }}" class="img-fluid w-75 w">
+                <img src="{{ asset('storage/upload/No_data.svg') }}" class="img-fluid w-75 w">
             </div>
 
             @endif

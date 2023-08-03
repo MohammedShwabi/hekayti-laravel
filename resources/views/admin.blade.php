@@ -71,7 +71,7 @@
                 <div class="row justify-content-center align-items-center text-center">
                     <div class="col-lg-3 text-lg-left">
                         <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
-                            <img src="{{ asset('upload/profiles_photos/thumbs/' . $admin->photo) }}" alt="Logo" id="round-profile" class="img-fluid" />
+                            <img src="{{ asset('storage/upload/profiles_photos/thumbs/' . $admin->photo) }}" alt="Logo" id="round-profile" class="img-fluid" />
                             <span class="pe-2 user-name">{{ $admin->name }}</span>
                         </div>
                     </div>
@@ -107,7 +107,7 @@
         <h1 class="mb-0 pb-0 pt-5 text-muted">لا يوجد مدير بهذا الاسم !!</h1>
         @endif
 
-        <img src="{{ asset('upload/No_data.svg') }}" class="img-fluid w-75 w">
+        <img src="{{ asset('storage/upload/No_data.svg') }}" class="img-fluid w-75 w">
     </div>
     @endif
 </div>

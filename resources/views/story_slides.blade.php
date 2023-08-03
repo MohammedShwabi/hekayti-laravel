@@ -39,12 +39,12 @@
                             $("#card_slide_" + i).addClass("active");
 
                             // to get full url of image 
-                            var baseImageUrl = '{{ URL::to('/') }}/upload/slides_photos/';
+                            var baseImageUrl = '{{ URL::to('/') }}/storage/upload/slides_photos/';
                             var image = slides[i].image;
                             var imageUrl = baseImageUrl + image;
 
                             // to get full url of audio 
-                            var baseAudioUrl = '{{ URL::to('/') }}/upload/slides_sounds/';
+                            var baseAudioUrl = '{{ URL::to('/') }}/storage/upload/slides_sounds/';
                             var audio = slides[i].audio;
                             var audioUrl = baseAudioUrl + audio;
 
@@ -74,7 +74,7 @@
                     <div class="card_slide card" id="card_slide_{{ $i }}" onclick="getSlide({{ $i }})">
                         <div class="row px-1 justify-content-center align-items-center">
                             <div class="col-4 card-image my-1 p-0">
-                                <img id="image{{ $slide->id }}" src="{{ asset('upload/slides_photos/thumbs/' . $slide->image) }}" class="img-fluid " alt="...">
+                                <img id="image{{ $slide->id }}" src="{{ asset('storage/upload/slides_photos/thumbs/' . $slide->image) }}" class="img-fluid " alt="...">
                             </div>
                             <div class="col-6 pe-3 card-text">
                                 <p id="text{{ $slide->id }}">{{ $slide->text }}</p>
@@ -141,12 +141,12 @@
                         <div class="fa fa-pen"></div>
                     </div>
                     @endif
-                    <img id="slide_image" src="{{ asset('upload/slides_photos/' . $slide_photo) }}" class="img-fluid w-100 p-0" alt="...">
+                    <img id="slide_image" src="{{ asset('storage/upload/slides_photos/' . $slide_photo) }}" class="img-fluid w-100 p-0" alt="...">
                 </div>
                 <div id="imageInput"></div>
 
                 <div class="row sound align-items-center py-4 px-4">
-                    <audio controls class="col-11" id="slide_audio" src="{{ asset('upload/slides_sounds/' . $slide_audio) }}">
+                    <audio controls class="col-11" id="slide_audio" src="{{ asset('storage/upload/slides_sounds/' . $slide_audio) }}">
                         {{-- if there is more than formatt of audio file we can use the source tag her --}}
                         Your browser does not support the audio element.
                     </audio>

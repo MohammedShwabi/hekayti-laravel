@@ -82,7 +82,7 @@
                     <li>
                         <a class="navbar-brand" href="{{  route('profile')  }}">
                             <!-- edit here -->
-                            <img src="{{ asset('upload/profiles_photos/thumbs/' . Auth::user()->image) }}" alt="Logo" class="img-fluid" id="round-profile" />
+                            <img src="{{ asset('storage/upload/profiles_photos/thumbs/' . Auth::user()->image) }}" alt="Logo" class="img-fluid" id="round-profile" />
                         </a>
                     </li>
                     <li class="nav-item dropdown {{ Route::currentRouteName() === 'profile' ? 'active' : '' }}">

@@ -37,7 +37,7 @@
                     <div class="card_slide card {{ $i === count($slides) - 1 ? 'active' : '' }}" id="card_slide_{{ $i }}" onclick="getSlide({{ $i }})">
                         <div class="row px-1 justify-content-center align-items-center">
                             <div class="col-4 card-image my-1 p-0">
-                                <img id="image{{ $slide->id }}" src="{{ asset('upload/slides_photos/thumbs/' . $slide->image) }}" class="img-fluid" alt="...">
+                                <img id="image{{ $slide->id }}" src="{{ asset('storage/upload/slides_photos/thumbs/' . $slide->image) }}" class="img-fluid" alt="...">
                             </div>
                             <div class="col-6 pe-3 card-text">
                                 <p id="text{{ $slide->id }}">{{ $slide->text }}</p>
