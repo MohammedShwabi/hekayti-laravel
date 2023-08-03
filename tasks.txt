@@ -1,0 +1,17 @@
+all tasks in hekiaty-laravel
+
+
+1-edit images path  --Done by Mohammed
+2-optimize js file
+3-optimize css file
+4-optimize  rout file 
+5-optimize all controllers
+7-optimize all blade files
+8-images upload and delete for all views 
+9-add arabic files 
+10-add feature of store slides
+11-add feature to unpublished any story
+12-edit rout for publish story and allow it to admin only
+13-edit api file and try to make it Restful
+14-edit management structure to have super admin and admin and manager
+15-check from all data coming from user =>specifically id that coming from git request
