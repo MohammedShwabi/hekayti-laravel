@@ -5,6 +5,8 @@ all tasks in hekiaty-laravel
 2-optimize js file
 3-optimize css file
 4-optimize  rout file 
+--check all the authentications 
+--make all routs in a good way 
 5-optimize all controllers
 7-optimize all blade files
 8-images upload and delete for all views 
@@ -23,8 +25,25 @@ some things need to Fix
 images in home page
 
 password validation 
-make all validation in the same way And Routes
-the correct way to encrypt password
+make all validation in the same way
+make all Routes in the same way 
+the correct way to encrypt password    ==> #DON BY MOHAMMED
+
+check from data coming from the user
+--search in the git url parameter 
+--all id coming from request
 
 
 
+
+change the name of the functions in all controllers
+--admin controller     ==> #DON BY MOHAMMED
+--stories controller
+
+
+
+redirect user depend on the role filed   ==> #DON BY MOHAMMED
+
+
+_____________In The blade pages______________
+add required attr to all inputs

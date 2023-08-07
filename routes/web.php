@@ -13,105 +13,77 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('auth.login');
-// });
-// Route::get('/', 'App\Http\Controllers\AdminController@show')->name('show');
+// non authenticated users 
+Route::get('/', [App\Http\Controllers\AdminController::class, 'login'])->name('root');
+Route::get('/login', [App\Http\Controllers\AdminController::class, 'login'])->name('login');
+// check the login data
+Route::post('/login', 'App\Http\Controllers\AdminController@tryLogin')->name('login');
 
-Route::get('/', 'App\Http\Controllers\AdminController@login')->name('login');
-Route::get('/login', 'App\Http\Controllers\AdminController@login')->name('login');
-Route::post('/login', 'App\Http\Controllers\AdminController@trylogin')->name('login');
-Route::middleware(['auth', 'admin'])->group(function () {
-Route::post('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');
+Route::middleware(['auth'])->group(function () {
+    // logout the user
+    Route::post('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');
 
 
-// Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
-// Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('profile');
-
-// Route::get('/stories', 'App\Http\Controllers\StoryController@getAllStories')->name('stories');
-// // Route::get('/stories', [App\Http\Controllers\StoryController::class, 'getAllStories'])->name('stories');
-
-// Route::get('/stories/{level}', 'App\Http\Controllers\HomeController@index')->name('home');
-// // Route::get('/story-slides/{story}', 'App\Http\Controllers\HomeController@index')->name('home');
-
-// Route::get('/storieshh/{level}', 'App\Http\Controllers\HomeController@index')->name('storyslide');
-// // Route::get('/stories/{level}', function () {
-// //     return view('welcome');
-// // });
-// // Route::get('/story-slides/{story}', function () {
-// //     return view('home');
-// // });
+    /** profile Routes  */
+    // show profile page 
+    Route::get('/profile', [App\Http\Controllers\AdminController::class, 'profile'])->name('profile');
+    // edit profile name
+    Route::post('/editName', [App\Http\Controllers\AdminController::class, 'editName'])->name('editName');
+    // edit profile photo 
+    Route::post('/editProfilePhoto', [App\Http\Controllers\AdminController::class, 'editProfilePhoto'])->name('editProfilePhoto');
+    // change the password 
+    Route::post('/changePassword', [App\Http\Controllers\AdminController::class, 'changePassword'])->name('changePassword');
 
 
 
+    // stories Routes
+    // show the story in the specific level send in the get parameter
+    Route::get('/stories', [App\Http\Controllers\StoryController::class, 'getAllStories'])->name('stories');
+    // add New Story 
+    Route::post('/addStory', [App\Http\Controllers\StoryController::class, 'addStory'])->name('addStory');
+    // edit Story 
+    Route::post('/editStory', [App\Http\Controllers\StoryController::class, 'editStory'])->name('editStory');
+    // delete story
+    Route::post('/deleteStory', [App\Http\Controllers\StoryController::class, 'deleteStory'])->name('deleteStory');
+    // to publish story
+    Route::post('/publishStory', [App\Http\Controllers\StoryController::class, 'publishStory'])->name('publishStory');
+    // get last order of the story depend on level 
+    Route::get('/get-last-order', [App\Http\Controllers\StoryController::class, 'getLastOrder'])->name('getLastOrder');
 
 
-// Route::get('/', function () {
-//     return view('auth.login');
-// });
+    // Slides Routes
+    // show slides of the story
+    Route::get('/storyslide', [App\Http\Controllers\StoryMediaController::class, 'index'])->name('storyslide');
+    // delete slide
+    Route::post('/deleteSlide', [App\Http\Controllers\StoryMediaController::class, 'deleteSlide'])->name('deleteSlide');
+    // edit slide text
+    Route::post('/editSlideText', [App\Http\Controllers\StoryMediaController::class, 'editSlideText'])->name('editSlideText');
+    // edit slide photo
+    Route::post('/editSlideImage', [App\Http\Controllers\StoryMediaController::class, 'editSlideImage'])->name('editSlideImage');
+    // edit slide sound
+    Route::post('/editSlideAudio', [App\Http\Controllers\StoryMediaController::class, 'editSlideAudio'])->name('editSlideAudio');
+    // add new slide
+    Route::post('/addNewSlide', [App\Http\Controllers\StoryMediaController::class, 'addNewSlide'])->name('addNewSlide');
 
 
-// profile Routes 
-// show profile page 
-Route::get('/profile', [App\Http\Controllers\AdminController::class, 'profile'])->name('profile');
-// edit profile photo 
-Route::post('/editProfilePhoto', [App\Http\Controllers\AdminController::class, 'editProfilePhoto'])->name('editProfilePhoto');
-// edit profile name
-Route::post('/editName', [App\Http\Controllers\AdminController::class, 'editName'])->name('editName');
-// change the password 
-Route::post('/changePassword', [App\Http\Controllers\AdminController::class, 'changePassword'])->name('changePassword');
+    // Routes for admin only
+    Route::middleware(['auth', 'admin'])->group(function () {
+        //dashboard 
+        Route::get('/home', [App\Http\Controllers\HomeController::class, 'showChart'])->name('home');
+        // manage all managers
+        Route::get('/manage', [App\Http\Controllers\AdminController::class, 'show'])->name('manage');
+        // add new manager
+        Route::post('/register', [App\Http\Controllers\AdminController::class, 'store'])->name('register');
+        // edit manager info
+        Route::post('/editManager', [App\Http\Controllers\AdminController::class, 'update'])->name('editManager');
+        // change the status of the manager
+        Route::get('/adminChangeLocked', [App\Http\Controllers\AdminController::class, 'adminChangeLocked'])->name('delete');
+        // delete manager
+        Route::post('/delete/{admin}', [App\Http\Controllers\AdminController::class, 'destroy'])->name('delete-admin');
 
-
-
-// stories Routes
-// show the story in the specific level send in the get parameter
-Route::get('/stories', [App\Http\Controllers\StoryController::class, 'getAllStories'])->name('stories');
-// add New Story 
-Route::post('/addStory', [App\Http\Controllers\StoryController::class, 'addStory'])->name('addStory');
-// edit Story 
-Route::post('/editStory', [App\Http\Controllers\StoryController::class, 'editStory'])->name('editStory');
-// delete story
-Route::post('/deleteStory', [App\Http\Controllers\StoryController::class, 'deleteStory'])->name('deleteStory');
-// to publish story
-Route::post('/publishStory', [App\Http\Controllers\StoryController::class, 'publishStory'])->name('publishStory');
-// get last order of the story depand on level 
-Route::get('/get-last-order', [App\Http\Controllers\StoryController::class, 'getLastOrder'])->name('getLastOrder');
-
-
-// Slides Routes
-// show slides of the story
-Route::get('/storyslide', [App\Http\Controllers\StoryMediaController::class, 'index'])->name('storyslide');
-// delete slide
-Route::post('/deleteSlide', [App\Http\Controllers\StoryMediaController::class, 'deleteSlide'])->name('deleteSlide');
-// edit slide text
-Route::post('/editSlideText', [App\Http\Controllers\StoryMediaController::class, 'editSlideText'])->name('editSlideText');
-// edit slide photo
-Route::post('/editSlideImage', [App\Http\Controllers\StoryMediaController::class, 'editSlideImage'])->name('editSlideImage');
-// edit slide sound
-Route::post('/editSlideAudio', [App\Http\Controllers\StoryMediaController::class, 'editSlideAudio'])->name('editSlideAudio');
-// add new slide
-Route::post('/addNewSlide', [App\Http\Controllers\StoryMediaController::class, 'addNewSlide'])->name('addNewSlide');
-
-
-// Routes for admin only
-Route::middleware(['auth','admin'])->group(function () {
-    //dashboard 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'showChart'])->name('home');
-    // manage all managers
-    Route::get('/manage', [App\Http\Controllers\AdminController::class, 'show'])->name('manage');
-    // add new manager
-    Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register'])->name('register');
-    // edit manager info
-    Route::post('/editManager', [App\Http\Controllers\AdminController::class, 'editManager'])->name('editManager');
-    // delete manager
-    Route::post('/delete', [App\Http\Controllers\AdminController::class, 'delete'])->name('delete');
-    // change the status of the manager
-    Route::get('/adminChangeLocked', [App\Http\Controllers\AdminController::class, 'adminChangeLocked'])->name('delete');
-
-    // check filed
-    Route::post('/checkFiled', [App\Http\Controllers\StoryController::class, 'checkFiled'])->name('checkFiled');
-
-});
+        // check filed
+        Route::post('/checkFiled', [App\Http\Controllers\StoryController::class, 'checkFiled'])->name('checkFiled');
+    });
 });
 
 // test

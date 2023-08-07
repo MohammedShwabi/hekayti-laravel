@@ -198,6 +198,7 @@ $(function () {
             })
             .fail(function (response) {
                 // Hide loading overlay
+                console.log('Error in change state');
                 toggleLoadingOverlay(false);
             });
     });

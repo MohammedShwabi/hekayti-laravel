@@ -71,7 +71,7 @@
                 <div class="row justify-content-center align-items-center text-center">
                     <div class="col-lg-3 text-lg-left">
                         <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
-                            <img src="{{ asset('storage/upload/profiles_photos/thumbs/' . $admin->photo) }}" alt="Logo" id="round-profile" class="img-fluid" />
+                            <img src="{{ asset('storage/upload/profiles_photos/thumbs/' . $admin->image) }}" alt="Logo" id="round-profile" class="img-fluid" />
                             <span class="pe-2 user-name">{{ $admin->name }}</span>
                         </div>
                     </div>
@@ -233,10 +233,11 @@
                 <h5 class="modal-title">حذف مدير</h5>
                 <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <form action="{{ route('delete-admin', $admin) }}" method="POST">
             <form action="delete" method="POST">
                 @csrf
                 <div class="modal-body">
-                    <input type="hidden" name="admin_id" id="admin_id">
+                    <input type="hidden" name="admin" id="admin_id">
                     <p class="text-center delete-text">هل انت متاكد من الحذف</p>
                 </div>
                 <div class="modal-footer justify-content-evenly">
