@@ -99,9 +99,9 @@
                 <div class="modal-body mx-5 mb-4">
                     <div class="form-group">
                         <div class="col-12 mt-4 mb-3">
-                            <label for="nameInput" class="form-label manager-name">إسم المستخدم</label>
-                            <input type="text" required class="form-control" name="name" id="nameInput" placeholder="محمد شوابي" autofocus value="{{ Auth::user()->name }}">
-                            <span class="invalid-feedback" role="alert" id="nameError">
+                            <label for="nameEditInput" class="form-label manager-name">إسم المستخدم</label>
+                            <input type="text" required class="form-control" name="name" id="nameEditInput" placeholder="محمد شوابي" autofocus value="{{ Auth::user()->name }}">
+                            <span class="invalid-feedback" role="alert" id="nameEditError">
                                 <strong></strong>
                             </span>
                         </div>

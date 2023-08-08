@@ -213,13 +213,12 @@
                             <strong></strong>
                         </span>
                     </div>
-
+                    <div class="modal-footer  justify-content-evenly mb-4">
+                        <input type="submit" id="submitEdit" class="save btn" value="حفظ" />
+                        <input type="reset" class="cancel btn btn-secondary" data-bs-dismiss="modal" value="إلغاء" />
+                    </div>
+                </form>
             </div>
-            <div class="modal-footer  justify-content-evenly mb-4">
-                <input type="submit" id="submitEdit" class="save btn" value="حفظ" />
-                <input type="reset" class="cancel btn btn-secondary" data-bs-dismiss="modal" value="إلغاء" />
-            </div>
-            </form>
         </div>
     </div>
 </div>
@@ -234,17 +233,17 @@
                 <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('delete-admin', $admin) }}" method="POST">
-            <form action="delete" method="POST">
-                @csrf
-                <div class="modal-body">
-                    <input type="hidden" name="admin" id="admin_id">
-                    <p class="text-center delete-text">هل انت متاكد من الحذف</p>
-                </div>
-                <div class="modal-footer justify-content-evenly">
-                    <button type="submit" class="btn save" id="delete_btn">حذف</button>
-                    <button type="button" class="btn btn-secondary cancel" data-bs-dismiss="modal">إلغاء</button>
-                </div>
-            </form>
+                <form action="delete" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" name="admin" id="admin_id">
+                        <p class="text-center delete-text">هل انت متاكد من الحذف</p>
+                    </div>
+                    <div class="modal-footer justify-content-evenly">
+                        <button type="submit" class="btn save" id="delete_btn">حذف</button>
+                        <button type="button" class="btn btn-secondary cancel" data-bs-dismiss="modal">إلغاء</button>
+                    </div>
+                </form>
         </div>
     </div>
 </div>

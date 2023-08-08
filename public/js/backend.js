@@ -1,6 +1,6 @@
 // ************ start of general function section ************
 
-// initialize var for search section
+// initialize variable to store the current focus  search result index
 var currentFocus = -1;
 
 // Function to toggle the loading overlay
@@ -10,8 +10,9 @@ function toggleLoadingOverlay(show) {
 
 // Function to perform search based on input and display results
 function performSearch(url, searchData) {
-    // also check if the search text is less than 3 characters
+    // Check if the search query is at least 3 characters long
     if (searchData.search.length < 3) {
+        // Clear the result list
         $("#result_list").empty();
     } else {
         $.ajax({
@@ -28,13 +29,15 @@ function performSearch(url, searchData) {
 // Function to handle search results
 function handleSearchResult(response, url, level) {
 
-    // check the response and add it to variable
-    const searchResultsHTML = response && response.length > 0
-        ? response.map(result => {
+    // Check if the response is not empty
+    const searchResultsHTML = response && response.length > 0 ?
+        // Map the response to a list of links with the url, search query and level
+        response.map(result => {
             const query = `${url}?search=${encodeURIComponent(result)}${url === "stories" ? `&level=${encodeURIComponent(level)}` : ""}`;
             return `<a href='${query}' class='list-group-item list-group-item-action search-item'>${result}</a>`;
         }).join("")
-        : "<a href='#' class='list-group-item list-group-item-action search-item'>لا توجد نتائج</a>";
+        : // Display a message that there are no results
+        "<a href='#' class='list-group-item list-group-item-action search-item'>لا توجد نتائج</a>";
 
     // add the list item to the page
     $("#result_list").html(searchResultsHTML);
@@ -51,6 +54,80 @@ function deletePopup(target_id, model, pop_input) {
     $(`#${pop_input}`).val(target_id);
     $(`#${model}`).modal('show');
 }
+
+// to reset form and errors
+function resetFormAndErrors(formId) {
+    const form = $(formId)[0];
+    // Reset form inputs
+    $(form).trigger('reset');
+    // Remove validation error styling and messages
+    $(`${formId} input`).removeClass('is-invalid').siblings('.invalid-feedback').children('strong').empty();
+}
+
+// Function to handle AJAX requests
+function handleAjaxRequest(options) {
+    $.ajax({
+        method: options.method,
+        multipart: options.multipart,
+        headers: { Accept: "application/json" },
+        data: options.data,
+        contentType: false,
+        processData: false,
+        url: options.url,
+        success: options.success,
+        error: (response) => {
+            if (response.status === 422) { handleValidationErrors(response.responseJSON.errors, options.url) }
+            else if (response.status === 401) { handleUnauthorizedError(response.responseJSON.message) }
+            else { console.log(response.status) }
+        },
+        complete: () => toggleLoadingOverlay(false) // Hide loading overlay
+    });
+}
+
+// Function to handle validation errors
+function handleValidationErrors(errors, url) {
+    const suffix = url.includes("edit") ? "Edit" : "";
+
+    Object.keys(errors).forEach(function (key) {
+        $("#" + key + suffix + "Input").addClass("is-invalid")
+        .siblings('.invalid-feedback').children('strong').text(errors[key][0]);
+    });
+}
+
+// Function to handle unauthorized errors
+function handleUnauthorizedError(message) {
+    $("#old_passwordInput").addClass("is-invalid")
+    .siblings('.invalid-feedback').children('strong').text(message);
+}
+
+// Function to handle form submissions and errors
+function handleFormSubmission(formSelector, url, successCallback) {
+
+    $(formSelector).submit(function (e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+
+        var inputElements = $(formSelector + " input");
+        inputElements.removeClass("is-invalid").siblings('.invalid-feedback').children('strong').empty();
+
+        // Show loading overlay
+        toggleLoadingOverlay(true);
+
+        handleAjaxRequest({
+            method: "POST",
+            multipart: true,
+            data: formData,
+            url: url,
+            success: function () {
+                // Hide loading overlay
+                toggleLoadingOverlay(false);
+                successCallback();
+            }
+        });
+    });
+}
+
 
 // to call function only when page loaded
 $(document).ready(function () {
@@ -178,8 +255,8 @@ function editAdmin(admin_id, admin_name, admin_email) {
     $('#emailEditInput').val(admin_email);
     $('#edit_manager').modal('show');
 }
-// later
-$(function () {
+
+$(document).ready(function () {
 
     // Change state of the admin
     $('.toggle-class').change(function () {
@@ -193,372 +270,75 @@ $(function () {
         // Change the value in the database
         $.get('adminChangeLocked', { 'locked': locked, 'admin_id': admin_id })
             .done(function (data) {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
+                toggleLoadingOverlay(false); // Hide loading overlay
             })
             .fail(function (response) {
-                // Hide loading overlay
                 console.log('Error in change state');
-                toggleLoadingOverlay(false);
-            });
-    });
-
-
-    // add manager pop up
-    $('#manager_form').submit(function (e) {
-
-        e.preventDefault();
-        // Serialize form data
-        let formData = $(this).serializeArray();
-
-        // get the input
-        var managerInput = $("#manager_form input");
-
-        // Clear previous error messages
-        managerInput.toggleClass("is-invalid", false).siblings('.invalid-feedback').children('strong').empty();
-
-        // Show loading overlay
-        toggleLoadingOverlay(true);
-
-        $.ajax({
-            method: "POST",
-            headers: {
-                Accept: "application/json"
-            },
-            url: "register",
-            data: formData,
-            success: () => {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-
-                // Redirect to admin page
-                window.location.assign("manage")
-            },
-            error: (response) => {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-
-                if (response.status === 422) {
-                    // Handle validation errors
-                    let errors = response.responseJSON.errors;
-
-                    Object.keys(errors).forEach(function (key) {
-                        $("#" + key + "Input").addClass("is-invalid");
-                        $("#" + key + "Error").children("strong").text(errors[key][0]);
-                    });
-                } else {
-                    // Handle other error cases
-                    console.log(response.status);
-                }
+                toggleLoadingOverlay(false); // Hide loading overlay
             }
-        })
-    });
-
-    // to rest add admin popup when the popup closed
-    $('#add_manager').on('hidden.bs.modal', function () {
-
-        // empty all input in the form
-        $('#manager_form')[0].reset();
-
-        // remove invalid error message from all input
-        $("#manager_form input").removeClass("is-invalid").siblings('.invalid-feedback').children('strong').empty();
+            );
 
     });
 
-    // edit manager pop up
-    $('#edit_manager_form').submit(function (e) {
-        e.preventDefault();
-
-        // Serialize form data
-        let formData = $(this).serializeArray();
-
-        // get the input
-        var managerEditInput = $("#edit_manager_form input");
-
-        // Clear previous error messages
-        managerEditInput.toggleClass("is-invalid", false).siblings('.invalid-feedback').children('strong').empty();
-
-        // Show loading overlay
-        toggleLoadingOverlay(true);
-
-        $.ajax({
-            method: "POST",
-            headers: {
-                Accept: "application/json"
-            },
-            url: "editManager",
-            data: formData,
-            success: () => {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-                // Redirect to admin page
-                window.location.assign("manage")
-            },
-            error: (response) => {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-
-                if (response.status === 422) {
-                    // Handle validation errors
-                    let errors = response.responseJSON.errors;
-
-                    console.log(errors);
-
-                    Object.keys(errors).forEach(function (key) {
-                        $("#" + key + "EditInput").addClass("is-invalid");
-                        $("#" + key + "EditError").children("strong").text(errors[key][0]);
-                        console.log(key + "EditError");
-
-                    });
-                } else {
-                    // Handle other error cases
-                    console.log(response.status);
-                }
-            }
-        })
+    // Handle form submission for adding manager
+    handleFormSubmission("#manager_form", "register", function () {
+        window.location.assign("manage");
     });
 
-    // to rest edit admin popup when the popup closed
-    $('#edit_manager').on('hidden.bs.modal', function () {
-
-        // empty all input in the form
-        $('#edit_manager_form')[0].reset();
-
-        // remove invalid error message from all input
-        $("#edit_manager_form input").removeClass("is-invalid").siblings('.invalid-feedback').children('strong').empty();
-
+    // Handle form submission for editing manager
+    handleFormSubmission("#edit_manager_form", "editManager", function () {
+        window.location.assign("manage");
     });
 
+    // to rest modals form input when the popup closed
+    $('#add_manager, #edit_manager, #edit_name_pop, #change_password, #add_story, #edit_story').on('hidden.bs.modal', function () {
+        // Get the form ID
+        const formId = $(this).find('form').attr('id');
+
+        // Check which modal is being closed
+        if ($(this).is('#add_story')) {
+            // Clear warning and reset story photo label
+            $("#warning_order").empty();
+            const spanHTML = '<span class="icon-bordered upload-icon"><i class="fa fa-upload"></i></span>';
+            $("#cover_photoLabel").html("اختر صورة لرفعها" + spanHTML);
+        } else if ($(this).is('#edit_story')) {
+            // Clear warning for edit story modal
+            $("#warning_edit_order").empty();
+        }
+
+        // Call the resetFormAndErrors function to reset the form and errors
+        resetFormAndErrors(`#${formId}`);
+    });
 })
 
 // ************** end of admin page **************
 
 // ************** start of profile page **************
-// to edit name 
-$('#edit_name_form').submit(function (e) {
-    e.preventDefault();
+$(document).ready(function () {
+    // Handle form submission for editing profile name
+    handleFormSubmission("#edit_name_form", "editName", function () {
+        window.location.assign("profile");
+    });
 
-    // Serialize form data
-    var formData = $(this).serializeArray();
-
-    // get the input
-    var nameInput = $('#edit_name_form #nameInput');
-
-    // remove invalid error message input
-    nameInput.removeClass('is-invalid').siblings('.invalid-feedback').children('strong').empty();
-
-    // Show loading overlay
-    toggleLoadingOverlay(true);
-
-    $.ajax({
-        method: "POST",
-        headers: {
-            Accept: "application/json"
-        },
-        url: "editName",
-        data: formData,
-        success: function () {
-            // Hide loading overlay
-            toggleLoadingOverlay(false);
-
-            // Redirect to profile page
-            window.location.assign("profile");
-        },
-        error: function (response) {
-            // Hide loading overlay
-            toggleLoadingOverlay(false);
-
-            if (response.status === 422) {
-                // Handle validation errors
-                var errors = response.responseJSON.errors;
-                nameInput.addClass('is-invalid').siblings('.invalid-feedback').children('strong').text(errors.name[0]);
-
-            } else {
-                console.log(response.status);
-                // Handle other error cases
-                // window.location.reload();
-            }
-        }
+    // Handle form submission for changing profile password
+    handleFormSubmission("#change_pass", "changePassword", function () {
+        window.location.assign("profile");
     });
 });
-
-// to change password
-$('#change_pass').submit(function (e) {
-    e.preventDefault();
-
-    // Serialize form data
-    var formData = $(this).serializeArray();
-
-    // get the input
-    var changePassInput = $("#change_pass input");
-
-    // remove invalid error message input
-    changePassInput.toggleClass("is-invalid", false).siblings('.invalid-feedback').children('strong').empty();
-
-    // Show loading overlay
-    toggleLoadingOverlay(true);
-
-    $.ajax({
-        method: "POST",
-        headers: {
-            Accept: "application/json"
-        },
-        url: "changePassword",
-        data: formData,
-        success: function () {
-            // Hide loading overlay
-            toggleLoadingOverlay(false);
-
-            // Redirect to profile page
-            window.location.assign("profile");
-        },
-        error: function (response) {
-            // Hide loading overlay
-            toggleLoadingOverlay(false);
-
-            if (response.status === 422) {
-                // Handle validation errors
-                var { responseJSON: { errors } } = response;
-                Object.keys(errors).forEach(function (key) {
-                    $("#" + key + "Input").addClass("is-invalid");
-                    $("#" + key + "Error").children("strong").text(errors[key][0]);
-                });
-            }
-            if (response.status === 401) {
-                // Handle unauthorized error
-                let message = response.responseJSON.message;
-                $("#old_passwordInput").addClass("is-invalid");
-                $("#old_passwordError").children("strong").text(message);
-            } else {
-                console.log(response.status);
-                // Handle other error cases
-                // window.location.reload();
-            }
-        }
-    });
-});
-
-// to rest edit name popup when the popup closed
-$("#edit_name_pop").on('hidden.bs.modal', function () {
-
-    // empty all input in the form
-    $('#edit_name_form')[0].reset();
-
-    // remove invalid error message from all input
-    $('#edit_name_form input').removeClass('is-invalid').siblings('.invalid-feedback').children('strong').empty();
-
-});
-
-// to rest change password popup when the popup closed
-$("#change_password").on('hidden.bs.modal', function () {
-
-    // empty all input in the form
-    $('#change_pass')[0].reset();
-
-    // remove invalid error message from all input
-    $('#change_pass input').removeClass('is-invalid').siblings('.invalid-feedback').children('strong').empty();
-
-});
-
 // ************** end of profile page **************
 
 // ************** start of stories page **************
 
 $(document).ready(function () {
 
-    // add story pop up
-    $('#story_form').submit(function (e) {
-        e.preventDefault();
-
-        // get the input
-        var storyInput = $("#story_form input");
-
-        // Clear previous error messages
-        storyInput.toggleClass("is-invalid", false).siblings('.invalid-feedback').children('strong').empty();
-
-        // Show loading overlay
-        toggleLoadingOverlay(true);
-
-        $.ajax({
-            method: "POST",
-            multipart: true,
-            headers: {
-                Accept: "application/json"
-            },
-            data: new FormData(this),
-            contentType: false,
-            processData: false,
-            url: "addStory",
-            success: () => {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-                // Redirect to admin page
-                window.location.reload()
-            },
-            error: (response) => {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-
-                if (response.status === 422) {
-                    // Handle validation errors
-                    let errors = response.responseJSON.errors;
-
-                    // loop throw the error and display them
-                    Object.keys(errors).forEach(function (key) {
-                        $("#" + key + "Input").addClass("is-invalid");
-                        $("#" + key + "Error").children("strong").text(errors[key][0]);
-                    });
-                } else {
-                    // Handle other error cases
-                    console.log(response.status);
-                }
-            }
-        })
+    // Handle form submission for add story
+    handleFormSubmission("#story_form", "addStory", function () {
+        window.location.reload()
     });
 
-    // edit story pop up
-    $('#edit_story_form').submit(function (e) {
-        e.preventDefault();
-        $(".invalid-feedback").children("strong").text("");
-        $("#edit_story_form input").removeClass("is-invalid");
-
-        // Show loading overlay
-        toggleLoadingOverlay(true);
-
-        $.ajax({
-            method: "POST",
-            multipart: true,
-            // processData: false,
-            headers: {
-                Accept: "application/json"
-            },
-            data: new FormData(this),
-            contentType: false,
-            processData: false,
-            url: "editStory",
-            success: () => {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-                window.location.reload()
-            },
-            error: (response) => {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-                if (response.status === 422) {
-                    let errors = response.responseJSON.errors;
-                    Object.keys(errors).forEach(function (key) {
-                        $("#" + key + "EditInput").addClass(
-                            "is-invalid");
-                        $("#" + key + "EditError").children(
-                            "strong").text(errors[
-                                key][0]);
-                    });
-                } else {
-                    console.log(response.status);
-                    // window.location.reload();
-                }
-            }
-        })
+    // Handle form submission for editing story
+    handleFormSubmission("#edit_story_form", "editStory", function () {
+        window.location.reload()
     });
 });
 
@@ -590,7 +370,7 @@ function getStoryOrder(level, orderInput) {
         });
 }
 
-// add the story no when add story pop-up is show
+// add the story number when add story pop-up is show
 $("#add_story").on('shown.bs.modal', function () {
     // get the last order then put it in the order field
     getStoryOrder($('#level').val(), '#story_orderInput');
@@ -635,28 +415,6 @@ function updateLabelName(label, input) {
         $(input).siblings('.invalid-feedback').children('strong').empty();
     }
 }
-
-// to rest add story popup when closed
-$("#add_story").on('hidden.bs.modal', function () {
-    // empty all input in the form
-    $('#story_form')[0].reset();
-    // remove invalid error message from all input
-    $('#story_form input').removeClass('is-invalid').siblings('.invalid-feedback').children('strong').empty();
-    $("#warning_order").empty();
-
-    // rest the story photo lable
-    var spanHTML = '<span class="icon-bordered upload-icon"><i class="fa fa-upload"></i></span>';
-    $("#cover_photoLabel").html("اختر صورة لرفعها" + spanHTML);
-});
-
-// to rest edit story popup when closed
-$("#edit_story").on('hidden.bs.modal', function () {
-    // empty all input in the form
-    $('#edit_story_form')[0].reset();
-    // remove invalid error message from all input
-    $('#edit_story_form input').removeClass('is-invalid').siblings('.invalid-feedback').children('strong').empty();
-    $("#warning_edit_order").empty();
-});
 
 // ************** end of stories page **************
 
@@ -749,7 +507,7 @@ function addText() {
 
 }
 
-$('input[type="submit"]').on('click', function (event) {
+$('#add_slide').on('click', function (event) {
     var errorMessage = $('#error-image-message');
 
     // Check if error message is visible
@@ -777,7 +535,7 @@ function saveSlide() {
 
     // validate from image 
     if (!photoInput || !photoInput.files || !photoInput.files.length > 0) {
-        
+
 
         // Scroll to the error message after it's shown
         document.querySelector('#edit-photo').scrollIntoView({ behavior: 'smooth' });
@@ -877,7 +635,7 @@ function editMedia(type, url) {
         formData.append(type, this.files[0]);
 
         // this for edit slide photo and audio
-        if(url == "editSlideImage" || url == "editSlideAudio"){
+        if (url == "editSlideImage" || url == "editSlideAudio") {
             var id = $('#slide_id').text();
             formData.append('id', id);
         }
@@ -931,7 +689,7 @@ function editMedia(type, url) {
                     // Display the error message
                     $("#error-" + type + "-message").text(errorMsg);
 
-                    if(url= 'editSlideImage'){
+                    if (url = 'editSlideImage') {
                         $("#error-" + type + "-message").append('<i class="fa fa-close close-btn" onclick="deleteText()"></i>');
                     }
                 }
@@ -1002,5 +760,4 @@ function deleteText() {
 function closeSlide() {
     $('.card_slide:last').click();
 }
-
 // ************** end of story slide page **************
