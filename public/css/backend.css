@@ -367,7 +367,7 @@ body>div.container-fluid.full-page {
 /*end our-app section*/
 /* start login page  */
 .login-page {
-    background: url('../img/loginpage.png') no-repeat center/cover;
+    background: url('../storage/img/loginpage.png') no-repeat center/cover;
     flex-grow: 1;
 }
 
