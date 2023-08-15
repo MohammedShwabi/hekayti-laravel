@@ -536,7 +536,7 @@ function saveSlide() {
     var soundMessage = $("#error-audio-message");
     var textMessage = $("#error-text-message");
 
-    console.log(photoInput);
+    // console.log(photoInput);
 
     // validate from image 
     if (!photoInput || !photoInput.files || !photoInput.files.length > 0) {
@@ -590,7 +590,7 @@ function saveSlide() {
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        url: 'addNewSlide?story_id=' + story_id,
+        url: '/addNewSlide?story_id=' + story_id,
         type: 'POST',
         data: formData,
         processData: false,
@@ -640,7 +640,7 @@ function editMedia(type, url) {
         formData.append(type, this.files[0]);
 
         // this for edit slide photo and audio
-        if (url == "editSlideImage" || url == "editSlideAudio") {
+        if (url == "/editSlideImage" || url == "/editSlideAudio") {
             var id = $('#slide_id').text();
             formData.append('id', id);
         }
@@ -660,7 +660,7 @@ function editMedia(type, url) {
                 // Hide loading overlay
                 toggleLoadingOverlay(false);
 
-                if (type === "image" && url == "editSlideImage") {
+                if (type === "image" && url == "/editSlideImage") {
                     // update main slid image
                     $("#slide_image").attr("src", data.url);
 
@@ -672,7 +672,7 @@ function editMedia(type, url) {
                     //we append a cache-busting parameter to the URL by adding ?_= followed by the current timestamp using new Date().getTime(). 
                     $("#slide_audio").attr("src", data.url + "?" + (new Date()).getTime());
                 }
-                else if (type === "image" && url == "editProfilePhoto") {
+                else if (type === "image" && url == "/editProfilePhoto") {
                     // Update the nav profile photo
                     $('#round-profile').attr('src', data.thumbUrl);
                     // Update the preview image with the new URL
@@ -694,7 +694,7 @@ function editMedia(type, url) {
                     // Display the error message
                     $("#error-" + type + "-message").text(errorMsg);
 
-                    if (url = 'editSlideImage') {
+                    if (url = '/editSlideImage') {
                         $("#error-" + type + "-message").append('<i class="fa fa-close close-btn" onclick="deleteText()"></i>');
                     }
                 }
@@ -724,7 +724,7 @@ function editText() {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
 
-            url: 'editSlideText?id=' + id,
+            url: '/editSlideText?id=' + id,
             type: 'POST',
             data: {
                 text: newText

@@ -287,7 +287,7 @@ class StoryController extends Controller
         $slides->each(function ($slide) {
             $slidePhotoPath = 'upload/slides_photos/' . $slide->photo;
             $slidePhotoThumbPath = 'upload/slides_photos/thumbs/' . $slide->photo;
-            $slideSoundPath = public_path('upload/slides_sounds/' . $slide->sound);
+            $slideSoundPath = 'upload/slides_sounds/' . $slide->sound;
 
 
             // Delete the slide photo file if it exists

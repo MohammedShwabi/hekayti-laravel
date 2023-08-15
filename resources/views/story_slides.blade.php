@@ -54,8 +54,8 @@
                             $('#slide_audio').attr('src', audioUrl);
                             $('#slide_text').text(slides[i].text);
 
-                            $('#edit-image').attr('onclick', "editMedia('image','editSlideImage')");
-                            $('#replace_audio').attr('onclick', "editMedia('audio', 'editSlideAudio')");
+                            $('#edit-image').attr('onclick', "editMedia('image','/editSlideImage')");
+                            $('#replace_audio').attr('onclick', "editMedia('audio', '/editSlideAudio')");
                             $('#edit_text_icon').attr('onclick', "editText()");
 
                             $("#icon_text").text("تعديل");
@@ -136,7 +136,7 @@
 
                 <div class="row image p-0">
                     @if (!$story->published)
-                    <div class="edit-img py-1 px-4 " id="edit-photo" onclick="{{ $hasSlide ? 'editMedia(\'image\', \'editSlideImage\')' : 'addPhoto()' }}">
+                    <div class="edit-img py-1 px-4 " id="edit-photo" onclick="{{ $hasSlide ? 'editMedia(\'image\', \'/editSlideImage\')' : 'addPhoto()' }}">
                         <span id="icon_text">{{ $hasSlide ? 'تعديل' : 'إضافة' }}</span>
                         <div class="fa fa-pen"></div>
                     </div>
@@ -151,7 +151,7 @@
                         Your browser does not support the audio element.
                     </audio>
                     @if (!$story->published)
-                    <span class="replace px-3 col-1 m-lg-0 m-2" id="replace_sound" onclick="{{ $hasSlide ? 'editMedia(\'audio\', \'editSlideAudio\')' : 'addSound()' }}">
+                    <span class="replace px-3 col-1 m-lg-0 m-2" id="replace_sound" onclick="{{ $hasSlide ? 'editMedia(\'audio\', \'/editSlideAudio\')' : 'addSound()' }}">
                         <div class="fa-solid fa-repeat"></div>
                     </span>
                     @endif
@@ -193,7 +193,7 @@
                 <h5 class="modal-title">حذف صفحة</h5>
                 <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="deleteSlide" method="POST">
+            <form action="/deleteSlide" method="POST">
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="slide_id" id="del_slide_id">

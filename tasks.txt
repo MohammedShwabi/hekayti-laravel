@@ -17,8 +17,9 @@ all tasks in hekiaty-laravel
 13-edit api file and try to make it Restful
 14-edit management structure to have super admin and admin and manager
 15-check from all data coming from user =>specifically id that coming from git request
+16-story slide functions and error massages on the addNewSlide
 
-
+edit search url from js files
 
 some things need to Fix
 

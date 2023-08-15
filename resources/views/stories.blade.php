@@ -70,7 +70,7 @@
                 <div class="card card-story">
 
                     <img src="{{ asset('storage/upload/stories_covers/' . $story->cover_photo) }}" class="img-fluid rounded " alt="..." />
-                    <a href="{{ route('storyslide') . '?story_id=' . $story->id }}" class="hover-background"></a>
+                    <a href="/slide/{{ $story->id }}" class="hover-background"></a>
 
                     <!-- if story is not published then show the icons -->
                     @if($story->published == 0)
