@@ -10,22 +10,19 @@ use Illuminate\Http\File;
 // use Illuminate\Support\Facades\Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class StoryController extends Controller
 {
 
-    // this prevent rout coming from non-auth attempt 
-    public function __construct()
+    /**
+     * Show all stories in the level
+     */
+    public function show(Request $request, Story $story, StoryMedia $storyMedia, $level)
     {
-        $this->middleware('auth');
-    }
-
-    // get all stories in the level
-    public function getAllStories(Request $request, Story $story, StoryMedia $storyMedia)
-    {
-        $level = $request->query('level');
+        // $level = $request->query('level');
         $search = $request->query('search');
 
         // Construct the query to retrieve stories
@@ -51,9 +48,25 @@ class StoryController extends Controller
         return view('stories', compact('stories', 'level', 'search'));
     }
 
-    // later
-    // add story to the database
-    public function addStory(Request $request, Story $story)
+    /**
+     * Get the last story_order
+     */
+    public function getLastOrder(Request $request)
+    {
+        // Get the level value from the request
+        $level = $request->input('level');
+
+        // Get the last story_order value for the specified level
+        $lastOrder = Story::where('level', $level)->max('story_order') ?? 0;
+
+        // Return the last story_order value as a JSON response
+        return response()->json(['lastOrder' => $lastOrder]);
+    }
+
+    /**
+     * Add story to the database
+     */
+    public function store(Request $request, Story $story)
     {
         $validated = $request->validate(
             [
@@ -87,32 +100,19 @@ class StoryController extends Controller
                     },
                 ],
             ],
-            [
-                'level.required' => 'لطفا قم بإدخال رقم المستوى',
-                'level.integer' => 'يجب ان يكون رقم المستوى رقما',
-                'cover_photo.required' => 'لطفا قم بإدخال صورة الغلاف',
-                'cover_photo.image' => 'يجب ان يكون الملف صورة ',
-                'cover_photo.mimes' => 'فقط الانواع التالية متاحة jpeg, png, jpg, gif,svg',
-                'cover_photo.max' => '2MB حجم الصورة اكبر ',
-                'cover_photo.unique' => 'هذا الصورة موجودة مسبقا',
-                'name.required' => 'لطفا قم بإدخال إسم القصة',
-                'name.unique' => 'هذا الاسم موجود مسبقا',
-                'author.required' => 'لطفا قم بإدخال إسم المؤلف',
-                'story_order.required' => 'لطفا قم بإدخال رقم القصة في المستوى',
-                'story_order.integer' => '  يجيب ان يكون رقم القصة رقما صحيحا',
-                'story_order.min' => '  يجيب ان يكون رقم القصة 1 او اكثر',
-            ]
         );
 
-        $imagename = '';
+        $imageName = '';
 
-        if ($request->hasFile('cover_photo')) {
-            $image = $request->file('cover_photo');
-            // to get uniqe name
-            $imagename = $image->getClientOriginalName();
+        $image = $request->file('cover_photo');
+        if ($image->isValid()) {
+            // to get unique name
+            $imageName = $image->getClientOriginalName();
             // check if file exist 
 
-            $image->move(public_path('upload/stories_covers/'), $imagename);
+            //  save image
+            $image->storeAs('upload/stories_covers/', $imageName, ['disk' => 'public']);
+
 
             $story_order = $request->input('story_order');
             $level = $request->input('level');
@@ -141,7 +141,7 @@ class StoryController extends Controller
             try {
                 $story->create([
                     'name' => $request->name,
-                    'cover_photo' => $imagename,
+                    'cover_photo' => $imageName,
                     'author' => $request->author,
                     'level' => $level,
                     'story_order' => $story_order,
@@ -149,64 +149,21 @@ class StoryController extends Controller
                 ]);
                 return response()->json(['success' => 'it\'s successful']);
             } catch (\Exception $e) {
-                // if any error accrose then delete uploaded files from files
-                $ImagePath = public_path('upload/stories_covers/', $imagename);
-                if (file_exists($ImagePath)) {
-                    unlink($ImagePath);
+                // if any error happen delete uploaded files from files
+                $ImagePath = 'upload/stories_covers/' . $imageName;
+
+                if ($ImagePath && Storage::disk('public')->exists($ImagePath)) {
+                    Storage::disk('public')->delete($ImagePath);
                 }
                 return response()->json(['error' => 'some thing wrong to insert slide'], 500);
             }
         }
     }
 
-    // to delete story
-    public function deleteStory(Request $request)
-    {
-        // Retrieve the story by ID
-        $story = Story::findOrFail($request->story_id);
-
-        $slides = $story->storyMedia;
-
-        // Delete all related slides and their associated files
-        $slides->each(function ($slide) {
-            $slidePhotoPath = public_path('upload/slides_photos/' . $slide->photo);
-            $slidePhotoThumbPath = public_path('upload/slides_photos/thumbs/' . $slide->photo);
-            $slideSoundPath = public_path('upload/slides_sounds/' . $slide->sound);
-
-            // Delete the slide photo file if it exists
-            file_exists($slidePhotoPath) && unlink($slidePhotoPath);
-
-            // Delete the slide thumb photo file if it exists
-            file_exists($slidePhotoThumbPath) && unlink($slidePhotoThumbPath);
-
-            // Delete the slide sound file if it exists
-            file_exists($slideSoundPath) && unlink($slideSoundPath);
-
-            $slide->delete();
-        });
-
-        // get the stroy cover photo
-        $coverPhotoPath = public_path('upload/stories_covers/' . $story->cover_photo);
-
-        // Delete the cover photo for the story
-        file_exists($coverPhotoPath) && unlink($coverPhotoPath);
-
-        // Delete the story record
-        $story->delete();
-
-        return back();
-    }
-
-    // to publish story
-    public function publishStory(Request $request)
-    {
-        Story::where('id', $request->story_id)->update(['published' => 1]);
-        return back();
-    }
-
-    // later
-    // to edit story
-    public function editStory(Request $request)
+    /**
+     * Edit story
+     */
+    public function edit(Request $request)
     {
         $validated = $request->validate(
             [
@@ -228,20 +185,14 @@ class StoryController extends Controller
                     },
                 ],
             ],
-            [
-                'name.required' => 'لطفا قم بإدخال إسم القصة',
-                'name.unique' => 'هذا الاسم موجود مسبقا',
-                'author.required' => 'لطفا قم بإدخال إسم المؤلف',
-                'story_order.required' => 'لطفا قم بإدخال رقم القصة في المستوى',
-                'story_order.integer' => 'يجيب ان يكون رقم القصة رقما',
-            ]
         );
-        // get all info about the spicific story
+        // get all info about the specific story
         $story = Story::find($request->edit_story_id);
 
-        $imagename = null;
+        $imageName = null;
         // if there is an image 
         if ($request->hasFile('cover_photo')) {
+
             $validated = $request->validate(
                 [
                     'cover_photo' => [
@@ -259,28 +210,24 @@ class StoryController extends Controller
                     ],
 
                 ],
-                [
-                    'cover_photo.image' => 'يجب ان يكون الملف صورة ',
-                    'cover_photo.mimes' => 'فقط الانواع التالية متاحة jpeg, png, jpg, gif,svg',
-                    'cover_photo.max' => '2MB حجم الصورة اكبر ',
-                ]
             );
             $image = $request->file('cover_photo');
             // to get uniqe name
-            $imagename = $image->getClientOriginalName();
+            $imageName = $image->getClientOriginalName();
 
             // to replace image in files
-            $image->move(public_path('upload/stories_covers/'), $imagename);
+            $image->storeAs('upload/stories_covers/', $imageName, ['disk' => 'public']);
 
             // to delete old image from files
-            $path = public_path('upload/stories_covers/' . $story->cover_photo);
-            if (file_exists($path)) {
-                unlink($path);
+            $ImagePath = 'upload/stories_covers/' . $story->cover_photo;
+
+            if ($ImagePath && Storage::disk('public')->exists($ImagePath)) {
+                Storage::disk('public')->delete($ImagePath);
             }
         }
-        if ($imagename !== null) {
+        if ($imageName !== null) {
             // to edit the image in DB
-            $story->cover_photo = $imagename;
+            $story->cover_photo = $imageName;
         }
         $story->name = $request->name;
         $story->author = $request->author;
@@ -317,28 +264,58 @@ class StoryController extends Controller
         return back();
     }
 
-    // to get the last story_order
-    public function getLastOrder(Request $request)
+    /**
+     * Publish story
+     */
+    public function publishStory(Request $request)
     {
-        // Get the level value from the request
-        $level = $request->input('level');
-
-        // Get the last story_order value for the specified level
-        $lastOrder = Story::where('level', $level)->max('story_order') ?? 0;
-
-        // Return the last story_order value as a JSON response
-        return response()->json($lastOrder);
+        Story::where('id', $request->story_id)->update(['published' => 1]);
+        return back();
     }
 
-    // to check story one filed
-    public function checkFiled(Request $request, Story $story)
+    /**
+     * Delete story
+     */
+    public function destroy(Request $request)
     {
-        $validated = $request->validate([
-            'value' => 'required|string|max:255|unique:stories,name',
-        ], [
-            'value.required' => 'لطفا قم بإدخال إسم القصة',
-            'value.unique' => 'هذا الاسم موجود مسبقا',
-        ]);
-    }
+        // Retrieve the story by ID
+        $story = Story::findOrFail($request->story_id);
 
+        $slides = $story->storyMedia;
+
+        // Delete all related slides and their associated files
+        $slides->each(function ($slide) {
+            $slidePhotoPath = 'upload/slides_photos/' . $slide->photo;
+            $slidePhotoThumbPath = 'upload/slides_photos/thumbs/' . $slide->photo;
+            $slideSoundPath = public_path('upload/slides_sounds/' . $slide->sound);
+
+
+            // Delete the slide photo file if it exists
+            if (Storage::disk('public')->exists($slidePhotoPath)) {
+                Storage::disk('public')->delete($slidePhotoPath);
+            }
+            // Delete the slide thumb photo file if it exists
+            if (Storage::disk('public')->exists($slidePhotoThumbPath)) {
+                Storage::disk('public')->delete($slidePhotoThumbPath);
+            }
+            // Delete the slide sound file if it exists
+            if (Storage::disk('public')->exists($slideSoundPath)) {
+                Storage::disk('public')->delete($slideSoundPath);
+            }
+
+            $slide->delete();
+        });
+
+        // get the stroy cover photo
+        $coverPhotoPath = 'upload/stories_covers/' . $story->cover_photo;
+
+        // Delete the cover photo for the story
+        if (Storage::disk('public')->exists($coverPhotoPath)) {
+            Storage::disk('public')->delete($coverPhotoPath);
+        }
+        // Delete the story record
+        $story->delete();
+
+        return back();
+    }
 }

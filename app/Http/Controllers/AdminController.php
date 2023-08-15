@@ -51,7 +51,7 @@ class AdminController extends Controller
                 if ($user->role === 'admin') {
                     return redirect('/home');
                 } else {
-                    return redirect('/stories');
+                    return redirect('/stories/1');
                 }
             } else {
                 // User is locked, so logout and show an error message
@@ -307,8 +307,10 @@ class AdminController extends Controller
     /**
      * Remove the specified manager
      */
-    public function destroy(Admin $admin)
+    public function destroy(Request $request)
     {
+
+        $admin = Admin::findOrFail($request->admin_id);
         // Get the photo filename
         $image = $admin->image;
 

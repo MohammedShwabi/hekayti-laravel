@@ -66,7 +66,7 @@
                     </li>
                     @endif
                     <li class="nav-item {{ Route::currentRouteName() === 'stories' || Route::currentRouteName() === 'storyslide' ? 'active' : '' }}">
-                        <a class="nav-link" href="{{route('stories') }}?level=1">
+                        <a class="nav-link" href="/stories/1">
                             <p class="nav-text">القصص</p>
                         </a>
                     </li>

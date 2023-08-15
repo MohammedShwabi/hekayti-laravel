@@ -20,7 +20,7 @@
     <!-- start of story search section -->
     <div class="row mt-4 d-flex justify-content-center align-items-center">
         <div class="col-md-9">
-            <form method="get" action="{{ route('stories') }}">
+            <form method="get" action="/stories/'{{$level}}">
                 <div class="search form-group">
                     <span class="search-icon icon-bordered">
                         <i class="fa-solid fa-magnifying-glass fa-flip-horizontal" id="search_icon" style="--fa-animation-duration: 1s;"></i>
@@ -43,13 +43,13 @@
         <div class="level-tap">
             <ul class="nav nav-pills text-center justify-content-center">
                 <li class="nav-item col-lg-2 col-md-3 {{ $level == 1 ? 'active' : '' }} " value="1">
-                    <a class="nav-link" href="{{ route('stories') }}?level=1">سهل</a>
+                    <a class="nav-link" href="/stories/1">سهل</a>
                 </li>
                 <li class="nav-item col-lg-2 col-md-3 {{ $level == 2 ? 'active' : '' }}" value="2">
-                    <a class="nav-link" href="{{ route('stories') }}?level=2">متوسط </a>
+                    <a class="nav-link" href="/stories/2">متوسط </a>
                 </li>
                 <li class="nav-item col-lg-2 col-md-3 {{ $level == 3 ? 'active' : '' }} " value="3">
-                    <a class="nav-link" href="{{ route('stories') }}?level=3">صعب</a>
+                    <a class="nav-link" href="/stories/3">صعب</a>
                 </li>
             </ul>
         </div>
@@ -291,7 +291,7 @@
                     <h5 class="modal-title">حذف قصة</h5>
                     <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="deleteStory" method="POST">
+                <form action="/deleteStory" method="POST">
                     @csrf
                     <div class="modal-body">
                         <input type="hidden" name="story_id" id="story_id">

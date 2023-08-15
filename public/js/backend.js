@@ -90,14 +90,14 @@ function handleValidationErrors(errors, url) {
 
     Object.keys(errors).forEach(function (key) {
         $("#" + key + suffix + "Input").addClass("is-invalid")
-        .siblings('.invalid-feedback').children('strong').text(errors[key][0]);
+            .siblings('.invalid-feedback').children('strong').text(errors[key][0]);
     });
 }
 
 // Function to handle unauthorized errors
 function handleUnauthorizedError(message) {
     $("#old_passwordInput").addClass("is-invalid")
-    .siblings('.invalid-feedback').children('strong').text(message);
+        .siblings('.invalid-feedback').children('strong').text(message);
 }
 
 // Function to handle form submissions and errors
@@ -332,12 +332,12 @@ $(document).ready(function () {
 $(document).ready(function () {
 
     // Handle form submission for add story
-    handleFormSubmission("#story_form", "addStory", function () {
+    handleFormSubmission("#story_form", "/addStory", function () {
         window.location.reload()
     });
 
     // Handle form submission for editing story
-    handleFormSubmission("#edit_story_form", "editStory", function () {
+    handleFormSubmission("#edit_story_form", "/editStory", function () {
         window.location.reload()
     });
 });
@@ -359,21 +359,26 @@ function checkLastOrder(input, warningDiv) {
 // get the last order then put it in the order field
 function getStoryOrder(level, orderInput) {
 
-    $.get('get-last-order', { level: level })
-        .done(function (order) {
-            // Set the value of the input field to the last order value returned by the server
+    $.ajax({
+        url: '/getLastOrder',
+        method: 'GET',
+        data: { level: level },
+        dataType: 'json',
+        success: function (response) {
+            var order = response.lastOrder;
             $(orderInput).val(order + 1).data('order', order + 1);
-        })
-        .fail(function (xhr, status, error) {
-            // Handle any errors that may occur
+        },
+        error: function (xhr, status, error) {
             console.log(error);
-        });
+        }
+    });
 }
 
 // add the story number when add story pop-up is show
 $("#add_story").on('shown.bs.modal', function () {
     // get the last order then put it in the order field
     getStoryOrder($('#level').val(), '#story_orderInput');
+
 });
 
 // update the stroy order filed when level select is change

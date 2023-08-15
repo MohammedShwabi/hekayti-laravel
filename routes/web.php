@@ -23,7 +23,6 @@ Route::middleware(['auth'])->group(function () {
     // logout the user
     Route::post('/logout', 'App\Http\Controllers\AdminController@logout')->name('logout');
 
-
     /** profile Routes  */
     // show profile page 
     Route::get('/profile', [App\Http\Controllers\AdminController::class, 'profile'])->name('profile');
@@ -34,22 +33,20 @@ Route::middleware(['auth'])->group(function () {
     // change the password 
     Route::post('/changePassword', [App\Http\Controllers\AdminController::class, 'changePassword'])->name('changePassword');
 
-
-
-    // stories Routes
-    // show the story in the specific level send in the get parameter
-    Route::get('/stories', [App\Http\Controllers\StoryController::class, 'getAllStories'])->name('stories');
+    /** stories Routes  */
+    // show the story in the specific level 
+    Route::get('/stories/{level}', [App\Http\Controllers\StoryController::class, 'show'])->name('stories');
+    // get last order of the story depend on level 
+    Route::get('/getLastOrder', [App\Http\Controllers\StoryController::class, 'getLastOrder'])->name('getLastOrder');
+    
     // add New Story 
-    Route::post('/addStory', [App\Http\Controllers\StoryController::class, 'addStory'])->name('addStory');
+    Route::post('/addStory', [App\Http\Controllers\StoryController::class, 'store'])->name('addStory');
     // edit Story 
-    Route::post('/editStory', [App\Http\Controllers\StoryController::class, 'editStory'])->name('editStory');
-    // delete story
-    Route::post('/deleteStory', [App\Http\Controllers\StoryController::class, 'deleteStory'])->name('deleteStory');
+    Route::post('/editStory', [App\Http\Controllers\StoryController::class, 'edit'])->name('editStory');
     // to publish story
     Route::post('/publishStory', [App\Http\Controllers\StoryController::class, 'publishStory'])->name('publishStory');
-    // get last order of the story depend on level 
-    Route::get('/get-last-order', [App\Http\Controllers\StoryController::class, 'getLastOrder'])->name('getLastOrder');
-
+    // delete story
+    Route::post('/deleteStory', [App\Http\Controllers\StoryController::class, 'destroy'])->name('deleteStory');
 
     // Slides Routes
     // show slides of the story
@@ -79,10 +76,9 @@ Route::middleware(['auth'])->group(function () {
         // change the status of the manager
         Route::get('/adminChangeLocked', [App\Http\Controllers\AdminController::class, 'adminChangeLocked'])->name('delete');
         // delete manager
-        Route::post('/delete/{admin}', [App\Http\Controllers\AdminController::class, 'destroy'])->name('delete-admin');
+        Route::post('/delete', [App\Http\Controllers\AdminController::class, 'destroy'])->name('delete-admin');
 
-        // check filed
-        Route::post('/checkFiled', [App\Http\Controllers\StoryController::class, 'checkFiled'])->name('checkFiled');
+
     });
 });
 

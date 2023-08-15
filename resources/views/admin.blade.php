@@ -232,11 +232,11 @@
                 <h5 class="modal-title">حذف مدير</h5>
                 <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('delete-admin', $admin) }}" method="POST">
+            <form action="{{ route('delete-admin') }}" method="POST">
                 <form action="delete" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <input type="hidden" name="admin" id="admin_id">
+                        <input type="hidden" name="admin_id" id="admin_id">
                         <p class="text-center delete-text">هل انت متاكد من الحذف</p>
                     </div>
                     <div class="modal-footer justify-content-evenly">
