@@ -84,7 +84,7 @@ class StoryController extends Controller
                         }
                     },
                 ],
-                'name' => 'required|string|max:255|unique:stories,name',
+                'story_name' => 'required|string|max:255|unique:stories,name',
                 'author' => ['required', 'string'],
                 // this to validate from the story_order field and check if its not greeter than max story_order +1
                 'story_order' => [
@@ -140,7 +140,7 @@ class StoryController extends Controller
             // create the new story
             try {
                 $story->create([
-                    'name' => $request->name,
+                    'name' => $request->story_name,
                     'cover_photo' => $imageName,
                     'author' => $request->author,
                     'level' => $level,
@@ -167,9 +167,9 @@ class StoryController extends Controller
     {
         $validated = $request->validate(
             [
-                'name' => [
+                'story_name' => [
                     'required', 'string', 'max:255',
-                    Rule::unique('stories')->ignore(request('edit_story_id')),
+                    Rule::unique('stories', 'name')->ignore($request->edit_story_id),
                 ],
                 'author' => ['required', 'string', 'max:255'],
                 'story_order' => [
@@ -229,7 +229,7 @@ class StoryController extends Controller
             // to edit the image in DB
             $story->cover_photo = $imageName;
         }
-        $story->name = $request->name;
+        $story->name = $request->story_name;
         $story->author = $request->author;
 
         // check if story_order or level has been changed

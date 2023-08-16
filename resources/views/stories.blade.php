@@ -184,8 +184,8 @@
                         </div>
                         <div class="col-12 mb-3">
                             <label for="name" class="form-label story-title">عنوان القصة</label>
-                            <input type="text" class="form-control" name="name" id="nameInput" placeholder="ليلى والذئب">
-                            <span class="invalid-feedback" role="alert" id="nameError">
+                            <input type="text" class="form-control" name="story_name" id="story_nameInput" placeholder="ليلى والذئب">
+                            <span class="invalid-feedback" role="alert" id="story_nameError">
                                 <strong></strong>
                             </span>
                         </div>
@@ -251,22 +251,22 @@
                             </div>
                         </div>
                         <div class="col-12 mb-3">
-                            <label for="name" class="form-label story-title">عنوان القصة</label>
-                            <input type="text" class="form-control" name="name" id="nameEditInput" placeholder="ليلى والذئب">
-                            <span class="invalid-feedback" role="alert" id="nameEditError">
+                            <label for="story_name" class="form-label story-title">عنوان القصة</label>
+                            <input type="text" class="form-control" name="story_name" id="story_nameEditInput" required placeholder="ليلى والذئب">
+                            <span class="invalid-feedback" role="alert" id="story_nameEditError">
                                 <strong></strong>
                             </span>
                         </div>
                         <div class="col-12  mb-3">
                             <label for="author" class="form-label story-author">إسم المؤلف</label>
-                            <input type="text" class="form-control" name="author" id="authorEditInput" placeholder="هشام نعمان">
+                            <input type="text" class="form-control" name="author" id="authorEditInput" required placeholder="هشام نعمان">
                             <span class="invalid-feedback" role="alert" id="authorEditError">
                                 <strong></strong>
                             </span>
                         </div>
                         <div class="col-12">
                             <label for="story_order" class="form-label order">ترتيب القصة في المستوى</label>
-                            <input type="number" class="form-control" name="story_order" id="story_orderEditInput" data-order="0" oninput="checkLastOrder(this ,'#warning_edit_order' )">
+                            <input type="number" class="form-control" name="story_order" id="story_orderEditInput" required data-order="0" oninput="checkLastOrder(this ,'#warning_edit_order' )">
                             <span class="invalid-feedback" role="alert" id="story_orderEditError">
                                 <strong></strong>
                             </span>

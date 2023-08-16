@@ -251,7 +251,7 @@ function hidePassword(inputId) {
 // Function to show the edit admin popup
 function editAdmin(admin_id, admin_name, admin_email) {
     $('#edit_admin_id').val(admin_id);
-    $('#nameEditInput').val(admin_name);
+    $('#usernameEditInput').val(admin_name);
     $('#emailEditInput').val(admin_email);
     $('#edit_manager').modal('show');
 }
@@ -398,7 +398,7 @@ function editStory(story_id, story_name, story_author, story_photo, story_order,
     // fill all pop-up input with data
     $('#edit_level').val(level);
     $('#edit_story_id').val(story_id);
-    $('#nameEditInput').val(story_name);
+    $('#story_nameEditInput').val(story_name);
     $('#authorEditInput').val(story_author);
     $('#cover_photoEditLabel').html(story_photo + spanHTML);
     $('#story_orderEditInput').val(story_order);

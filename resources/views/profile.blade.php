@@ -99,9 +99,9 @@
                 <div class="modal-body mx-5 mb-4">
                     <div class="form-group">
                         <div class="col-12 mt-4 mb-3">
-                            <label for="nameEditInput" class="form-label manager-name">إسم المستخدم</label>
-                            <input type="text" required class="form-control" name="name" id="nameEditInput" placeholder="محمد شوابي" autofocus value="{{ Auth::user()->name }}">
-                            <span class="invalid-feedback" role="alert" id="nameEditError">
+                            <label for="usernameEditInput" class="form-label manager-name">إسم المستخدم</label>
+                            <input type="text" required class="form-control" name="username" id="usernameEditInput" placeholder="محمد شوابي" autofocus value="{{ Auth::user()->name }}">
+                            <span class="invalid-feedback" role="alert" id="usernameEditError">
                                 <strong></strong>
                             </span>
                         </div>
@@ -145,10 +145,12 @@
                         </span>
                     </div>
                     <div class="col-12">
-                        <label for="new_password_confirmation" class="form-label manager-name">تأكيد كلمة المرور
+                        <label for="new_password_confirmationInput" class="form-label manager-name">تأكيد كلمة المرور
                             الجديدة</label>
                         <input type="password" required class="form-control" name="new_password_confirmation" id="new_password_confirmationInput">
-                        <div class="invalid-feedback"></div>
+                        <span class="invalid-feedback" role="alert" id="new_password_confirmationError">
+                            <strong></strong>
+                        </span>
                     </div>
                 </div>
                 <div class="modal-footer  justify-content-evenly mb-4">

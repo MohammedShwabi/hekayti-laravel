@@ -120,15 +120,15 @@
                 <span class="icon-bordered fs-4" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-close"></i></span>
                 <h5 class="modal-title text-center w-100" id="add_manager_label">إضافة مدير</h5>
             </div>
-            <div class="modal-body  mx-5 mb-4">
-                <form method="POST" id="manager_form">
+            <form method="POST" id="manager_form">
+                <div class="modal-body  mx-5 mb-4">
                     @csrf
 
                     <div class="form-group">
                         <div class="col-12 mt-4 mb-3">
-                            <label for="nameInput" class="form-label manager-name">إسم المستخدم</label>
-                            <input type="text" class="form-control" name="name" id="nameInput" required placeholder="محمد شوابي" autofocus>
-                            <span class="invalid-feedback" role="alert" id="nameError">
+                            <label for="usernameInput" class="form-label manager-name">إسم المستخدم</label>
+                            <input type="text" class="form-control" name="username" id="usernameInput" required placeholder="محمد شوابي" autofocus>
+                            <span class="invalid-feedback" role="alert" id="usernameError">
                                 <strong></strong>
                             </span>
                         </div>
@@ -151,17 +151,18 @@
                     </div>
 
                     <div class="col-12">
-                        <label for="password-confirm" class="form-label manager-confirm-pass">تأكيد كلمة المرور
-                        </label>
-                        <input type="password" class="form-control" name="password_confirmation" required id="password-confirm" autocomplete="new-password">
-                        <div class="invalid-feedback"></div>
+                        <label for="password_confirmationInput" class="form-label manager-confirm-pass">تأكيد كلمة المرور</label>
+                        <input type="password" class="form-control" name="password_confirmation" required id="password_confirmationInput" autocomplete="new-password">
+                        <span class="invalid-feedback" role="alert" id="password_confirmationError">
+                            <strong></strong>
+                        </span>
                     </div>
 
-            </div>
-            <div class="modal-footer  justify-content-evenly mb-4">
-                <input type="submit" id="submit" class="save btn" value="حفظ" />
-                <input type="reset" class="cancel btn btn-secondary" data-bs-dismiss="modal" value="إلغاء" />
-            </div>
+                </div>
+                <div class="modal-footer  justify-content-evenly mb-4">
+                    <input type="submit" id="submit" class="save btn" value="حفظ" />
+                    <input type="reset" class="cancel btn btn-secondary" data-bs-dismiss="modal" value="إلغاء" />
+                </div>
             </form>
         </div>
     </div>
@@ -175,15 +176,15 @@
                 <span class="icon-bordered fs-4" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-close"></i></span>
                 <h5 class="modal-title text-center w-100" id="edit_manager_label">تعديل مدير</h5>
             </div>
-            <div class="modal-body  mx-5 mb-4">
-                <form id="edit_manager_form">
+            <form id="edit_manager_form">
+                <div class="modal-body  mx-5 mb-4">
                     @csrf
                     <input type="hidden" name="edit_admin_id" id="edit_admin_id">
                     <div class="form-group">
                         <div class="col-12 mt-4 mb-3">
-                            <label for="nameEditInput" class="form-label manager-name">إسم المستخدم</label>
-                            <input type="text" class="form-control" name="name" id="nameEditInput" required placeholder="محمد شوابي" autofocus>
-                            <span class="invalid-feedback" role="alert" id="nameEditError">
+                            <label for="usernameEditInput" class="form-label manager-name">إسم المستخدم</label>
+                            <input type="text" class="form-control" name="username" id="usernameEditInput" required placeholder="محمد شوابي" autofocus>
+                            <span class="invalid-feedback" role="alert" id="usernameEditError">
                                 <strong></strong>
                             </span>
                         </div>
@@ -213,14 +214,15 @@
                             <strong></strong>
                         </span>
                     </div>
-                    <div class="modal-footer  justify-content-evenly mb-4">
-                        <input type="submit" id="submitEdit" class="save btn" value="حفظ" />
-                        <input type="reset" class="cancel btn btn-secondary" data-bs-dismiss="modal" value="إلغاء" />
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer  justify-content-evenly mb-4">
+                    <input type="submit" id="submitEdit" class="save btn" value="حفظ" />
+                    <input type="reset" class="cancel btn btn-secondary" data-bs-dismiss="modal" value="إلغاء" />
+                </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 
 
