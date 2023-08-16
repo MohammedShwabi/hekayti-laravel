@@ -67,19 +67,15 @@ function resetFormAndErrors(formId) {
 // Function to handle AJAX requests
 function handleAjaxRequest(options) {
     $.ajax({
-        method: options.method,
-        multipart: options.multipart,
-        headers: { Accept: "application/json" },
+        method: "POST",
+        multipart: options.multipart || false,
+        headers: options.headers || { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
         data: options.data,
         contentType: false,
         processData: false,
         url: options.url,
         success: options.success,
-        error: (response) => {
-            if (response.status === 422) { handleValidationErrors(response.responseJSON.errors, options.url) }
-            else if (response.status === 401) { handleUnauthorizedError(response.responseJSON.message) }
-            else { console.log(response.status) }
-        },
+        error: options.error,
         complete: () => toggleLoadingOverlay(false) // Hide loading overlay
     });
 }
@@ -87,17 +83,16 @@ function handleAjaxRequest(options) {
 // Function to handle validation errors
 function handleValidationErrors(errors, url) {
     const suffix = url.includes("edit") ? "Edit" : "";
-
-    Object.keys(errors).forEach(function (key) {
-        $("#" + key + suffix + "Input").addClass("is-invalid")
-            .siblings('.invalid-feedback').children('strong').text(errors[key][0]);
-    });
+    Object.keys(errors).forEach( (key) => { setError(`#${key}${suffix}Input`, errors[key][0]) });
 }
 
-// Function to handle unauthorized errors
-function handleUnauthorizedError(message) {
-    $("#old_passwordInput").addClass("is-invalid")
-        .siblings('.invalid-feedback').children('strong').text(message);
+// Helper function to set error for a given input element
+function setError(selector, errorMsg) {
+    $(selector)
+        .addClass("is-invalid")
+        .siblings('.invalid-feedback')
+        .children('strong')
+        .text(errorMsg);
 }
 
 // Function to handle form submissions and errors
@@ -115,19 +110,31 @@ function handleFormSubmission(formSelector, url, successCallback) {
         toggleLoadingOverlay(true);
 
         handleAjaxRequest({
-            method: "POST",
+            headers: { Accept: "application/json" },
             multipart: true,
             data: formData,
             url: url,
-            success: function () {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-                successCallback();
+            success: () => successCallback(),
+            error: (response) => {
+                if (response.status === 422) { handleValidationErrors(response.responseJSON.errors, url) }
+                // handle unauthorized errors
+                else if (response.status === 401) { setError("#old_password Input", response.responseJSON.message); }
+                else { console.log(response.status) }
             }
         });
     });
 }
 
+// to show error message in story slide page
+function showError(element, message, withCloseBtn = false) {
+    element.text(message);
+    if (withCloseBtn) { element.append('<i class="fa fa-close close-btn" onclick="deleteText()"></i>'); }
+}
+
+// to clear error message in story slide page
+function clearErrors() {
+    $("[id^='error-']").empty();
+}
 
 // to call function only when page loaded
 $(document).ready(function () {
@@ -527,101 +534,63 @@ $('#add_slide').on('click', function (event) {
 
 // save slide 
 function saveSlide() {
-
     // Get the selected input data
     var photoInput = $("#add_slide_image")[0];
     var soundInput = $("#add_slide_audio")[0];
-    var textElement = $("#slide_text");
+    var textInput = $("#slide_text");
     var photoMessage = $("#error-image-message");
     var soundMessage = $("#error-audio-message");
     var textMessage = $("#error-text-message");
 
-    // console.log(photoInput);
-
     // validate from image 
     if (!photoInput || !photoInput.files || !photoInput.files.length > 0) {
-
-
+        showError(photoMessage, "لطفا قم بإختيار الصورة", true);
         // Scroll to the error message after it's shown
         document.querySelector('#edit-photo').scrollIntoView({ behavior: 'smooth' });
-        photoMessage.text("لطفا قم بإختيار الصورة").append('<i class="fa fa-close close-btn" onclick="deleteText()"></i>');
         return;
     }
-
-
     var photoFile = photoInput.files[0];
 
     // validate from sound
     if (!soundInput || !soundInput.files || !soundInput.files.length > 0) {
-        // Access input.files safely here
-        soundMessage.text("لطفا قم بإختيار الصوت");
+        showError(soundMessage, "لطفا قم بإختيار الصوت");
         return;
     }
-
     var soundFile = soundInput.files[0];
 
-    // Get the contents of the "story-content" div
-    var slideText = textElement.html();
+    // validate from text
+    var slideText = textInput.html();
     if (slideText == '' || slideText == 'أدخل النص هنا') {
-        photoMessage.empty();
-        soundMessage.text("");
-        textMessage.text("لطفا قم بإدخال النص");
+        showError(textMessage, "لطفا قم بإدخال النص");
         return;
     }
 
-    // Create a new FormData object
+    // clear old error message
+    clearErrors();
+
+    // Create a new FormData object and append from input to it
     var formData = new FormData();
-
-    // Append the selected image file to the form data
     formData.append('image', photoFile);
-
-    // Append the selected audio file to the form data
     formData.append('audio', soundFile);
-
-    // Append the contents of the "slide text" div to the form data
     formData.append('text', slideText);
-    // get story id 
-    var story_id = $('#story_id').text();
 
     // Show loading overlay
     toggleLoadingOverlay(true);
 
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        url: '/addNewSlide?story_id=' + story_id,
-        type: 'POST',
+    handleAjaxRequest({
+        url: '/addNewSlide?story_id=' + $('#story_id').text(),
         data: formData,
-        processData: false,
-        contentType: false,
-
-        success: function (response) {
-            // Hide loading overlay
-            toggleLoadingOverlay(false);
-            // Handle the response from the server
-            location.reload();
-        },
+        success: () => location.reload(),
         error: function (response) {
-            // Hide loading overlay
-            toggleLoadingOverlay(false);
-
             // Handle errors
             if (response.status === 422) {
-                // clear all error messages first
-                $("[id^='error-']").empty();
                 let errors = response.responseJSON.errors;
                 Object.keys(errors).forEach(function (key) {
-                    $("#error-" + key + "-message").text(errors[key][0]);
-                    if (key == 'image') {
-                        $("#error-" + key + "-message").text(errors[key][0]).append('<i class="fa fa-close close-btn" onclick="deleteText()"></i>');;
-                    }
+                    showError($("#error-" + key + "-message"), errors[key][0], key == 'image');
                 });
             } else {
                 console.log(response.status);
-                // window.location.reload();
             }
-            // alert('Error saving slide.');
         }
     });
 }
@@ -635,37 +604,23 @@ function editMedia(type, url) {
 
     // Listen for a change event on the input field
     input.change(function () {
-
         var formData = new FormData();
         formData.append(type, this.files[0]);
 
         // this for edit slide photo and audio
         if (url == "/editSlideImage" || url == "/editSlideAudio") {
-            var id = $('#slide_id').text();
-            formData.append('id', id);
+            formData.append('id', $('#slide_id').text());
         }
-
         // Show loading overlay
         toggleLoadingOverlay(true);
 
-        // Send an AJAX request to the server to upload the image
-        $.ajax({
-            headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") },
+        handleAjaxRequest({
             url: url,
-            type: "POST",
             data: formData,
-            contentType: false,
-            processData: false,
             success: function (data) {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-
                 if (type === "image" && url == "/editSlideImage") {
-                    // update main slid image
-                    $("#slide_image").attr("src", data.url);
-
-                    // update aside slid imag
-                    $('#image' + id).attr('src', data.url);
+                    // update main slid and aside slid images
+                    $("#slide_image, #image" + id).attr("src", data.url);
 
                 } else if (type === "audio") {
                     // This ensures that the browser loads the new version of the audio file instead of using a cached version.
@@ -680,23 +635,14 @@ function editMedia(type, url) {
                 }
                 // empty error message
                 $('#error-' + type + '-message').text("");
-
             },
             error: function (xhr) {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-                // Get the first error message
+                // clearErrors();
                 var errors = xhr.responseJSON.errors;
-
                 if (errors) {
                     // Get the first error message
                     var errorMsg = Object.values(errors)[0][0];
-                    // Display the error message
-                    $("#error-" + type + "-message").text(errorMsg);
-
-                    if (url = '/editSlideImage') {
-                        $("#error-" + type + "-message").append('<i class="fa fa-close close-btn" onclick="deleteText()"></i>');
-                    }
+                    showError($("#error-" + type + "-message"), errorMsg, url == '/editSlideImage');
                 }
             }
         });
@@ -704,57 +650,35 @@ function editMedia(type, url) {
 }
 
 function editText() {
-    var $element = $('#slide_text');
+    var $input = $('<input>', { type: 'text', id: 'slide_input', value: $('#slide_text').text() })
+        .addClass('form-control')
+        .replaceAll('#slide_text')
+        .focus()
+        .blur(function () {
+            var newText = $input.val();
+            var id = $('#slide_id').text();
 
-    var $input = $('<input>').attr('type', 'text').attr('id', 'slide_input').val($element.text());
-    $input.addClass('form-control');
+            // Show loading overlay
+            toggleLoadingOverlay(true);
 
-    $element.replaceWith($input);
-    $input.focus();
-
-    $input.blur(function () {
-        var newText = $input.val();
-        var id = $('#slide_id').text();
-
-        // Show loading overlay
-        toggleLoadingOverlay(true);
-
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-
-            url: '/editSlideText?id=' + id,
-            type: 'POST',
-            data: {
-                text: newText
-            },
-            success: function (data) {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-
-
-                var $newElement = $('<div>').attr('id', 'slide_text').text($input.val());
-                $input.replaceWith($newElement);
-                $('#text' + id).text($input.val());
-                $('#error-text-message').text('');
-            },
-            error: function (xhr, textStatus, error) {
-                // Hide loading overlay
-                toggleLoadingOverlay(false);
-
-                var errors = xhr.responseJSON.errors;
-                if (errors) {
-                    // Get the first error message
-                    var errorMessage = Object.values(errors)[0][0];
-                    $('#error-text-message').text(errorMessage);
-                    // ther is some error to add botostrap stylt
-                    // $('#slide_input').addClass('is-invalid');
+            handleAjaxRequest({
+                url: '/editSlideText?id=' + id,
+                data: { text: newText },
+                success: function (data) {
+                    $('<div>', { id: 'slide_text', text: newText }).replaceAll($input);
+                    $('#text' + id).text(newText);
+                    $('#error-text-message').text('');
+                },
+                error: function (xhr, textStatus, error) {
+                    // clearErrors();
+                    var errors = xhr.responseJSON.errors;
+                    if (errors) {
+                        var errorMessage = Object.values(errors)[0][0];
+                        showError($('#error-text-message'), errorMessage);
+                    }
                 }
-            }
+            });
         });
-
-    });
 }
 
 // to delete photo error message when user click on the close icon
