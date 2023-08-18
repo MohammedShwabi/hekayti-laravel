@@ -15,6 +15,9 @@ function performSearch(url, searchData) {
         // Clear the result list
         $("#result_list").empty();
     } else {
+        // add the level part to url 
+        if (url == "/stories") { url += `/${encodeURIComponent(searchData.level)}` }
+
         $.ajax({
             type: 'GET',
             url: url,
@@ -22,6 +25,7 @@ function performSearch(url, searchData) {
             beforeSend: () => $("#search_icon").toggleClass("fa-circle-notch fa-spin fa-magnifying-glass"), // to show loading icon
             success: (response) => handleSearchResult(response, url, searchData.level),
             error: (xhr, status, error) => console.log("Error:", error),
+            complete: () => $("#search_icon").toggleClass("fa-circle-notch fa-spin fa-magnifying-glass") // to hide loading icon
         });
     }
 }
@@ -33,7 +37,7 @@ function handleSearchResult(response, url, level) {
     const searchResultsHTML = response && response.length > 0 ?
         // Map the response to a list of links with the url, search query and level
         response.map(result => {
-            const query = `${url}?search=${encodeURIComponent(result)}${url === "stories" ? `&level=${encodeURIComponent(level)}` : ""}`;
+            const query = `${url}${url === "stories" ? `/${encodeURIComponent(level)}` : ""}?search=${encodeURIComponent(result)}`;
             return `<a href='${query}' class='list-group-item list-group-item-action search-item'>${result}</a>`;
         }).join("")
         : // Display a message that there are no results
@@ -41,9 +45,6 @@ function handleSearchResult(response, url, level) {
 
     // add the list item to the page
     $("#result_list").html(searchResultsHTML);
-
-    // to hide loading icon
-    $("#search_icon").toggleClass("fa-circle-notch fa-spin fa-magnifying-glass");
 
     // to reset the current focus suggestion item
     currentFocus = -1;
@@ -83,7 +84,7 @@ function handleAjaxRequest(options) {
 // Function to handle validation errors
 function handleValidationErrors(errors, url) {
     const suffix = url.includes("edit") ? "Edit" : "";
-    Object.keys(errors).forEach( (key) => { setError(`#${key}${suffix}Input`, errors[key][0]) });
+    Object.keys(errors).forEach((key) => { setError(`#${key}${suffix}Input`, errors[key][0]) });
 }
 
 // Helper function to set error for a given input element
@@ -151,7 +152,7 @@ $(document).ready(function () {
     $("#search_txt").blur(function () {
         setTimeout(function () {
             $('#result_list').hide();
-        }, 200);
+        }, 300);
     });
 
     // show search result

@@ -1,50 +1,36 @@
-all tasks in hekiaty-laravel
+all tasks in Hekayti-laravel
 
 
-1-edit images path  --Done by Mohammed
-2-optimize js file
-3-optimize css file
-4-optimize  rout file 
---check all the authentications 
---make all routs in a good way 
-5-optimize all controllers
-7-optimize all blade files
-8-images upload and delete for all views 
-9-add arabic files 
-10-add feature of store slides
-11-add feature to unpublished any story
-12-edit rout for publish story and allow it to admin only
-13-edit api file and try to make it Restful
-14-edit management structure to have super admin and admin and manager
-15-check from all data coming from user =>specifically id that coming from git request
-16-story slide functions and error massages on the addNewSlide
-
-edit search url from js files
-
-some things need to Fix
-
-images in home page
-
-password validation 
-make all validation in the same way
-make all Routes in the same way 
-the correct way to encrypt password    ==> #DON BY MOHAMMED
-
-check from data coming from the user
---search in the git url parameter 
---all id coming from request
-
-
-
-
-change the name of the functions in all controllers
---admin controller     ==> #DON BY MOHAMMED
---stories controller
-
-
-
-redirect user depend on the role filed   ==> #DON BY MOHAMMED
-
+1-edit images path  ==> #DONE BY MOHAMMED
+2-optimize js file   ==> #DONE BY HESHAM
+3-optimize css file     ==> #DONE BY HESHAM 
+4-optimize rout file ==> #DONE BY MOHAMMED
+--check all the authentications  ==> #DONE BY MOHAMMED
+--make all routs in a good way ==> #DONE BY MOHAMMED
+5-optimize all controllers ==> #DONE BY MOHAMMED
+6-check from data coming from the user  ==> #..... BY MOHAMMED
+--search in the get url parameter   ==> #..... BY
+--all id coming from request       ==> #DON BY MOHAMMED
+7-optimize all blade files:
+-- optimize story_slide blade
+-- Merge all the popup into one 
+8-images upload and delete for all views  ==> #DONE BY MOHAMMED
+9-add arabic files     ==> #DONE BY HESHAM
+10-add feature to story_slide page to sort slides 
+11-add feature to unpublished any story  ==> DELETED
+12-edit rout for publish story and allow it to admin only ==> #DON BY MOHAMMED
+13-edit api file and try to make it Restful                ------------------------------------
+14-edit management structure to have super admin and admin and manager  ==> DELETED
+15-check from all data coming from user => specifically id that coming from get request  ==> #DONE BY MOHAMMED
+16-story slide functions and error massages on the addNewSlide ------------------------------------
+17-edit search url from js files     ==> #DONE BY HESHAM
+18-images in home page     ==> #DONE BY HESHAM
+19-password validation   ==> #DON BY MOHAMMED
+20-make all validation in the same way   ==> #DON BY MOHAMMED
+21-make all Routes in the same way  ==> #DON BY MOHAMMED
+22-the correct way to encrypt password    ==> #DON BY MOHAMMED
+23-change the name of the functions in all controllers  ==> #DON BY MOHAMMED
+24-redirect user depend on the role filed   ==> #DON BY MOHAMMED
 
 _____________In The blade pages______________
 add required attr to all inputs
