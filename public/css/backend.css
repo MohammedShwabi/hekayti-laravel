@@ -47,7 +47,8 @@ body {
 /* start common style */
 /* page title */
 .full-page,
-.stories-page {
+.stories-page,
+.profile-page {
     margin-top: 87px;
     background-color: var(--light-orange);
     position: relative
@@ -71,7 +72,6 @@ body {
     -o-border-radius: .7rem;
 }
 
-/* edit here */
 .form-control:focus {
     box-shadow: 0 0 0 0.25rem rgba(250, 208, 157, .25);
 }
@@ -91,7 +91,6 @@ body {
     color: var(--dark-brown);
 }
 
-/* edit here */
 .modal .modal-body .form-label,
 #rest_form .form-label {
     font-size: 1.2rem;
@@ -99,26 +98,31 @@ body {
     font-weight: bold;
 }
 
-.modal .modal-footer .save {
-    width: 25%
-}
-
+.modal .modal-footer .save,
 .modal .modal-footer .cancel {
     width: 25%
 }
 
-.save {
-    background-color: var(--dark-pink);
+.save,
+.cancel {
     color: var(--white);
     font-family: var(--title-font);
     font-size: 1.2rem;
-    border: 1px solid var(--dark-pink);
     box-shadow: 0 4px 7px -6px var(--black);
     border-radius: .9rem;
     -webkit-border-radius: .9rem;
     -moz-border-radius: .9rem;
     -ms-border-radius: .9rem;
     -o-border-radius: .9rem
+}
+
+.save {
+    background-color: var(--dark-pink);
+    border: 1px solid var(--dark-pink);
+}
+.cancel {
+    background-color: var(--light-pink);
+    border: 1px solid var(--light-pink);
 }
 
 .save:hover {
@@ -131,28 +135,7 @@ body {
     box-shadow: 0 0 0 0.25rem var(--light-pink);
 }
 
-.cancel {
-    background-color: var(--light-pink);
-    color: #fff;
-    font-family: var(--title-font);
-    font-size: 1.2rem;
-    border: 1px solid var(--light-pink);
-    box-shadow: 0 4px 7px -6px var(--black);
-    border-radius: .9rem;
-    -webkit-border-radius: .9rem;
-    -moz-border-radius: .9rem;
-    -ms-border-radius: .9rem;
-    -o-border-radius: .9rem
-}
-
-
-.cancel:hover {
-    color: var(--light-pink);
-    background-color: var(--white);
-    border: 1px solid var(--light-pink)
-}
-
-
+.cancel:hover
 .cancel:active,
 .cancel.active,
 .cancel:focus {
@@ -165,14 +148,12 @@ body {
     box-shadow: 0 0 0 0.25rem rgba(247, 188, 163, .5);
 }
 
-/* edit here */
 .slide-cancel {
     background: var(--white);
     color: var(--dark-pink);
     border: 1px solid var(--dark-pink);
 }
 
-/* edit here */
 .slide-cancel:hover {
     background-color: var(--dark-pink);
     color: var(--white);
@@ -191,7 +172,6 @@ nav {
     margin: 0 20px
 }
 
-/* edit here */
 .navbar .navbar-nav .nav-item.active .nav-link,
 .navbar .navbar-nav .nav-item .nav-link:hover {
     color: var(--dark-pink);
@@ -213,7 +193,6 @@ nav {
     padding-right: 0;
 }
 
-/* edit here */
 #round-profile {
     height: 50px;
     width: 50px;
@@ -222,7 +201,6 @@ nav {
     border: 1px solid var(--dark-orange);
 }
 
-/* edit here */
 #mynavbar>ul>li.nav-item.dropdown>div {
     right: -40px;
     text-align: right;
@@ -230,7 +208,6 @@ nav {
     border: 1px solid var(--light-pink);
 }
 
-/* edit here */
 #mynavbar .dropdown-item.active,
 .dropdown-item:active,
 .dropdown-item:focus,
@@ -240,7 +217,6 @@ nav {
 }
 
 /* main container for all page should add this style to position footer in the bottom correctly */
-/* edit here */
 body>div.container-fluid.full-page {
     flex: 1 !important;
 }
@@ -457,7 +433,6 @@ body>div.container-fluid.full-page {
 
 /* start stories page  */
 
-/* edit here */
 .stories-page {
     flex: 1 !important;
 }
@@ -480,7 +455,6 @@ body>div.container-fluid.full-page {
     position: relative
 }
 
-/* edit here */
 .full-page .form-group .search-icon,
 .stories-page .form-group .search-icon {
     font-size: 1.4rem;
@@ -489,7 +463,6 @@ body>div.container-fluid.full-page {
     padding-top: 0.7rem;
 }
 
-/* edit here */
 .full-page .form-group .form-control,
 .stories-page .form-group .form-control {
     padding-right: 4rem;
@@ -628,10 +601,7 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
 }
 
 /* style for each icon bg and hover color */
-.story-links li a:hover .fa-pen {
-    color: #fff
-}
-
+.story-links li a:hover .fa-pen,
 .story-links li a:hover .fa-trash-can {
     color: #fff
 }
@@ -674,7 +644,6 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
     content: attr(data-tip);
     color: #fff;
     background-color: #555;
-    /* background-color: var(--dark-pink); */
     font-size: 14px;
     line-height: 18px;
     padding: 5px 10px;
@@ -713,8 +682,7 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
 }
 
 .line-vertical {
-    border-left: .1rem solid var(--light-pink);
-    /* edit here */
+    border-left: .1rem solid var(--light-pink); 
     height: 3.1rem;
     position: absolute;
     left: 3.7rem
@@ -722,12 +690,6 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
 
 /* end stories page  */
 /* start profile page and edit profile page  */
-.profile-page {
-    margin-top: 87px;
-    background-color: var(--light-orange);
-    position: relative
-}
-
 .profile-page .page-title {
     position: relative;
     padding-right: 5px
@@ -767,8 +729,6 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
     color: var(--dark-pink);
     top: 1rem;
     right: 1.5rem;
-
-    /* edit here */
     background-color: white;
     border: 2px solid var(--dark-pink);
     padding: 8px;
@@ -776,11 +736,9 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
 }
 
 .profile-page .profile-card .profile-img img {
-    /* edit here */
     width: 100%;
     max-height: 400px;
     object-fit: cover;
-
     border: 1px solid rgb(0 0 0 / 10%);
     border-radius: .7rem;
     -webkit-border-radius: .7rem;
@@ -825,10 +783,7 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
     color: var(--white)
 }
 
-.profile-page .profile-card .profile-form .save {
-    width: 50%
-}
-
+.profile-page .profile-card .profile-form .save,
 .profile-page .profile-card .profile-form .cancel {
     width: 50%
 }
@@ -854,14 +809,12 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
 .full-page .list-content .user-name {
     color: var(--dark-brown);
     font-size: 1.2rem;
-    font-family: var(--title-font);
-    /* edit here */
+    font-family: var(--title-font); 
     word-break: break-word;
 }
 
 .full-page .list-content .user-email {
     color: rgb(51 51 51 / 66%);
-    /* edit here */
     word-break: break-word;
 }
 
@@ -936,7 +889,6 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
     overflow-x: unset
 }
 
-/* edit here */
 .slides-part .story-title {
     font-family: var(--title-font);
     font-size: 1.3rem;
@@ -944,7 +896,6 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
     z-index: 1;
 }
 
-/* edit here */
 .slides-part .slides .card {
     cursor: pointer;
     background-color: var(--light-pink);
@@ -954,12 +905,10 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
     -webkit-border-radius: .4rem;
     -moz-border-radius: .4rem;
     -ms-border-radius: .4rem;
-    -o-border-radius: .4rem;
-    /* edit here */
+    -o-border-radius: .4rem;   
     transition: background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border 0.2s ease-in-out;
 }
 
-/* edit here */
 .slides-part .slides .card.active {
     box-shadow: inset 0px 10px 20px -10px rgba(0, 0, 0, 0.55), 0px 10px 20px rgba(0, 0, 0, 0.3);
     border: 2px solid white;
@@ -1029,7 +978,6 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
 }
 
 .view-slide .image .edit-img {
-    /* edit here */
     cursor: pointer;
     font-family: var(--title-font);
     width: -webkit-fit-content;
@@ -1109,14 +1057,12 @@ audio:focus-visible {
 /* end view_story.php page  */
 /* start footer section*/
 .footer {
-    /* edit here */
     flex-shrink: 0 !important;
     background-color: #feeedc;
     font-size: 1.4rem;
     color: var(--dark-brown)
 }
 
-/* edit here */
 .footer div {
     font-size: 20px;
     font-family: var(--title-font);
@@ -1133,7 +1079,6 @@ audio:focus-visible {
 }
 
 /* ************************************************* */
-/* edit here */
 .row.image {
     position: relative;
 }
@@ -1277,12 +1222,11 @@ audio:focus-visible {
 
 /* ----------------------------------------- */
 
-/* edit here */
-.warnin-order {
+.warning-order {
     transition: all 0.3s ease-in-out;
 }
 
-.warnin-order:not(:empty) {
+.warning-order:not(:empty) {
     padding: 0.5rem 1rem;
 }
 
@@ -1299,7 +1243,6 @@ audio:focus-visible {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    /* semi-transparent black */
     z-index: 9999;
     display: none;
 }
