@@ -21,8 +21,6 @@
                         @php
                             // this to check if there is slides coming
                             $hasSlide = count($slides) > 0;
-                            // this count to using it on the js func to get the index of array
-                            $i = 0;
                         @endphp
 
                         <!-- Include the JavaScript file and pass the slides data -->
@@ -36,8 +34,8 @@
                         {{-- Merge the id with the id to distinguish it --}}
                         @if ($hasSlide)
                             @foreach ($slides as $slide)
-                                <div class="card_slide card" id="card_slide_{{ $i }}"
-                                    data-slide-id="{{ $slide->id }}" onclick="getSlide({{ $i }})">
+                                <div class="card_slide card" id="card_slide_{{ $slide->page_no  }}"
+                                    data-slide-id="{{ $slide->id }}" onclick="getSlide({{ $slide->page_no }})">
                                     <div class="row px-1 justify-content-center align-items-center">
                                         <div class="col-4 card-image my-1 p-0">
                                             <img id="image{{ $slide->id }}"
@@ -58,10 +56,6 @@
                                         @endif
                                     </div>
                                 </div>
-                                @php
-                                    // incerment the count
-                                    $i++;
-                                @endphp
                             @endforeach
                             @php
                                 // this to get the last slide to print it
@@ -180,8 +174,7 @@
                     <div class="add-slide-btns modal-footer  justify-content-evenly pb-4" style="border-top: none;">
                         @if (!$hasSlide)
                             <button type="button" class="btn save" id="add_slide" onclick="saveSlide()">حفظ</button>
-                            <input type="reset" onclick="getSlide({{ $i }})"
-                                class="cancel slide-cancel btn btn-secondary" value="إلغاء">
+                            <input type="reset" class="cancel slide-cancel btn btn-secondary" value="إلغاء">
                         @endif
                     </div>
                 </div>

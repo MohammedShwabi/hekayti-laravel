@@ -436,7 +436,7 @@ $(document).ready(function () {
 
     // add new slide
     $('.add-slide-btn').click(function () {
-        $('#slide_image').attr('src', "storage/upload/slides_photos/img_upload.svg");
+        $('#slide_image').attr('src', "/storage/upload/slides_photos/img_upload.svg");
         $('#slide_audio').attr('src', "");
         $('#slide_text').text("أدخل النص هنا");
 
