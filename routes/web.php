@@ -77,6 +77,6 @@ Route::middleware(['auth'])->group(function () {
         // change the status of the manager
         Route::get('/adminChangeLocked', [App\Http\Controllers\AdminController::class, 'adminChangeLocked'])->name('delete');
         // delete manager
-        Route::post('/delete', [App\Http\Controllers\AdminController::class, 'destroy'])->name('delete-admin');
+        Route::post('/deleteAdmin', [App\Http\Controllers\AdminController::class, 'destroy'])->name('delete-admin');
     });
 });

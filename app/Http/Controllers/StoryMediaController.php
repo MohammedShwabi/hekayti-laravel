@@ -338,11 +338,11 @@ class StoryMediaController extends Controller
         // data validation
         $validatedData =  $request->validate(
             [
-                'slide_id' => 'required|exists:stories_media,id',
+                'del_slide_id' => 'required|exists:stories_media,id',
             ]
         );
         // get slide data 
-        $slide = StoryMedia::find($request->slide_id);
+        $slide = StoryMedia::find($request->del_slide_id);
 
         // delete all files
         $imagePath = '/storage/upload/slides_photos/' . $slide->image;
