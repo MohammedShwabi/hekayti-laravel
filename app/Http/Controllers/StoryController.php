@@ -22,9 +22,15 @@ class StoryController extends Controller
      */
     public function show(Request $request, Story $story, StoryMedia $storyMedia, $level)
     {
-        // $level = $request->query('level');
         $search = $request->query('search');
 
+        // Validate the level parameter
+        $validator = Validator::make(['level' => $level], [
+            'level' => 'required|integer|min:1|max:10|exists:stories,level', // Example validation rules
+        ]);
+        if ($validator->fails()) {
+            $level = 1;
+        }
         // Construct the query to retrieve stories
         $query = $story::where('level', $level)->when($search, function ($query, $search) {
             // get only the name that match the search

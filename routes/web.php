@@ -80,6 +80,3 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/delete', [App\Http\Controllers\AdminController::class, 'destroy'])->name('delete-admin');
     });
 });
-
-// test
-    // Route::get('/slide/{id}', [App\Http\Controllers\StoryMediaController::class, 'getSlideDetails'])->name('deleteStory');

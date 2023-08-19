@@ -74,10 +74,6 @@ class StoryMediaController extends Controller
      */
     public function store(Request $request)
     {
-        // i need this to add page no
-        // to get the last item 
-        //$lastRow = $story_media::latest()->first();
-
         // validate from the story id 
         $validatedData = request()->validate(
             [
@@ -194,7 +190,7 @@ class StoryMediaController extends Controller
      */
     public function editSlideImage(Request $request)
     {
-        // validate from the id 
+        // data validation
         $validatedData = request()->validate(
             [
                 'id' => 'required|exists:stories_media,id',
@@ -259,7 +255,7 @@ class StoryMediaController extends Controller
      */
     public function editSlideAudio(Request $request)
     {
-        // validate from the id 
+        // data validation
         $validatedData = request()->validate(
             [
                 'id' => 'required|exists:stories_media,id',
@@ -316,7 +312,7 @@ class StoryMediaController extends Controller
     public function editSlideText(Request $request)
     {
 
-        // validate data
+        // data validation
         $validatedData =  $request->validate(
             [
                 'id' => 'required|exists:stories_media,id',
@@ -339,6 +335,12 @@ class StoryMediaController extends Controller
      */
     public function destroy(Request $request)
     {
+        // data validation
+        $validatedData =  $request->validate(
+            [
+                'slide_id' => 'required|exists:stories_media,id',
+            ]
+        );
         // get slide data 
         $slide = StoryMedia::find($request->slide_id);
 

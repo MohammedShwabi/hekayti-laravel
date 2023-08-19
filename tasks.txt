@@ -8,9 +8,9 @@ all tasks in Hekayti-laravel
 --check all the authentications  ==> #DONE BY MOHAMMED
 --make all routs in a good way ==> #DONE BY MOHAMMED
 5-optimize all controllers ==> #DONE BY MOHAMMED
-6-check from data coming from the user  ==> #..... BY MOHAMMED
---search in the get url parameter   ==> #..... BY
---all id coming from request       ==> #DON BY MOHAMMED
+6-check from data coming from the user  ==> #DONE BY MOHAMMED
+--search in the get url parameter   ==> #DONE BY
+--all id coming from request       ==> #DONE BY MOHAMMED
 7-optimize all blade files:
 -- optimize story_slide blade
 -- Merge all the popup into one 
@@ -18,19 +18,19 @@ all tasks in Hekayti-laravel
 9-add arabic files     ==> #DONE BY HESHAM
 10-add feature to story_slide page to sort slides   ==> #DONE BY HESHAM
 11-add feature to unpublished any story  ==> DELETED
-12-edit rout for publish story and allow it to admin only ==> #DON BY MOHAMMED
+12-edit rout for publish story and allow it to admin only ==> #DONE BY MOHAMMED
 13-edit api file and try to make it Restful                ------------------------------------
 14-edit management structure to have super admin and admin and manager  ==> DELETED
 15-check from all data coming from user => specifically id that coming from get request  ==> #DONE BY MOHAMMED
 16-story slide functions and error massages on the addNewSlide ------------------------------------
 17-edit search url from js files     ==> #DONE BY HESHAM
 18-images in home page     ==> #DONE BY HESHAM
-19-password validation   ==> #DON BY MOHAMMED
-20-make all validation in the same way   ==> #DON BY MOHAMMED
-21-make all Routes in the same way  ==> #DON BY MOHAMMED
-22-the correct way to encrypt password    ==> #DON BY MOHAMMED
-23-change the name of the functions in all controllers  ==> #DON BY MOHAMMED
-24-redirect user depend on the role filed   ==> #DON BY MOHAMMED
+19-password validation   ==> #DONE BY MOHAMMED
+20-make all validation in the same way   ==> #DONE BY MOHAMMED
+21-make all Routes in the same way  ==> #DONE BY MOHAMMED
+22-the correct way to encrypt password    ==> #DONE BY MOHAMMED
+23-change the name of the functions in all controllers  ==> #DONE BY MOHAMMED
+24-redirect user depend on the role filed   ==> #DONE BY MOHAMMED
 
 _____________In The blade pages______________
 add required attr to all inputs
