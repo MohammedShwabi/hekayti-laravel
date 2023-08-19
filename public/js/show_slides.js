@@ -1,7 +1,7 @@
 // to get the slide details and put it in the left side of the page
 function getSlide(i) {
-    // to add the active class
 
+    // to remove the "active" class from all slides
     $(".card_slide").removeClass("active");
 
     // add "active" class to the clicked slide
