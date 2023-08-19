@@ -16,7 +16,7 @@ all tasks in Hekayti-laravel
 -- Merge all the popup into one 
 8-images upload and delete for all views  ==> #DONE BY MOHAMMED
 9-add arabic files     ==> #DONE BY HESHAM
-10-add feature to story_slide page to sort slides 
+10-add feature to story_slide page to sort slides   ==> #DONE BY HESHAM
 11-add feature to unpublished any story  ==> DELETED
 12-edit rout for publish story and allow it to admin only ==> #DON BY MOHAMMED
 13-edit api file and try to make it Restful                ------------------------------------

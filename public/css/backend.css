@@ -1343,3 +1343,8 @@ audio:focus-visible {
     font-size: 0.75em;
     margin-left: 0.25em;
 }
+
+/* style for sort story slid */
+.sortable-ghost {
+    opacity: 0.5; /* Example: Reduce opacity for the "ghost" element */
+}

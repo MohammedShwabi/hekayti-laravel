@@ -17,7 +17,7 @@
                     {{ $story->name }}
                 </div>
 
-                <div class="slides">
+                <div class="slides" id="sortable">
                     @php
                     // this to check if there is slides coming
                     $hasSlide = count($slides) > 0;
@@ -71,7 +71,7 @@
                     {{-- Merge the id with the id to distinguish it --}}
                     @if ($hasSlide)
                     @foreach ($slides as $slide)
-                    <div class="card_slide card" id="card_slide_{{ $i }}" onclick="getSlide({{ $i }})">
+                    <div class="card_slide card" id="card_slide_{{ $i }}" data-slide-id="{{ $slide->id }}" onclick="getSlide({{ $i }})" >
                         <div class="row px-1 justify-content-center align-items-center">
                             <div class="col-4 card-image my-1 p-0">
                                 <img id="image{{ $slide->id }}" src="{{ asset('storage/upload/slides_photos/thumbs/' . $slide->image) }}" class="img-fluid " alt="...">
@@ -82,7 +82,7 @@
                             <!-- delete the icon if the story has been published     -->
                             @if (!$story->published)
                             <div class="col-2 px-1">
-                                <div class="delete-slide" onclick="event.stopPropagation(); deletePopup({{$slide->id}},'delete_slide','del_slide_id')" >
+                                <div class="delete-slide" onclick="event.stopPropagation(); deletePopup({{$slide->id}},'delete_slide','del_slide_id')">
                                     <i class="fa fa-trash-can"></i>
                                 </div>
                             </div>
@@ -117,10 +117,24 @@
                     @endif
                 </div>
             </div>
+
+            <!-- enable sort only if story is not published  -->
+            @if (!$story->published)
+            <!-- for sort story slide using jQuery SortableJS -->
+            <script src="https://unpkg.com/sortablejs-make/Sortable.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>
+
+            <!-- another way, you can sort using jQuery UI  -->
+            <!-- <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script> -->
+
+            <!-- load the chart.js file -->
+            <script src="{{ URL::asset('js/sort_slid.js') }}" async></script>
+            @endif
+
         </div>
         <div class="col-xlg-8 col-lg-8 p-0">
             <div class="view-slide">
-                
+
                 @php
                 $slide_photo = $hasSlide ? $last_slide->image : 'img_upload.svg';
                 $slide_audio = $hasSlide ? $last_slide->audio : '';
@@ -141,12 +155,12 @@
                         <div class="fa fa-pen"></div>
                     </div>
                     @endif
-                    <img id="slide_image" src="{{ asset('storage/upload/slides_photos/' . $slide_photo) }}" class="img-fluid w-100 p-0" alt="...">
+                    <img id="slide_image" src="{{ asset('storage/upload/slides_photos/'.$slide_photo) }}" class="img-fluid w-100 p-0" alt="...">
                 </div>
                 <div id="imageInput"></div>
 
                 <div class="row sound align-items-center py-4 px-4">
-                    <audio controls class="col-11" id="slide_audio" src="{{ asset('storage/upload/slides_sounds/' . $slide_audio) }}">
+                    <audio controls class="col-11" id="slide_audio" src="{{ asset('storage/upload/slides_sounds/'.$slide_audio) }}">
                         {{-- if there is more than formatt of audio file we can use the source tag her --}}
                         Your browser does not support the audio element.
                     </audio>
@@ -169,13 +183,13 @@
                     </span>
                     @endif
                 </div>
-                
+
                 <div id="error-text-message" class="align-items-center  px-4 text-center invalid-feedback d-block">
                 </div>
-                
+
                 <div class="add-slide-btns modal-footer  justify-content-evenly pb-4" style="border-top: none;">
                     @if (!$hasSlide)
-                    
+
                     <button type="button" class="btn save" id="add_slide" onclick="saveSlide()">حفظ</button>
                     <input type="reset" onclick="getSlide({{ $i }})" class="cancel slide-cancel btn btn-secondary" value="إلغاء">
                     @endif

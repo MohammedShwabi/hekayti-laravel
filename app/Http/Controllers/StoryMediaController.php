@@ -23,8 +23,8 @@ class StoryMediaController extends Controller
      */
     public function show(Story $story, StoryMedia $storyMedia)
     {
-        // get the story slides in the specific story
-        $slides = $story->storyMedia;
+        // get the story slides in the specific story and order them by page no
+        $slides = StoryMedia::where('story_id', $story->id)->orderBy('page_no')->get();
 
         // return data to blade file 
         return view('story_slides', compact('slides', 'story'));
@@ -310,7 +310,7 @@ class StoryMediaController extends Controller
         }
     }
 
-     /**
+    /**
      * Edit slide text
      */
     public function editSlideText(Request $request)
@@ -361,5 +361,18 @@ class StoryMediaController extends Controller
         // delete slide 
         $slide->delete();
         return back();
+    }
+
+    // to change the order of story slid
+    public function updateSlideOrder(Request $request)
+    {
+        $slideOrder = $request->slideOrder;
+
+        // Loop through the slideOrder array and update the order in the database
+        foreach ($slideOrder as $index => $slideId) {
+            StoryMedia::where('id', $slideId)->update(['page_no' => $index]);
+        }
+
+        return response()->json(['message' => 'Slide order updated successfully']);
     }
 }

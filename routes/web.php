@@ -58,6 +58,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/editSlideText', [App\Http\Controllers\StoryMediaController::class, 'editSlideText'])->name('editSlideText');
     // delete slide
     Route::post('/deleteSlide', [App\Http\Controllers\StoryMediaController::class, 'destroy'])->name('deleteSlide');
+    // sort slid rout
+    Route::post('/updateSlideOrder', [App\Http\Controllers\StoryMediaController::class, 'updateSlideOrder'])->name('updateSlideOrder');
 
 
     // Routes for admin only

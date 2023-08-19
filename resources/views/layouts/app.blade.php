@@ -32,7 +32,7 @@
     <!-- <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script> -->
 
     <!-- or user local jquery -->
-    <script src="{{ URL::asset('js/jquery-3.6.0.min.js') }}" async></script>
+    <script src="{{ URL::asset('js/jquery-3.6.0.min.js') }}" ></script>
 
 </head>
 
