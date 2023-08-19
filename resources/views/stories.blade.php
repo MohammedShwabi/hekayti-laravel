@@ -20,13 +20,12 @@
     <!-- start of story search section -->
     <div class="row mt-4 d-flex justify-content-center align-items-center">
         <div class="col-md-9">
-            <form method="get" action="/stories/'{{$level}}">
+            <form method="get" action="/stories/{{$level}}/">
                 <div class="search form-group">
                     <span class="search-icon icon-bordered">
                         <i class="fa-solid fa-magnifying-glass fa-flip-horizontal" id="search_icon" style="--fa-animation-duration: 1s;"></i>
                     </span>
                     <input type="text" value="{{$search}}" name="search" id="search_txt" oninput="performSearch('/stories', { search: this.value.trim(), level: '{{ $level }}' })" autocomplete="off" class="form-control shadow-none" placeholder="بحث عن قصة ...">
-                    <input type="hidden" name="level" value="{{ $level }}">
                     <input type="submit" id="search_btn" value="بحث" class="btn btn-primary">
                 </div>
             </form>
