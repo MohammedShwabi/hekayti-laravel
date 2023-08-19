@@ -120,12 +120,17 @@
 
             <!-- enable sort only if story is not published  -->
             @if (!$story->published)
-            <!-- for sort story slide using jQuery SortableJS -->
-            <script src="https://unpkg.com/sortablejs-make/Sortable.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@latest/jquery-sortable.js"></script>
 
-            <!-- another way, you can sort using jQuery UI  -->
+            <!-- CDN link for jQuery SortableJS -->
+            <!-- <script src="https://unpkg.com/sortablejs-make/Sortable.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@1.0.1/jquery-sortable.min.js"></script> -->
+            
+            <!-- another way using jQuery UI  -->
             <!-- <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script> -->
+
+            <!-- or user local jQuery SortableJS -->
+            <script src="{{ URL::asset('js/Sortable.min.js') }}" async></script>
+            <script src="{{ URL::asset('js/jquery-sortable.min.js') }}" async></script>
 
             <!-- load the chart.js file -->
             <script src="{{ URL::asset('js/sort_slid.js') }}" async></script>
