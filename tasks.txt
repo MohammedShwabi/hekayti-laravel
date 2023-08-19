@@ -31,6 +31,4 @@ all tasks in Hekayti-laravel
 22-the correct way to encrypt password    ==> #DONE BY MOHAMMED
 23-change the name of the functions in all controllers  ==> #DONE BY MOHAMMED
 24-redirect user depend on the role filed   ==> #DONE BY MOHAMMED
-
-_____________In The blade pages______________
-add required attr to all inputs
+25-add required attr to all inputs
