@@ -9,7 +9,6 @@
         </div>
         <!-- end of loading overlay element -->
 
-        <!-- start of page title section -->
         <div class="row text-center mt-4">
             <div class="title">
                 القصص
@@ -20,7 +19,7 @@
         <!-- start of story search section -->
         <div class="row mt-4 d-flex justify-content-center align-items-center">
             <div class="col-md-9">
-                <form method="get" action="/stories/'{{ $level }}">
+                <form method="get" action="/stories/{{ $level }}/">
                     <div class="search form-group">
                         <span class="search-icon icon-bordered">
                             <i class="fa-solid fa-magnifying-glass fa-flip-horizontal" id="search_icon"
@@ -29,7 +28,6 @@
                         <input type="text" value="{{ $search }}" name="search" id="search_txt"
                             oninput="performSearch('/stories', { search: this.value.trim(), level: '{{ $level }}' })"
                             autocomplete="off" class="form-control shadow-none" placeholder="بحث عن قصة ...">
-                        <input type="hidden" name="level" value="{{ $level }}">
                         <input type="submit" id="search_btn" value="بحث" class="btn btn-primary">
                     </div>
                 </form>
@@ -294,7 +292,8 @@
                                 <span class="invalid-feedback" role="alert" id="story_orderEditError">
                                     <strong></strong>
                                 </span>
-                                <div class="warning-order mt-4 alert-warning rounded" id="warning_edit_order"></div>
+                                <div class="warning-order mt-4 alert-warning rounded" id="warning_edit_order">
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer  justify-content-evenly mb-4">
