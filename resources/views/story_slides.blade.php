@@ -22,7 +22,6 @@
                             var baseImageUrl = '{{ URL::to('/') }}/storage/upload/slides_photos/';
                             var baseAudioUrl = '{{ URL::to('/') }}/storage/upload/slides_sounds/';
                         </script>
-                        <script src=" {{ URL::asset('js/show_slides.js') }}"></script>
 
                         <div id="sortable">
                             @foreach ($slides as $slide)
@@ -81,9 +80,6 @@
                     <!-- or user local jQuery SortableJS -->
                     <script src="{{ URL::asset('js/Sortable.min.js') }}"></script>
                     <script src="{{ URL::asset('js/jquery-sortable.min.js') }}"></script>
-
-                    <!-- load the chart.js file -->
-                    <script src="{{ URL::asset('js/sort_slides.js') }}" async></script>
                 @endif
             </div>
 

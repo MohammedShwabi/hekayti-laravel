@@ -432,30 +432,70 @@ function updateLabelName(label, input) {
 // ************** end of stories page **************
 
 // ************** start of story slide page **************
-$(document).ready(function () {
 
+// to change slide content and method
+function addSlideContent(options) {
+    $('#slide_image').attr('src', options.imageSrc);
+    $('#slide_audio').attr('src', options.audioSrc);
+    $('#slide_text').text(options.text);
+    // icon text
+    $("#icon_text").text(options.imageIconText);
+    // add buttons section
+    $('.add-slide-btns').html(options.addButtonsSection);
+    // clear error messages
+    $("#error-image-message, #error-audio-message, #error-text-message").text("");
+
+    // on click method
+    $('#edit-image').attr('onclick', options.editImageMethod);
+    $('#replace_audio').attr('onclick', options.editAudioMethod);
+    $('#edit_text_icon').attr('onclick', options.editTextMethod);
+}
+
+function getSlide(i) {
+    const slide = slides[i];
+
+    // to remove the "active" class from all slides
+    $(".card_slide").removeClass("active");
+    // add "active" class to the clicked slide
+    $(`#card_slide_${i}`).addClass("active");
+
+    // to get full url of image and audio and the text
+    const imageUrl = baseImageUrl + slide.image;
+    const audioUrl = baseAudioUrl + slide.audio;
+    const text = slide.text;
+
+    // set data from js array to html page  
+    $('#slide_id').text(slide.id);
+
+    addSlideContent({
+        imageSrc: imageUrl,
+        audioSrc: audioUrl,
+        text: text,
+        imageIconText: "تعديل",
+        addButtonsSection: '',
+        editImageMethod: "editMedia('image','/editSlideImage')",
+        editAudioMethod: "editMedia('audio', '/editSlideAudio')",
+        editTextMethod: 'editText'
+    });
+
+}
+
+$(document).ready(function () {
     // add new slide
     $('.add-slide-btn').click(function () {
-        $('#slide_image').attr('src', "/storage/upload/slides_photos/img_upload.svg");
-        $('#slide_audio').attr('src', "");
-        $('#slide_text').text("أدخل النص هنا");
-
-        $('#edit-photo').attr('onclick', "addPhoto()");
-        $('#replace_sound').attr('onclick', "addSound()");
-        $('#edit_text_icon').attr('onclick', "addText()");
-
-
-        $('.add-slide-btns').html(
-            '<button type="button" class="btn save" id="add_slide" onclick="saveSlide()">حفظ</button>' +
-            '<input type="button" onclick="closeSlide()" class="cancel slide-cancel btn btn-secondary" value="إلغاء">'
-        );
-
-        $("#icon_text").text("إضافة");
-
-        $("#error-image-message").text("");
-        $("#error-audio-message").text("");
-        $("#error-text-message").text("");
-
+        // rest the slide content
+        addSlideContent({
+            imageSrc: "/storage/upload/slides_photos/img_upload.svg",
+            audioSrc: "",
+            text: "أدخل النص هنا",
+            imageIconText: "إضافة",
+            addButtonsSection:
+                '<button type="button" class="btn save" id="add_slide" onclick="saveSlide()">حفظ</button>' +
+                '<input type="button" onclick="closeSlide()" class="cancel slide-cancel btn btn-secondary" value="إلغاء">',
+            editImageMethod: 'addPhoto',
+            editAudioMethod: 'addSound',
+            editTextMethod: 'addText'
+        });
     });
 
     // make the last slide active 
@@ -690,4 +730,38 @@ function deleteText() {
 function closeSlide() {
     $('.card_slide:last').click();
 }
+
+// for sort slides
+$(document).ready(function () {
+    $('#sortable').sortable({
+        ghostClass: "sortable-ghost",  // Class name for the drop placeholder
+        onUpdate: updateSlideOrder,
+    });
+});
+
+// Get the new order of the slides
+function getNewOrder() {
+    var newOrder = [];
+    $('#sortable .card_slide').each(function () {
+        newOrder.push($(this).data('slide-id'));
+    });
+    return newOrder;
+}
+
+// Send the new order to the server using an AJAX request
+function updateSlideOrder() {
+    $.ajax({
+        url: '/updateSlideOrder',
+        method: 'POST',
+        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+        data: { slideOrder: getNewOrder() },
+        success: function (response) {
+            // Handle success, if needed
+        },
+        error: function (error) {
+            // Handle error, if needed
+        }
+    });
+}
+
 // ************** end of story slide page **************
