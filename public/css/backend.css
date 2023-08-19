@@ -1083,7 +1083,8 @@ audio:focus-visible {
     position: relative;
 }
 
-#error-image-message {
+
+.view-slide #error-image-message {
     background-color: #f8d7da;
     color: #721c24;
     text-align: center;
