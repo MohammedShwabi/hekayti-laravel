@@ -661,6 +661,7 @@ function editMedia(type, url) {
             success: function (data) {
                 if (type === "image" && url == "/editSlideImage") {
                     // update main slid and aside slid images
+                    id = $('#slide_id').text();
                     $("#slide_image, #image" + id).attr("src", data.url);
 
                 } else if (type === "audio") {
