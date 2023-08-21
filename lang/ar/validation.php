@@ -228,6 +228,7 @@ return [
         'new_password_confirmation'           => 'تأكيد كلمة المرور الجديدة',
         // silde
         'text'           => 'النص',
+        'audio'           => 'الصوت',
         
 
     ],

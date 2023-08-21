@@ -72,7 +72,7 @@ function handleAjaxRequest(options) {
         multipart: options.multipart || false,
         headers: options.headers || { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
         data: options.data,
-        contentType: false,
+        contentType: options.contentType || false,
         processData: false,
         url: options.url,
         success: options.success,
@@ -700,14 +700,17 @@ function editText() {
             var newText = $input.val();
             var id = $('#slide_id').text();
 
+            const requestData = { text: newText, id: id };
+
             // Show loading overlay
             toggleLoadingOverlay(true);
 
             handleAjaxRequest({
-                url: '/editSlideText?id=' + id,
-                data: { text: newText },
+                url: '/editSlideText',
+                data: JSON.stringify(requestData),
+                contentType: 'application/json',
                 success: function (data) {
-                    $('<div>', { id: 'slide_text', text: newText }).replaceAll($input);
+                    $('<p>', { id: 'slide_text', text: newText }).replaceAll($input);
                     $('#text' + id).text(newText);
                     $('#error-text-message').text('');
                 },
