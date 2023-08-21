@@ -31,7 +31,7 @@
                     <!-- upload photo error message -->
                     <div id="error-image-message" class="alert-danger rounded text-center m-2"></div>
                     <div class="profile-img">
-                        <span id="edit_profile_photo" onclick="editMedia('image', 'editProfilePhoto')">
+                        <span id="edit_profile_photo" onclick="editMedia('image', '/editProfilePhoto')">
                             <i class="fa fa-camera camera-icon"></i>
                         </span>
                         <img class="img-fluid shadow-sm" height="300px" id="profile_photo" src="{{ asset('storage/upload/profiles_photos/' . Auth::user()->image) }}" alt="">

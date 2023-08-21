@@ -292,8 +292,7 @@
                                 <span class="invalid-feedback" role="alert" id="story_orderEditError">
                                     <strong></strong>
                                 </span>
-                                <div class="warning-order mt-4 alert-warning rounded" id="warning_edit_order">
-                                </div>
+                                <div class="warning-order mt-4 alert-warning rounded" id="warning_edit_order"></div>
                             </div>
                         </div>
                         <div class="modal-footer  justify-content-evenly mb-4">

@@ -218,7 +218,7 @@ class StoryController extends Controller
                 ],
             );
             $image = $request->file('cover_photo');
-            // to get uniqe name
+            // to get unique name
             $imageName = $image->getClientOriginalName();
 
             // to replace image in files

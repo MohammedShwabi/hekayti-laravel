@@ -228,8 +228,8 @@ class StoryMediaController extends Controller
                 $story_media = StoryMedia::find($id);
                 // to delete old image from files  and thumb file
                 if ($story_media->image !== 'default.png') {
-                    $thumbPath = '/storage/upload/slides_photos/thumbs/' . $story_media->image;
-                    $imagePath = '/storage/upload/slides_photos/' . $story_media->image;
+                    $imagePath = 'upload/slides_photos/' . $story_media->image;
+                    $thumbPath = 'upload/slides_photos/thumbs/' . $story_media->image;
 
                     if ($imagePath && Storage::disk('public')->exists($imagePath)) {
                         Storage::disk('public')->delete($imagePath);
@@ -289,7 +289,7 @@ class StoryMediaController extends Controller
                 // Delete old audio file from the directory
                 // This if we have default value
                 if ($story_media->audio !== 'default.mp3') {
-                    $audioPath = '/storage/upload/slides_sounds/' . $story_media->audio;
+                    $audioPath = 'upload/slides_sounds/' . $story_media->audio;
                     if ($audioPath && Storage::disk('public')->exists($audioPath)) {
                         Storage::disk('public')->delete($audioPath);
                     }
@@ -345,9 +345,9 @@ class StoryMediaController extends Controller
         $slide = StoryMedia::find($request->del_slide_id);
 
         // delete all files
-        $imagePath = '/storage/upload/slides_photos/' . $slide->image;
-        $thumbPath = '/storage/upload/slides_photos/thumbs/' . $slide->image;
-        $audioPath = '/storage/upload/slides_sounds/' . $slide->audio;
+        $imagePath = 'upload/slides_photos/' . $slide->image;
+        $thumbPath = 'upload/slides_photos/thumbs/' . $slide->image;
+        $audioPath = 'upload/slides_sounds/' . $slide->audio;
 
 
         if ($imagePath && Storage::disk('public')->exists($imagePath)) {

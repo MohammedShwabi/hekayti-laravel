@@ -133,8 +133,8 @@ function showError(element, message, withCloseBtn = false) {
 }
 
 // to clear error message in story slide page
-function clearErrors() {
-    $("[id^='error-']").empty();
+function clearErrors(targetDivId = null) {
+    $(targetDivId ? `#error-${targetDivId}-message` : "[id^='error-']").empty();
 }
 
 // to call function only when page loaded
@@ -515,8 +515,17 @@ function addFile(type) {
 
         var file = this.files[0];
 
+        // Check if a file was selected
+        if (!file) {
+            // showError(`#error-${type}-message`, "يرجى اختيار ملف " + (type === "image" ? "صورة" : "صوت") + ".", true);
+            $(`#error-${type}-message`).text("يرجى اختيار ملف " + (type === "image" ? "صورة" : "صوت") + ".");
+            return;
+        }
+
         // Check if the selected file is correct type
         if (file.type.match(type + '.*')) {
+            // clear error message
+            clearErrors(type);
 
             var reader = new FileReader();
             reader.onload = function (event) {
@@ -525,7 +534,8 @@ function addFile(type) {
             };
             reader.readAsDataURL(file);
         } else {
-            alert("Please select a " + type.toUpperCase() + " file.");
+            $(`#error-${type}-message`).text("يرجى إختيار ملف " + (type === "image" ? "صورة" : "صوت") + ".");
+
         }
     });
     $("#" + type + "Input").html(input);
@@ -659,22 +669,22 @@ function editMedia(type, url) {
         handleAjaxRequest({
             url: url,
             data: formData,
-            success: function (data) {
+            success: (response) => {
                 if (type === "image" && url == "/editSlideImage") {
                     // update main slid and aside slid images
                     id = $('#slide_id').text();
-                    $("#slide_image, #image" + id).attr("src", data.url);
+                    $("#slide_image, #image" + id).attr("src", response.url);
 
                 } else if (type === "audio") {
                     // This ensures that the browser loads the new version of the audio file instead of using a cached version.
                     //we append a cache-busting parameter to the URL by adding ?_= followed by the current timestamp using new Date().getTime(). 
-                    $("#slide_audio").attr("src", data.url + "?" + (new Date()).getTime());
+                    $("#slide_audio").attr("src", response.url + "?" + (new Date()).getTime());
                 }
                 else if (type === "image" && url == "/editProfilePhoto") {
                     // Update the nav profile photo
-                    $('#round-profile').attr('src', data.thumbUrl);
+                    $('#round-profile').attr('src', response.thumbUrl);
                     // Update the preview image with the new URL
-                    $('#profile_photo').attr('src', data.url);
+                    $('#profile_photo').attr('src', response.url);
                 }
                 // empty error message
                 $('#error-' + type + '-message').text("");

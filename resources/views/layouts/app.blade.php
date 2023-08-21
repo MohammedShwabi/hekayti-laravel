@@ -42,7 +42,7 @@
     <!-- start navbar -->
     <nav class="navbar navbar-expand-md fixed-top navbar-light shadow">
         <div class="container">
-            <a class="navbar-brand" href="{{ (Auth::user()->role == 'admin') ? route('home') : route('stories').'?level=1' }}">
+            <a class="navbar-brand" href="{{ (Auth::user()->role == 'admin') ? route('home') : route('stories', ['level' => 1]) }}">
                 <img src="{{ asset('storage/img/logo.png') }}" alt="Logo" style="width:60px;" class="img-fluid" />
             </a>
 
