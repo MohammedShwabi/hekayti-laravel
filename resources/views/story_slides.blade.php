@@ -80,6 +80,9 @@
                     <!-- or user local jQuery SortableJS -->
                     <script src="{{ URL::asset('js/Sortable.min.js') }}"></script>
                     <script src="{{ URL::asset('js/jquery-sortable.min.js') }}"></script>
+
+                    <!-- load the chart.js file -->
+                    <script src="{{ URL::asset('js/sort_slides.js') }}" async></script>
                 @endif
             </div>
 
@@ -122,7 +125,7 @@
 
                     <div class="row image p-0">
                         @if (!$story->published)
-                            <div class="edit-img py-1 px-4 " id="edit-photo" onclick="{{ $imageClick }}">
+                            <div class="edit-img py-1 px-4 " id="edit_image" onclick="{{ $imageClick }}">
                                 <span id="icon_text">{{ $imageText }}</span>
                                 <div class="fa fa-pen"></div>
                             </div>
@@ -140,7 +143,7 @@
                             Your browser does not support the audio element.
                         </audio>
                         @if (!$story->published)
-                            <span class="replace px-3 col-1 m-lg-0 m-2" id="replace_sound" onclick="{{ $audioClick }}">
+                            <span class="replace px-3 col-1 m-lg-0 m-2" id="replace_audio" onclick="{{ $audioClick }}">
                                 <div class="fa-solid fa-repeat"></div>
                             </span>
                         @endif

@@ -446,7 +446,7 @@ function addSlideContent(options) {
     $("#error-image-message, #error-audio-message, #error-text-message").text("");
 
     // on click method
-    $('#edit-image').attr('onclick', options.editImageMethod);
+    $('#edit_image').attr('onclick', options.editImageMethod);
     $('#replace_audio').attr('onclick', options.editAudioMethod);
     $('#edit_text_icon').attr('onclick', options.editTextMethod);
 }
@@ -475,7 +475,7 @@ function getSlide(i) {
         addButtonsSection: '',
         editImageMethod: "editMedia('image','/editSlideImage')",
         editAudioMethod: "editMedia('audio', '/editSlideAudio')",
-        editTextMethod: 'editText'
+        editTextMethod: 'editText()'
     });
 
 }
@@ -492,9 +492,9 @@ $(document).ready(function () {
             addButtonsSection:
                 '<button type="button" class="btn save" id="add_slide" onclick="saveSlide()">حفظ</button>' +
                 '<input type="button" onclick="closeSlide()" class="cancel slide-cancel btn btn-secondary" value="إلغاء">',
-            editImageMethod: 'addPhoto',
-            editAudioMethod: 'addSound',
-            editTextMethod: 'addText'
+            editImageMethod: 'addPhoto()',
+            editAudioMethod: 'addSound()',
+            editTextMethod: 'addText()'
         });
     });
 
@@ -587,7 +587,7 @@ function saveSlide() {
     if (!photoInput || !photoInput.files || !photoInput.files.length > 0) {
         showError(photoMessage, "لطفا قم بإختيار الصورة", true);
         // Scroll to the error message after it's shown
-        document.querySelector('#edit-photo').scrollIntoView({ behavior: 'smooth' });
+        document.querySelector('#edit_image').scrollIntoView({ behavior: 'smooth' });
         return;
     }
     var photoFile = photoInput.files[0];
@@ -611,6 +611,7 @@ function saveSlide() {
 
     // Create a new FormData object and append from input to it
     var formData = new FormData();
+    formData.append('story_id', $('#story_id').text());
     formData.append('image', photoFile);
     formData.append('audio', soundFile);
     formData.append('text', slideText);
@@ -619,7 +620,7 @@ function saveSlide() {
     toggleLoadingOverlay(true);
 
     handleAjaxRequest({
-        url: '/addNewSlide?story_id=' + $('#story_id').text(),
+        url: '/addNewSlide',
         data: formData,
         success: () => location.reload(),
         error: function (response) {
@@ -733,39 +734,6 @@ function deleteText() {
 
 function closeSlide() {
     $('.card_slide:last').click();
-}
-
-// for sort slides
-$(document).ready(function () {
-    $('#sortable').sortable({
-        ghostClass: "sortable-ghost",  // Class name for the drop placeholder
-        onUpdate: updateSlideOrder,
-    });
-});
-
-// Get the new order of the slides
-function getNewOrder() {
-    var newOrder = [];
-    $('#sortable .card_slide').each(function () {
-        newOrder.push($(this).data('slide-id'));
-    });
-    return newOrder;
-}
-
-// Send the new order to the server using an AJAX request
-function updateSlideOrder() {
-    $.ajax({
-        url: '/updateSlideOrder',
-        method: 'POST',
-        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-        data: { slideOrder: getNewOrder() },
-        success: function (response) {
-            // Handle success, if needed
-        },
-        error: function (error) {
-            // Handle error, if needed
-        }
-    });
 }
 
 // ************** end of story slide page **************
