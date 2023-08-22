@@ -268,7 +268,7 @@ class StoryMediaController extends Controller
                         $filename = $value->getClientOriginalName();
                         $existingStory = StoryMedia::where('audio', $filename)->where('id', $request->id)->first();
                         if ($existingStory) {
-                            $fail('هذه الصوت موجودة مسبقا');
+                            $fail('هذا الصوت موجود مسبقا');
                         }
                     },
                 ],

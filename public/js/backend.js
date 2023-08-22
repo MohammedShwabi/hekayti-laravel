@@ -527,7 +527,7 @@ function addFile(type) {
 
         // check if there is no file selected
         if (!file) {
-            showError($(`#error-${type}-message`), "لطفا قم بإختيار " + (isImage ? "الصورة" : "الصوت")  , (isImage));
+            showError($(`#error-${type}-message`), "لطفا قم بإختيار " + (isImage ? "الصورة" : "الصوت"), (isImage));
             $("#slide_" + type).attr("src", (isImage ? "../storage/upload/slides_photos/img_upload.svg" : ""));
             return;
         }
@@ -669,6 +669,19 @@ function editMedia(type, url) {
 
     // Listen for a change event on the input field
     input.change(function () {
+
+        // check if the file name choose is not the same as old file before send the request
+        if (url != "/editProfilePhoto") {
+            var oldFile = $(`#slide_${type}`).attr('src');
+            var oldFileName = oldFile.split('/').pop();
+            var newFileName = this.files[0].name;
+            if (oldFileName == newFileName) {
+                var errorMessage = (type == "image" ? "هذه الصورة موجودة مسبقا" : "هذا الصوت موجود مسبقا")
+                showError($("#error-" + type + "-message"), errorMessage, url == '/editSlideImage');
+                return;
+            }
+        }
+
         var formData = new FormData();
         formData.append(type, this.files[0]);
 
@@ -716,14 +729,19 @@ function editMedia(type, url) {
 }
 
 function editText() {
-    var $input = $('<input>', { type: 'text', id: 'slide_input', value: $('#slide_text').text() })
-        .addClass('form-control')
+    var oldText = $('#slide_text').text().trim();
+    var $input = $('<input>', { type: 'text', id: 'slide_input', value: oldText, class: 'form-control' })
         .replaceAll('#slide_text')
         .focus()
         .blur(function () {
-            var newText = $input.val();
-            var id = $('#slide_id').text();
+            var newText = $input.val().trim();
 
+            // check if the text has been change before send the request
+            if (newText == oldText) {
+                $('<p>', { id: 'slide_text', text: newText }).replaceAll($input);
+                return;
+            }
+            var id = $('#slide_id').text();
             const requestData = { text: newText, id: id };
 
             // Show loading overlay
