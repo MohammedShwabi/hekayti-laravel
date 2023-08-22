@@ -291,10 +291,10 @@ class StoryController extends Controller
 
         // Delete all related slides and their associated files
         $slides->each(function ($slide) {
-            $slidePhotoPath = 'upload/slides_photos/' . $slide->photo;
-            $slidePhotoThumbPath = 'upload/slides_photos/thumbs/' . $slide->photo;
-            $slideSoundPath = 'upload/slides_sounds/' . $slide->sound;
 
+            $slidePhotoPath = 'upload/slides_photos/' . $slide->image;
+            $slidePhotoThumbPath = 'upload/slides_photos/thumbs/' . $slide->image;
+            $slideSoundPath = 'upload/slides_sounds/' . $slide->audio;
 
             // Delete the slide photo file if it exists
             if (Storage::disk('public')->exists($slidePhotoPath)) {

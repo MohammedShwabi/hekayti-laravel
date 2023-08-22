@@ -196,6 +196,7 @@ nav {
 #round-profile {
     height: 50px;
     width: 50px;
+    -o-object-fit: cover;
     object-fit: cover;
     border-radius: 50px;
     border: 1px solid var(--dark-orange);
@@ -534,17 +535,13 @@ body>div.container-fluid.full-page {
 }
 
 .hover-background {
-    transition: .5s ease;
     opacity: 0;
-    transform: translate(-50%, -50%);
     -webkit-transition: .5s ease;
     -moz-transition: .5s ease;
     -ms-transition: .5s ease;
     -o-transition: .5s ease;
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    -o-transform: translate(-50%, -50%)
+    transition: .5s ease;
+    transform: translate(-50%, -50%);
 }
 
 .out-card:hover .hover-background {
@@ -738,6 +735,7 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
 .profile-page .profile-card .profile-img img {
     width: 100%;
     max-height: 400px;
+    -o-object-fit: cover;
     object-fit: cover;
     border: 1px solid rgb(0 0 0 / 10%);
     border-radius: .7rem;
@@ -925,6 +923,7 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
 .slides-part .slides .card .card-image img {
     width: 100% !important;
     height: 100%;
+    -o-object-fit: cover;
     object-fit: cover;
     border-radius: .7rem;
     -webkit-border-radius: .7rem;
@@ -1009,6 +1008,7 @@ ul:has(> li:nth-child(2)):not(:has(> li:nth-child(3)))>li {
 }
 
 .view-slide .image img[src$="img_upload.svg"] {
+    -o-object-fit: fill;
     object-fit: fill;
 }
 
@@ -1258,7 +1258,18 @@ audio:focus-visible {
     border-radius: 50%;
     border: 3px solid #fff;
     border-top-color: var(--dark-pink);
+    -webkit-animation: spinner-rotate 1s linear infinite;
     animation: spinner-rotate 1s linear infinite;
+}
+
+@-webkit-keyframes spinner-rotate {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
 }
 
 @keyframes spinner-rotate {
@@ -1272,6 +1283,15 @@ audio:focus-visible {
 }
 
 /* animation for count in dashboard */
+@-webkit-keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
 @keyframes fade-in {
     0% {
         opacity: 0;
@@ -1283,6 +1303,7 @@ audio:focus-visible {
 }
 
 .fade-in {
+    -webkit-animation: fade-in 1s ease-in-out;
     animation: fade-in 1s ease-in-out;
 }
 
