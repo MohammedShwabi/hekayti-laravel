@@ -201,7 +201,7 @@ class StoryMediaController extends Controller
                     'max:2048',
                     function ($attribute, $value, $fail) use ($request) {
                         $filename = $value->getClientOriginalName();
-                        $existingStory = StoryMedia::where('image', $filename)->where('id', '<>', $request->id)->first();
+                        $existingStory = StoryMedia::where('image', $filename)->where('id', $request->id)->first();
                         if ($existingStory) {
                             $fail('هذه الصورة موجودة مسبقا');
                         }
@@ -266,7 +266,7 @@ class StoryMediaController extends Controller
                     'max:2048',
                     function ($attribute, $value, $fail) use ($request) {
                         $filename = $value->getClientOriginalName();
-                        $existingStory = StoryMedia::where('audio', $filename)->where('id', '<>', $request->id)->first();
+                        $existingStory = StoryMedia::where('audio', $filename)->where('id', $request->id)->first();
                         if ($existingStory) {
                             $fail('هذه الصوت موجودة مسبقا');
                         }
