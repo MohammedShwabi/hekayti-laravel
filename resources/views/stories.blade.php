@@ -185,7 +185,7 @@
                                         اختر صورة لرفعها
                                         <span class="icon-bordered upload-icon"><i class="fa fa-upload"></i></span>
                                     </label>
-                                    <input autofocus type="file" onchange="updateLabelName('#cover_photoLabel', this)"
+                                    <input required autofocus type="file" onchange="updateLabelName('#cover_photoLabel', this)"
                                         class="d-none" name="cover_photo" id="cover_photoInput" accept="image/*">
                                     <span class="invalid-feedback" role="alert" id="cover_photoError">
                                         <strong></strong>
@@ -262,7 +262,7 @@
                                         <span class="icon-bordered upload-icon"><i class="fa fa-upload"></i></span>
                                     </label>
                                     <input type="file" onchange="updateLabelName('#cover_photoEditLabel', this)"
-                                        class="d-none" name="cover_photo" id="cover_photoEditInput"
+                                        class="d-none" name="cover_photo" required id="cover_photoEditInput"
                                         placeholder="Leav blank" accept="image/*">
                                     <span class="invalid-feedback" role="alert" id="cover_photoEditError">
                                         <strong></strong>

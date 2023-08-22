@@ -504,8 +504,17 @@ $(document).ready(function () {
 
 // for add slide actions 
 function addFile(type) {
-    // Create an input field of type "file"
-    var input = $("<input />", { type: "file", accept: type + "/*", name: "add_slide_" + type, id: "add_slide_" + type, style: "display: none;" });
+
+    var input = $("#add_slide_" + type);
+
+    // Check if there is no input field before create a new one
+    if (input.length === 0) {
+        // Create an input field of type "file"
+        input = $("<input />", { type: "file", accept: type + "/*", name: "add_slide_" + type, id: "add_slide_" + type, style: "display: none;" });
+
+        // Append the input to the page
+        $("#" + type + "Input").html(input);
+    }
 
     // Trigger a click event on the input field
     input.trigger("click");
@@ -514,11 +523,12 @@ function addFile(type) {
     input.change(function () {
 
         var file = this.files[0];
+        var isImage = (type === "image");
 
-        // Check if a file was selected
+        // check if there is no file selected
         if (!file) {
-            // showError(`#error-${type}-message`, "يرجى اختيار ملف " + (type === "image" ? "صورة" : "صوت") + ".", true);
-            $(`#error-${type}-message`).text("يرجى اختيار ملف " + (type === "image" ? "صورة" : "صوت") + ".");
+            showError($(`#error-${type}-message`), "لطفا قم بإختيار " + (isImage ? "الصورة" : "الصوت")  , (isImage));
+            $("#slide_" + type).attr("src", (isImage ? "../storage/upload/slides_photos/img_upload.svg" : ""));
             return;
         }
 
@@ -534,11 +544,9 @@ function addFile(type) {
             };
             reader.readAsDataURL(file);
         } else {
-            $(`#error-${type}-message`).text("يرجى إختيار ملف " + (type === "image" ? "صورة" : "صوت") + ".");
-
+            showError($(`#error-${type}-message`), "يرجى اختيار ملف " + (isImage ? "صورة" : "صوت"), (isImage));
         }
     });
-    $("#" + type + "Input").html(input);
 }
 
 function addPhoto() {
@@ -550,22 +558,27 @@ function addSound() {
 }
 
 function addText() {
+    // Get the current text element
     var $element = $('#slide_text');
 
-    var current_text = ($element.text() == "أدخل النص هنا") ? "" : $element.text();
-
-
-    var $input = $('<input>').attr('type', 'text').attr('id', 'slide_input').val(current_text);
-    $input.addClass('form-control');
+    // Create an input element with the current trimmed text as its value
+    const current_text = ($element.text() == "أدخل النص هنا") ? "" : $element.text().trim();
+    const $input = $('<input>', { type: 'text', id: 'slide_input', value: current_text, class: 'form-control' });
 
     $element.replaceWith($input);
-    $input.focus();
 
-    $input.blur(function () {
-        var current_text = ($.trim($input.val()) == "") ? "أدخل النص هنا" : $input.val();
+    // Replace the text element with the input element, focus on it, and set a blur event handler
+    $input.focus().blur(function () {
+        // Get the trimmed value from the input, or use default text
+        const newText = $input.val().trim() || "أدخل النص هنا";
 
-        var $newElement = $('<div>').attr('id', 'slide_text').text(current_text);
-        $input.replaceWith($newElement);
+        // Clear the error message if input has text
+        if (newText != "أدخل النص هنا") {
+            clearErrors("text");
+        }
+
+        // Replace the input element with a new text element containing the new text
+        $input.replaceWith($('<div>', { id: 'slide_text', text: newText }));
     });
 
 }
