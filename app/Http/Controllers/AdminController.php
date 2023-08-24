@@ -99,7 +99,9 @@ class AdminController extends Controller
         $admin->save();
 
         // Redirect back to the previous page
-        return back();
+        // return back();
+        // return the admin name save
+        return response()->json(['username' => $request->username]);
     }
 
     /**

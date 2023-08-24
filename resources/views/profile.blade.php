@@ -44,10 +44,10 @@
                         <div class="mx-5 mb-4">
                             <div class="form-group">
                                 <div class="col-12 mt-4 mb-3">
-                                    <label for="user_name" class="form-label user-name">الإسم</label>
+                                    <label for="user_name" class="form-label">الإسم</label>
                                     <div class="row justify-content-center align-items-center gx-2">
                                         <div class="col-8 ">
-                                            <div class="data-label user-name">{{ Auth::user()->name }}</div>
+                                            <div class="data-label" id="user_name">{{ Auth::user()->name }}</div>
                                         </div>
                                         <div class="col-4 ">
                                             <a class="btn change-pass-btn edit_name" id="edit_name" role="button" data-bs-toggle="modal" data-bs-target="#edit_name_pop">

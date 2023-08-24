@@ -115,7 +115,7 @@ function handleFormSubmission(formSelector, url, successCallback) {
             multipart: true,
             data: formData,
             url: url,
-            success: () => successCallback(),
+            success: (response) => successCallback(response),
             error: (response) => {
                 if (response.status === 422) { handleValidationErrors(response.responseJSON.errors, url) }
                 // handle unauthorized errors
@@ -324,13 +324,26 @@ $(document).ready(function () {
 // ************** start of profile page **************
 $(document).ready(function () {
     // Handle form submission for editing profile name
-    handleFormSubmission("#edit_name_form", "editName", function () {
-        window.location.assign("profile");
+    handleFormSubmission("#edit_name_form", "editName", function (response) {
+        // dismiss the popup
+        $('#edit_name_pop').modal('hide');
+
+        // update the input value
+        $("#usernameEditInput").attr('value', response.username);
+
+        // update the user name in the profile page
+        $("#user_name").text(response.username);
+
+        // update user name in the nav
+        var firstName = response.username.split(' ')[0];
+        $("#navbarDropdown").text(` ${firstName} `);
     });
+
 
     // Handle form submission for changing profile password
     handleFormSubmission("#change_pass", "changePassword", function () {
-        window.location.assign("profile");
+        // dismiss the popup
+        $('#change_password').modal('hide');
     });
 });
 // ************** end of profile page **************
