@@ -27,6 +27,8 @@ $(document).ready(function () {
     }
 
     $('#sortable').sortable({
+        handle: '.sort-icon',
+        scroll: true,
         ghostClass: "sortable-ghost",  // Class name for the drop placeholder
         onUpdate: updateSlideOrder,
     });

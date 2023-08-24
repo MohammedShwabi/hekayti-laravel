@@ -23,21 +23,32 @@
                             var baseAudioUrl = '{{ URL::to('/') }}/storage/upload/slides_sounds/';
                         </script>
 
+                        @php
+                            $not_published  = !$story->published;
+                            $colClass = $not_published ? 'col-4' : 'col-6';
+                        @endphp
+
                         <div id="sortable">
                             @foreach ($slides as $slide)
                                 <div class="card_slide card" id="card_slide_{{ $slide->page_no }}"
                                     data-slide-id="{{ $slide->id }}" onclick="getSlide({{ $slide->page_no }})">
                                     <div class="row px-1 justify-content-center align-items-center">
+                                        <!-- add sort icon only if the story has not been published      -->
+                                        @if ($not_published)
+                                            <div class="col-2 d-flex justify-content-center align-items-center">
+                                                <i class="fa-solid fa-bars sort-icon"></i>
+                                            </div>
+                                        @endif
                                         <div class="col-4 card-image my-1 p-0">
                                             <img id="image{{ $slide->id }}"
                                                 src="{{ asset('storage/upload/slides_photos/thumbs/' . $slide->image) }}"
                                                 class="img-fluid " alt="...">
                                         </div>
-                                        <div class="col-6 pe-3 card-text">
+                                        <div class="{{ $colClass }} pe-3 card-text">
                                             <p id="text{{ $slide->id }}">{{ $slide->text }}</p>
                                         </div>
                                         <!-- delete the icon if the story has been published     -->
-                                        @if (!$story->published)
+                                        @if ($not_published)
                                             <div class="col-2 px-1">
                                                 <div class="delete-slide"
                                                     onclick="event.stopPropagation(); deletePopup({{ $slide->id }},'delete_slide','del_slide_id')">
@@ -50,7 +61,7 @@
                             @endforeach
                         </div>
 
-                        @if (!$story->published)
+                        @if ($not_published)
                             <!-- this card for the add slide btn -->
                             <div class="card justify-content-center px-4">
                                 <div class="row add-slide">
@@ -69,7 +80,7 @@
                 </div>
 
                 <!-- enable sort only if story is not published  -->
-                @if (!$story->published)
+                @if ($not_published)
                     <!-- CDN link for jQuery SortableJS -->
                     <!-- <script src="https://unpkg.com/sortablejs-make/Sortable.min.js"></script> -->
                     <!-- <script src="https://cdn.jsdelivr.net/npm/jquery-sortablejs@1.0.1/jquery-sortable.min.js"></script> -->
@@ -124,7 +135,7 @@
                     <div id="error-image-message" class="shadow"></div>
 
                     <div class="row image p-0">
-                        @if (!$story->published)
+                        @if ($not_published)
                             <div class="edit-img py-1 px-4 " id="edit_image" onclick="{{ $imageClick }}">
                                 <span id="icon_text">{{ $imageText }}</span>
                                 <div class="fa fa-pen"></div>
@@ -142,7 +153,7 @@
                             {{-- if there is more than format of audio file we can use the source tag her --}}
                             Your browser does not support the audio element.
                         </audio>
-                        @if (!$story->published)
+                        @if ($not_published)
                             <span class="replace px-3 col-1 m-lg-0 m-2" id="replace_audio" onclick="{{ $audioClick }}">
                                 <div class="fa-solid fa-repeat"></div>
                             </span>
@@ -156,7 +167,7 @@
                         <div class="col-11">
                             <p id="slide_text">{{ $slide_text }}</p>
                         </div>
-                        @if (!$story->published)
+                        @if ($not_published)
                             <span class="edit-text px-3 shadow-lg col-1 m-lg-0 m-2" id="edit_text_icon"
                                 onclick="{{ $textClick }}">
                                 <div class="fa fa-pen"></div>
@@ -178,7 +189,7 @@
         </div>
     </div>
 
-    @if (!$story->published)
+    @if ($not_published)
         {{-- dele popup --}}
         @component('components.delete-confirmation-modal', [
             'modalId' => 'delete_slide',
