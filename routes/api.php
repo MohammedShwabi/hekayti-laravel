@@ -15,17 +15,31 @@ use Illuminate\Support\Facades\Route;
 */
 
 /** Stories Routes  */
+// get all stories
 Route::get('/get-all-stories', [App\Http\Controllers\Api\StoryApiController::class, 'getStories'])->name('get-all-stories');
+// get all story media
 Route::get('/get-all-storiesMedia', [App\Http\Controllers\Api\StoryApiController::class, 'getStoriesMedia'])->name('get-all-storiesMedia');
 
-Route::post('signup', [UserController::class, 'signup']); //to signup and add user to the user table
-Route::post('login', [UserController::class, 'login']); //to login and get the user information
-Route::post('updateUser', [UserController::class, 'updateUser']); //to update the user table
+/** User Routes  */
+// signup user
+Route::post('/signup', [App\Http\Controllers\Api\UserController::class, 'signup'])->name('signup');
+// login user
+Route::post('/login', [App\Http\Controllers\Api\UserController::class, 'login'])->name('login');
+// update user
+Route::post('/update-user', [App\Http\Controllers\Api\UserController::class, 'update'])->name('update-user');
 
-Route::post('accuracy', [AccuracyController::class, 'getAccuracy']); //to get the accuracy table
-Route::post('updateAccuracy', [AccuracyController::class, 'updateAccuracy']); //to update the accuracy table
-Route::post('uploadAccuracy', [AccuracyController::class, 'addAccuracy']); //to add to the accuracy table
+/** Accuracy Routes  */
+// get accuracy of the user
+Route::get('/get-accuracy', [App\Http\Controllers\Api\AccuracyController::class, 'getAccuracy'])->name('get-accuracy');
+// add accuracy to user
+Route::post('/upload-accuracy', [App\Http\Controllers\Api\AccuracyController::class, 'store'])->name('upload-accuracy');
+// update accuracy of the user
+Route::post('/update-accuracy', [App\Http\Controllers\Api\AccuracyController::class, 'update'])->name('upload-accuracy');
 
-Route::post('completion', [CompletionController::class, 'getCompletion']); //to get the completion table
-Route::post('updateCompletion', [CompletionController::class, 'updateCompletion']); //to update the completion table
-Route::post('uploadCompletion', [CompletionController::class, 'addCompletion']);//to add to the completion table
+/** Completion Routes  */
+// get completion of the user
+Route::get('/get-completion', [App\Http\Controllers\Api\CompletionController::class, 'getCompletion'])->name('get-completion');
+// add completion to user
+Route::post('/upload-completion', [App\Http\Controllers\Api\CompletionController::class, 'store'])->name('upload-completion');
+// update completion to user
+Route::post('/update-completion', [App\Http\Controllers\Api\CompletionController::class, 'update'])->name('update-completion');

@@ -33,4 +33,12 @@ trait GeneralTrait
             $key   => $value,
         ]);
     }
+    public function returnValidations($responseCode, $validator)
+    {
+        return response()->json([
+            'status' => false,
+            'responseCode' => $responseCode,
+            'validation'    => $validator->errors(),
+        ]);
+    }
 }

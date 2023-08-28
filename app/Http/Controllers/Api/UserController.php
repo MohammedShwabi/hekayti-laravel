@@ -1,41 +1,67 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\GeneralTrait;
+use Illuminate\Validation\Rule;
+
+use function PHPUnit\Framework\isEmpty;
 
 class UserController extends Controller
 {
-    //Added by Maryam
-    //*****************Start */
-    // this function sign up the user and return his id
+    use GeneralTrait;
+
+    /**
+     * Sign up the user 
+     */
+    // this function 
     public function signup(Request $request)
     {
+        // validate from data in the request
         $validator = Validator::make($request->all(), [
-            'email' => 'required|unique:users,email|email',
-            'password' => 'required'
+            'user_name' => 'required|min:3',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string',
+            'character' => 'required|integer',
+            'level' => 'required|integer'
         ]);
 
+        // return validation errors
         if ($validator->fails()) {
-            abort(434);
+            return $this->returnValidations(422, $validator);
         }
-        $user=User::create([
-            'user_name'=> $request->user_name,
-            'email'=> $request->email,
-            'password'=>  $request->password,
-            'character'=> $request->character,
-            'level'=> $request->level,
-        ]);
-        $user->save();
-       
-        return response()->json($user->id);
+
+        // store new user 
+        $newUser = new User();
+        $newUser->user_name = $request->user_name;
+        $newUser->email = $request->email;
+        $newUser->password = Hash::make($request->password);
+        $newUser->character = $request->character;
+        $newUser->level = $request->level;
+
+        $newUser->save();
+
+        // custom response array
+        $response = [
+            'id' => $newUser->id,
+            'user_name' => $newUser->user_name,
+            'email' => $newUser->email,
+            'character' => $newUser->character,
+            'level' => $newUser->level,
+        ];
+
+        return $this->returnData(200, 'User Added', 'user', $response);
     }
 
-    // this function login the user and return his information
+    /**
+     * Login the user
+     */
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -44,43 +70,57 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json('User not Found!');
+            return $this->returnValidations(422, $validator);
         }
         $user = User::where('email', $request->email)->first();
-        if((strcmp($request->password,$user->password))==0) { 
-                $userInfo=[
-                    'id' => $user->id,
-                    'user_name'=> $user->user_name,
-                    'email'=> $user->email,
-                    'character'=> $user->character,
-                    'level'=> $user->level,
-                ]; 
-            
-            return response()->json($userInfo);
+        if (Hash::check($request->password, $user->password)) {
+            $response = [
+                'id' => $user->id,
+                'user_name' => $user->user_name,
+                'email' => $user->email,
+                'character' => $user->character,
+                'level' => $user->level,
+            ];
+            return $this->returnData(200, 'User Found', 'user', $response);
         } else {
-            return response()->json('Password is not correct!');
+            return $this->returnError(401, 'Unauthenticated.');
         }
     }
-    
-    // this function update the information of the user for the mobile app
-    public function  updateUser(Request $request)
-    {
-        $user = User::where('id',$request->id)->update([
-            'user_name'=>$request->user_name,
-            'password'=>$request->password,
-            'character'=>$request->character,
-            'level'=>$request->level,
-            'email'=>$request->email,
-            'updated_at'=>$request->updated_at,
 
-            
+    /**
+     * Update the information of the user
+     */
+    public function  update(Request $request)
+    {
+        // validate from data in the request
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|exists:users,id',
+            'user_name' => 'required|min:3',
+            'email' => [
+                'required', 'email', 'max:255',
+                Rule::unique('users', 'email')->ignore($request->id),
+            ],
+            'password' => 'required|string',
+            'character' => 'required|integer',
+            'level' => 'required|integer'
+        ]);
+
+        // return validation errors
+        if ($validator->fails()) {
+            return $this->returnValidations(422, $validator);
+        }
+        // update user
+        $user = User::where('id', $request->id)->update(
+            [
+                'user_name' => $request->user_name,
+                'password' => Hash::make($request->password),
+                'character' => $request->character,
+                'level' => $request->level,
+                'email' => $request->email,
+                'updated_at' => $request->updated_at,
             ]
         );
-    
-       
-        return response()->json('Update User Successfully');
+        return $this->returnSuccessMessage(200, 'Update User Successfully.');
     }
-    // this function insert the accuracy of the user to the accuracy table for the mobile app
     
-    //*****************End */
 }

@@ -13,24 +13,31 @@ class StoryApiController extends Controller
 {
     use GeneralTrait;
 
-    // this function return all the stories table for the mobile app
+    /**
+     * Get all stories
+     */
     public function getStories()
     {
+        // get all stories
         $stories = Story::where('published', 1)->get();
         if ($stories->isEmpty()) {
             return $this->returnError(404, 'No Story Found.');
         }
+
         return $this->returnData(200, 'Stories retrieved', 'stories', $stories);
-    
     }
-    // this function return all the storyMedia table for the mobile app
+
+    /**
+     * Get all stories media
+     */
     public function  getStoriesMedia()
     {
+        // get all stories media
         $storiesMedia = StoryMedia::all();
         if ($storiesMedia->isEmpty()) {
             return $this->returnError(404, 'No Story Found.');
         }
-        return $this->returnData(200, 'StoriesMedia retrieved', 'storiesMedia', $storiesMedia);
 
+        return $this->returnData(200, 'StoriesMedia retrieved', 'storiesMedia', $storiesMedia);
     }
 }
