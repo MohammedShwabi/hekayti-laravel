@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/MohammedShwabi/hekiaty-laravel">
+  <a href="https://github.com/MohammedShwabi/hekayti-laravel">
  <img src="images/public/img/logo.png" alt="Logo" width="100" height="100"></a>
 </p>
 
@@ -8,7 +8,7 @@
 <div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/MohammedShwabi/hekiaty-laravel/issues/pulls)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/MohammedShwabi/hekayti-laravel/issues/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
@@ -112,15 +112,14 @@ Before you begin, ensure you have the following:
 Open your terminal/command prompt and run the following command to clone the repository:
 
 ```bash
-git clone https://github.com/MohammedShwabi/hekiaty-laravel.git
+git clone https://github.com/MohammedShwabi/hekayti-laravel.git
 ```
 
 <!-- :rocket: -->
 ## 🚀 Install Dependencies  <a name = "dependencies"></a>
 1. Navigate to the project directory:
-<!-- cd hekayti-laravel -->
 ```bash
-cd hekiaty-laravel
+cd hekayti-laravel
 ```
 2. Install project dependencies:
 ```bash
@@ -192,9 +191,11 @@ password: adminpassword
 
 <!-- :iphone: -->
 ## 📱 API Reference <a name = "api"></a>
-This project includes an API that can be used with an Android app. 
+This project includes an API that can be used with a Mobile app. 
 
-You can find documentation and usage examples in the API Documentation Excel File at [api-docs](https://api-docs.example.com).
+You can find postman collection and usage examples in the API Documentation Excel File at [api-docs](https://api-docs.example.com).
+
+You can export postman collection and find api documentation and  at [api-docs](https://github.com/MohammedShwabi/hekayti-laravel/HekaytiApiDocumentationAndCollection/Hekayti-Api-Documentation.xlsx).
 
 
 <!-- :warning: -->
@@ -214,7 +215,7 @@ If you'd like to contribute to the project, feel free to submit pull requests.
 - [@MohammedShwabi](https://github.com/MohammedShwabi) Backend Development
 - [@HeshamNoaman](https://github.com/HeshamNoaman) Frontend Development
 
-See also the list of [contributors](https://github.com/MohammedShwabi/hekiaty-laravel/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/MohammedShwabi/hekayti-laravel/contributors) who participated in this project.
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
