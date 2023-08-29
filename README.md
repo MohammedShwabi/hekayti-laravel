@@ -193,7 +193,7 @@ password: adminpassword
 ## 📱 API Reference <a name = "api"></a>
 This project includes an API that can be used with a Mobile app. 
 
-You can find postman collection and usage examples in the API Documentation Excel File at [api-docs](/HekaytiApiDocumentationAndCollection/Hekayti-Api-Documentation.xlsx).
+You can find postman collection and usage examples in the API Documentation Excel File at [api-docs](/HekaytiApiDocumentationAndCollection/).
 
 
 <!-- :warning: -->
