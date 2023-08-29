@@ -1,11 +1,11 @@
-<p style="text-align: center;">
+<p align="right">
   <a href="https://github.com/MohammedShwabi/hekiaty-laravel">
  <img src="images/public/img/logo.png" alt="Logo" width="100" height="100"></a>
 </p>
 
-<h3 style="text-align: center;">hekayti-laravel</h3>
+<h3 align="right">hekayti-laravel</h3>
 
-<div style="text-align: center;">
+<div align="right">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/MohammedShwabi/hekiaty-laravel/issues/pulls)
@@ -13,7 +13,7 @@
 
 </div>
 
-<p style="text-align: center;">
+<p align="right">
 Laravel web panel for a playful educational app, enhancing children's reading and listening skills  in a fun way.
 <br> 
 </p>
