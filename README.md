@@ -1,11 +1,11 @@
-<p align="right">
+<p align="center">
   <a href="https://github.com/MohammedShwabi/hekiaty-laravel">
  <img src="images/public/img/logo.png" alt="Logo" width="100" height="100"></a>
 </p>
 
-<h3 align="right">hekayti-laravel</h3>
+<h3 align="center">hekayti-laravel</h3>
 
-<div align="right">
+<div align="center">
 
 [![Status](https://img.shields.io/badge/status-active-success.svg)]()
 [![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/MohammedShwabi/hekiaty-laravel/issues/pulls)
@@ -13,7 +13,7 @@
 
 </div>
 
-<p align="right">
+<p align="center">
 Laravel web panel for a playful educational app, enhancing children's reading and listening skills  in a fun way.
 <br> 
 </p>
@@ -31,9 +31,10 @@ Laravel web panel for a playful educational app, enhancing children's reading an
 - [Database Configuration](#db_config)
 - [Storage Configuration](#storage_config)
 - [Running the Project](#running_project)
+- [API Reference](#api)
 - [Troubleshooting](#troubleshooting)
-- [License](#license)
 - [Contributing](#contributing)
+- [License](#license)
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
 
@@ -190,7 +191,7 @@ password: adminpassword
 ```
 
 <!-- :iphone: -->
-## 📱 API Reference
+## 📱 API Reference <a name = "api"></a>
 This project includes an API that can be used with an Android app. 
 
 You can find documentation and usage examples in the API Documentation Excel File at [api-docs](https://api-docs.example.com).
