@@ -1,0 +1,462 @@
+{
+	"info": {
+		"_postman_id": "35599747-86d4-4c7e-8e1c-5e910d58b31b",
+		"name": "Hekayti-Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26680974"
+	},
+	"item": [
+		{
+			"name": "Get-all-stories",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/get-all-stories?api_key=Mohammed_Shwabi",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"get-all-stories"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "Mohammed_Shwabi"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get-all-storiesMedia",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/get-all-storiesMedia?api_key=Mohammed_Shwabi",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"get-all-storiesMedia"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "Mohammed_Shwabi"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/signup?api_key=Mohammed_Shwabi&email=mohamqmedn@gmail.coms&user_name=mohammed&character=1&level=1&password=123456",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"signup"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "Mohammed_Shwabi"
+						},
+						{
+							"key": "email",
+							"value": "mohamqmedn@gmail.coms"
+						},
+						{
+							"key": "user_name",
+							"value": "mohammed"
+						},
+						{
+							"key": "character",
+							"value": "1"
+						},
+						{
+							"key": "level",
+							"value": "1"
+						},
+						{
+							"key": "password",
+							"value": "123456"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n    'api_key':'Mohammed_Shwabi',",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/login?api_key=Mohammed_Shwabi&email=mohamqmedn@gmail.coms&password=123456",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "Mohammed_Shwabi"
+						},
+						{
+							"key": "email",
+							"value": "mohamqmedn@gmail.coms"
+						},
+						{
+							"key": "password",
+							"value": "123456"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update-user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/update-user?api_key=Mohammed_Shwabi&email=mohamqmedn@gmail.coms&user_name=mohammed Ali&character=1&level=1&password=123456&id=30",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"update-user"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "Mohammed_Shwabi"
+						},
+						{
+							"key": "email",
+							"value": "mohamqmedn@gmail.coms"
+						},
+						{
+							"key": "user_name",
+							"value": "mohammed Ali"
+						},
+						{
+							"key": "character",
+							"value": "1"
+						},
+						{
+							"key": "level",
+							"value": "1"
+						},
+						{
+							"key": "password",
+							"value": "123456"
+						},
+						{
+							"key": "id",
+							"value": "30"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get-accuracy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/get-accuracy?api_key=Mohammed_Shwabi&user_id=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"get-accuracy"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "Mohammed_Shwabi"
+						},
+						{
+							"key": "user_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload-accuracy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/upload-accuracy?api_key=Mohammed_Shwabi&accuracy_stars=5&media_id=1&user_id=1&readed_text=nnnsn",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"upload-accuracy"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "Mohammed_Shwabi"
+						},
+						{
+							"key": "accuracy_stars",
+							"value": "5"
+						},
+						{
+							"key": "media_id",
+							"value": "1"
+						},
+						{
+							"key": "user_id",
+							"value": "1"
+						},
+						{
+							"key": "readed_text",
+							"value": "nnnsn"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update-accuracy",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/update-accuracy?api_key=Mohammed_Shwabi&accuracy_stars=5&media_id=1&user_id=1&readed_text=nnnsnmug",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"update-accuracy"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "Mohammed_Shwabi"
+						},
+						{
+							"key": "accuracy_stars",
+							"value": "5"
+						},
+						{
+							"key": "media_id",
+							"value": "1"
+						},
+						{
+							"key": "user_id",
+							"value": "1"
+						},
+						{
+							"key": "readed_text",
+							"value": "nnnsnmug"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get-completion",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/get-completion?api_key=Mohammed_Shwabi&user_id=1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"get-completion"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "Mohammed_Shwabi"
+						},
+						{
+							"key": "user_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload-completion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/upload-completion?api_key=Mohammed_Shwabi&stars=1&story_id=1&user_id=1&percentage=20",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"upload-completion"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "Mohammed_Shwabi"
+						},
+						{
+							"key": "stars",
+							"value": "1"
+						},
+						{
+							"key": "story_id",
+							"value": "1"
+						},
+						{
+							"key": "user_id",
+							"value": "1"
+						},
+						{
+							"key": "percentage",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update-completion",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/update-completion?api_key=Mohammed_Shwabi&stars=1&story_id=1&user_id=1&percentage=20",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"update-completion"
+					],
+					"query": [
+						{
+							"key": "api_key",
+							"value": "Mohammed_Shwabi"
+						},
+						{
+							"key": "stars",
+							"value": "1"
+						},
+						{
+							"key": "story_id",
+							"value": "1"
+						},
+						{
+							"key": "user_id",
+							"value": "1"
+						},
+						{
+							"key": "percentage",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
