@@ -22,7 +22,7 @@ class AdminController extends Controller
     public function login()
     {
         if (auth()->check()) {
-            return  redirect('/stories');
+            return  redirect('/stories/1');
         }
         return view('auth.login');
     }
