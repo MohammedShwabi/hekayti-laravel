@@ -193,9 +193,7 @@ password: adminpassword
 ## 📱 API Reference <a name = "api"></a>
 This project includes an API that can be used with a Mobile app. 
 
-You can find postman collection and usage examples in the API Documentation Excel File at [api-docs](https://api-docs.example.com).
-
-You can export postman collection and find api documentation and  at [api-docs](https://github.com/MohammedShwabi/hekayti-laravel/HekaytiApiDocumentationAndCollection/Hekayti-Api-Documentation.xlsx).
+You can find postman collection and usage examples in the API Documentation Excel File at [api-docs](/HekaytiApiDocumentationAndCollection/Hekayti-Api-Documentation.xlsx).
 
 
 <!-- :warning: -->
