@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 // use App\Models\User;
 use App\Models\Admin;
+use App\Models\User;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,12 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-        Admin::factory(1)->create();
+        // add 20 user
+        User::factory(20)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Call StoriesTableSeeder
+        $this->call(AdminsTableSeeder::class);
+
+        // Call StoriesTableSeeder
+        $this->call(StoriesTableSeeder::class);
+
+        // Call StoriesMediaTableSeeder
+        $this->call(StoriesMediaTableSeeder::class);
     }
 }

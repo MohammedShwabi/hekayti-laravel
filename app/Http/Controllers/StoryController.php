@@ -26,7 +26,7 @@ class StoryController extends Controller
 
         // Validate the level parameter
         $validator = Validator::make(['level' => $level], [
-            'level' => 'required|integer|min:1|max:10|exists:stories,level', // Example validation rules
+            'level' => 'required|integer|min:1|max:3',
         ]);
         if ($validator->fails()) {
             $level = 1;

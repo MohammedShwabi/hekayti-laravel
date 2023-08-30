@@ -344,6 +344,9 @@ class StoryMediaController extends Controller
         // get slide data 
         $slide = StoryMedia::find($request->del_slide_id);
 
+        // Remember the page_no of the deleted slide
+        $deletedPageNo = $slide->page_no;
+
         // delete all files
         $imagePath = 'upload/slides_photos/' . $slide->image;
         $thumbPath = 'upload/slides_photos/thumbs/' . $slide->image;
@@ -362,6 +365,12 @@ class StoryMediaController extends Controller
 
         // delete slide 
         $slide->delete();
+
+        // Reorder page numbers for remaining slides
+        StoryMedia::where('story_id', $slide->story_id)
+            ->where('page_no', '>', $deletedPageNo)
+            ->decrement('page_no');
+            
         return back();
     }
 
