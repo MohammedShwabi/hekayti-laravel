@@ -7,9 +7,9 @@
 
 <div align="center">
 
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/MohammedShwabi/hekayti-laravel/issues/pulls)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+![Status][status-shield]
+[![GitHub Pull Requests][pull-shield]][pull-url]
+[![License][license-shield]][license-url]
 
 </div>
 
@@ -101,6 +101,8 @@ Before you begin, ensure you have the following:
 - **PHP**: Make sure you have PHP installed on your system. You can download it from the [official PHP website](https://www.php.net/downloads.php).
 
 - **Composer**: Composer is a dependency management tool for PHP. You can install it by following the instructions [here](https://getcomposer.org/download/).
+
+- **MySQL**: This project requires a MySQL database. You can download and install it from the [official MySQL website](https://dev.mysql.com/downloads/installer/).
 
 - **Git**: You'll need Git to clone the repository. Download and install it from the [official Git website](https://git-scm.com/downloads).
 
@@ -208,7 +210,7 @@ If you'd like to contribute to the project, feel free to submit pull requests.
 
 <!-- :scroll: -->
 ## 📜 License <a name = "license"></a>
-<p>This project is licensed under the <a href="LICENSE" target="_new">MIT License</a>.</p>
+<p>This project is licensed under the <a href="https://github.com/MohammedShwabi/hekayti-laravel/blob/main/LICENSE.md">MIT License</a>.</p>
 
 ## ✍️ Authors <a name = "authors"></a>
 
@@ -219,14 +221,22 @@ See also the list of [contributors](https://github.com/MohammedShwabi/hekayti-la
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
-- Hat tip to anyone whose code was used
-- Inspiration
-- References
-
+- [@MaryamHajeb](https://github.com/MaryamHajeb) for analysis, database design, and story creation.
+- [@almomyz](https://github.com/almomyz) for contributing ideas, dedication in the work, and developing the mobile app.
+- [@OsamaNaseer](https://github.com/OsamaNaseer) for contributing ideas and participating in the development of the mobile app.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-<!-- icons -->
+<!-- small icon -->
+[status-shield]: https://img.shields.io/badge/status-active-success.svg
+
+[pull-shield]: https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg
+[pull-url]: https://github.com/MohammedShwabi/hekayti-laravel/issues/pulls
+
+[license-shield]: https://img.shields.io/badge/license-MIT-blue.svg
+[license-url]: https://github.com/MohammedShwabi/hekayti-laravel/blob/main/LICENSE.md
+
+<!-- built using icons -->
 [Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
 [Laravel-url]: https://laravel.com
 [Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
