@@ -223,7 +223,7 @@ See also the list of [contributors](https://github.com/MohammedShwabi/hekayti-la
 
 - [@MaryamHajeb](https://github.com/MaryamHajeb) for analysis, database design, and story creation.
 - [@almomyz](https://github.com/almomyz) for contributing ideas, dedication in the work, and developing the mobile app.
-- [@OsamaNaseer](https://github.com/OsamaNaseer) for contributing ideas and participating in the development of the mobile app.
+- [@osama-nasser1999](https://github.com/osama-nasser1999) for contributing ideas and participating in the development of the mobile app.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
